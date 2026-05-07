@@ -1,23 +1,803 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Satisfy&display=swap');
-@import "tailwindcss";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIETANA — Feel Vietnam, Your Way</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-@theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
-  --font-script: "Satisfy", cursive;
+  :root {
+    --green: #0F5132;
+    --green-light: #1a7a4a;
+    --green-dark: #0a3a24;
+    --gold: #D4AF37;
+    --gold-light: #e8cc6a;
+    --cream: #FAFAF7;
+    --warm-white: #F5F3EE;
+    --text-dark: #1a1a18;
+    --text-mid: #4a4a45;
+    --text-light: #8a8a80;
+    --shadow-soft: 0 4px 32px rgba(15,81,50,0.10);
+    --shadow-card: 0 8px 40px rgba(15,81,50,0.13);
+    --radius: 18px;
+    --radius-sm: 10px;
+  }
 
-  --color-brand-primary: #1D4D98;
-  --color-brand-accent: #D4AF37;
-  --color-brand-bg: #FAFAF7;
-  --color-brand-text: #1A1A1A;
-  --color-brand-muted: #6B6B6B;
-}
+  html { scroll-behavior: smooth; }
 
-@layer base {
   body {
-    @apply bg-brand-bg text-brand-text font-sans antialiased;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    overflow-x: hidden;
+    line-height: 1.6;
   }
-  h1, h2, h3, h4 {
-    @apply font-serif;
+
+  h1, h2, h3 { font-family: 'Cormorant Garamond', serif; letter-spacing: -0.01em; }
+  h1 { font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 300; line-height: 1.05; }
+  h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 400; }
+  h3 { font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 500; }
+  p { font-size: 1rem; color: var(--text-mid); line-height: 1.75; }
+
+  .section-label {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
   }
-}
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.2rem 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(250,250,247,0.0);
+    transition: background 0.4s, backdrop-filter 0.4s, box-shadow 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(250,250,247,0.95);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 1px 0 rgba(15,81,50,0.08);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.7rem; font-weight: 600;
+    color: #fff; letter-spacing: 0.05em;
+    text-decoration: none; transition: color 0.3s;
+  }
+  nav.scrolled .nav-logo { color: var(--green); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; font-size: 0.88rem; font-weight: 500;
+    color: rgba(255,255,255,0.85); transition: color 0.3s;
+  }
+  nav.scrolled .nav-links a { color: var(--text-mid); }
+  .nav-links a:hover { color: var(--gold) !important; }
+  .nav-cta {
+    background: var(--gold); color: var(--green-dark) !important;
+    padding: 0.5rem 1.3rem; border-radius: 50px;
+    font-weight: 600 !important; font-size: 0.83rem !important;
+    transition: background 0.3s, transform 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--gold-light) !important; transform: translateY(-1px); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: #fff; border-radius: 2px; transition: 0.3s; }
+  nav.scrolled .hamburger span { background: var(--green); }
+
+  /* HERO */
+  #hero {
+    position: relative; height: 100vh; min-height: 600px;
+    display: flex; align-items: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: url('https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?w=1800&q=85') center/cover no-repeat;
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(10,58,36,0.82) 0%, rgba(15,81,50,0.55) 50%, rgba(0,0,0,0.30) 100%);
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 0 6%;
+    max-width: 780px;
+    animation: heroFade 1.2s ease both;
+  }
+  @keyframes heroFade {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-label {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(212,175,55,0.18); border: 1px solid rgba(212,175,55,0.4);
+    color: var(--gold-light); font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    padding: 0.4rem 1rem; border-radius: 50px;
+    margin-bottom: 1.5rem;
+    animation: heroFade 1.2s 0.2s ease both;
+  }
+  .hero-content h1 {
+    color: #fff; margin-bottom: 1.2rem;
+    animation: heroFade 1.2s 0.35s ease both;
+  }
+  .hero-content h1 em { color: var(--gold-light); font-style: italic; }
+  .hero-sub {
+    color: rgba(255,255,255,0.82); font-size: 1.1rem;
+    margin-bottom: 2.5rem; max-width: 500px;
+    animation: heroFade 1.2s 0.5s ease both;
+  }
+  .hero-btns {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    animation: heroFade 1.2s 0.65s ease both;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--gold); color: var(--green-dark);
+    padding: 0.85rem 2rem; border-radius: 50px;
+    font-weight: 600; font-size: 0.92rem; text-decoration: none;
+    transition: all 0.28s; box-shadow: 0 4px 20px rgba(212,175,55,0.4);
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(212,175,55,0.5); }
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: transparent; color: #fff;
+    border: 1.5px solid rgba(255,255,255,0.5);
+    padding: 0.85rem 2rem; border-radius: 50px;
+    font-weight: 500; font-size: 0.92rem; text-decoration: none;
+    transition: all 0.28s;
+  }
+  .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: #fff; transform: translateY(-2px); }
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+    color: rgba(255,255,255,0.6); font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+    animation: heroFade 1.2s 1s ease both;
+  }
+  .scroll-line {
+    width: 1px; height: 48px; background: rgba(255,255,255,0.3);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.2); }
+  }
+
+  /* TRUST STRIP */
+  #trust { background: var(--green); padding: 3rem 6%; }
+  .trust-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2rem; max-width: 1100px; margin: 0 auto;
+  }
+  .trust-item {
+    display: flex; align-items: flex-start; gap: 1.2rem;
+    border-right: 1px solid rgba(255,255,255,0.12);
+    padding-right: 2rem;
+  }
+  .trust-item:last-child { border-right: none; }
+  .trust-icon {
+    font-size: 2rem; flex-shrink: 0;
+    background: rgba(212,175,55,0.15); border-radius: 12px;
+    width: 52px; height: 52px; display: flex; align-items: center; justify-content: center;
+  }
+  .trust-item h4 { color: #fff; font-family: 'DM Sans',sans-serif; font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; }
+  .trust-item p { color: rgba(255,255,255,0.65); font-size: 0.85rem; line-height: 1.5; }
+
+  /* SECTIONS */
+  section { padding: 6rem 6%; }
+  .section-header { text-align: center; margin-bottom: 4rem; }
+  .section-header h2 { margin-bottom: 1rem; color: var(--text-dark); }
+  .section-header p { max-width: 540px; margin: 0 auto; }
+
+  /* SERVICES */
+  #services { background: var(--warm-white); }
+  .services-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem; max-width: 1200px; margin: 0 auto;
+  }
+  .service-card {
+    background: #fff; border-radius: var(--radius);
+    padding: 2rem 1.6rem; box-shadow: var(--shadow-soft);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid rgba(15,81,50,0.06);
+    position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--green), var(--gold));
+    transform: scaleX(0); transition: transform 0.35s;
+    transform-origin: left;
+  }
+  .service-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-card); }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-icon {
+    font-size: 2.2rem; margin-bottom: 1.2rem;
+    width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, rgba(15,81,50,0.08), rgba(212,175,55,0.1));
+    border-radius: 14px;
+  }
+  .service-card h3 { font-size: 1.1rem; margin-bottom: 0.6rem; color: var(--green); }
+  .service-card p { font-size: 0.86rem; color: var(--text-light); line-height: 1.6; }
+
+  /* PACKAGES */
+  #packages { background: var(--cream); }
+  .packages-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.8rem; max-width: 1200px; margin: 0 auto;
+  }
+  .pkg-card {
+    position: relative; border-radius: var(--radius);
+    overflow: hidden; height: 420px; cursor: pointer;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.35s, box-shadow 0.35s;
+  }
+  .pkg-card:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 20px 60px rgba(15,81,50,0.2); }
+  .pkg-bg {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    transition: transform 0.5s;
+  }
+  .pkg-card:hover .pkg-bg { transform: scale(1.06); }
+  .pkg-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(10,58,36,0.92) 0%, rgba(10,58,36,0.35) 55%, transparent 100%);
+  }
+  .pkg-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 2rem 1.8rem; }
+  .pkg-badge {
+    display: inline-block; background: var(--gold); color: var(--green-dark);
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.3rem 0.8rem; border-radius: 50px; margin-bottom: 0.8rem;
+  }
+  .pkg-content h3 { color: #fff; font-size: 1.4rem; margin-bottom: 0.4rem; }
+  .pkg-price { color: var(--gold-light); font-size: 1.05rem; font-weight: 500; margin-bottom: 1rem; }
+  .pkg-btn {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.4);
+    color: #fff; padding: 0.5rem 1.2rem; border-radius: 50px;
+    font-size: 0.82rem; font-weight: 500; text-decoration: none;
+    backdrop-filter: blur(8px);
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 0.3s, transform 0.3s, background 0.25s;
+  }
+  .pkg-card:hover .pkg-btn { opacity: 1; transform: translateY(0); }
+  .pkg-btn:hover { background: rgba(255,255,255,0.25); border-color: #fff; }
+
+  /* CUSTOM TRIP */
+  #custom { background: var(--green); position: relative; overflow: hidden; text-align: center; }
+  #custom::before {
+    content: ''; position: absolute; top: -60px; right: -60px;
+    width: 380px; height: 380px;
+    background: radial-gradient(circle, rgba(212,175,55,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  #custom::after {
+    content: ''; position: absolute; bottom: -80px; left: -40px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  #custom .section-label { color: var(--gold); }
+  #custom h2 { color: #fff; margin-bottom: 1rem; }
+  #custom > p { color: rgba(255,255,255,0.72); max-width: 540px; margin: 0 auto 2rem; }
+  .custom-features {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;
+    margin-bottom: 2.5rem; position: relative; z-index: 1;
+  }
+  .custom-pill {
+    display: flex; align-items: center; gap: 0.5rem;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.9); padding: 0.55rem 1.2rem; border-radius: 50px;
+    font-size: 0.88rem; font-weight: 500; backdrop-filter: blur(8px);
+  }
+  .custom-pill .dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; }
+  .btn-gold {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--gold); color: var(--green-dark);
+    padding: 0.95rem 2.2rem; border-radius: 50px;
+    font-weight: 600; font-size: 0.95rem; text-decoration: none;
+    transition: all 0.28s; box-shadow: 0 4px 24px rgba(212,175,55,0.45);
+    position: relative; z-index: 1;
+  }
+  .btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(212,175,55,0.55); }
+
+  /* FOOD */
+  #food { background: var(--warm-white); }
+  .food-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2.5rem; max-width: 1100px; margin: 0 auto; align-items: center;
+  }
+  .food-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .food-img { border-radius: var(--radius-sm); overflow: hidden; aspect-ratio: 3/4; box-shadow: var(--shadow-soft); }
+  .food-img:first-child { margin-top: 2rem; }
+  .food-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .food-text .section-label { display: block; }
+  .food-text h2 { margin-bottom: 1.2rem; }
+  .food-text p { margin-bottom: 1.5rem; }
+  .food-highlights { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
+  .food-highlights li { display: flex; align-items: flex-start; gap: 0.8rem; font-size: 0.9rem; color: var(--text-mid); }
+  .food-highlights li .tick {
+    flex-shrink: 0; width: 22px; height: 22px;
+    background: rgba(15,81,50,0.1); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; color: var(--green);
+  }
+  .food-spots { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
+  .food-spot {
+    display: flex; align-items: center; gap: 0.5rem;
+    background: #fff; border: 1px solid rgba(15,81,50,0.12);
+    padding: 0.5rem 1rem; border-radius: 8px;
+    font-size: 0.82rem; font-weight: 500; color: var(--green);
+    box-shadow: var(--shadow-soft);
+  }
+
+  /* LOCAL EXPERIENCES */
+  #local { background: var(--cream); }
+  .exp-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem; max-width: 1200px; margin: 0 auto;
+  }
+  .exp-card {
+    background: #fff; border-radius: var(--radius); overflow: hidden;
+    box-shadow: var(--shadow-soft); transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid rgba(15,81,50,0.06);
+  }
+  .exp-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-card); }
+  .exp-img { height: 200px; overflow: hidden; }
+  .exp-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s; }
+  .exp-card:hover .exp-img img { transform: scale(1.08); }
+  .exp-body { padding: 1.5rem; }
+  .exp-body h3 { font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--green); }
+  .exp-body p { font-size: 0.85rem; color: var(--text-light); line-height: 1.6; }
+
+  /* ABOUT */
+  #about { background: var(--warm-white); }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; max-width: 1100px; margin: 0 auto; align-items: center;
+  }
+  .about-image { position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 4/5; box-shadow: var(--shadow-card); }
+  .about-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .about-badge {
+    position: absolute; bottom: 2rem; left: -1.5rem;
+    background: var(--green); color: #fff;
+    padding: 1.2rem 1.8rem; border-radius: var(--radius-sm); box-shadow: var(--shadow-card);
+  }
+  .about-badge .num { font-family: 'Cormorant Garamond',serif; font-size: 2.5rem; font-weight: 300; color: var(--gold); }
+  .about-badge span { font-size: 0.78rem; color: rgba(255,255,255,0.75); display: block; }
+  .about-text .section-label { display: block; }
+  .about-text h2 { margin-bottom: 1.2rem; }
+  .about-text p { margin-bottom: 1.5rem; }
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-top: 2rem; }
+  .stat-box { background: #fff; border-radius: var(--radius-sm); padding: 1.4rem; box-shadow: var(--shadow-soft); border-left: 3px solid var(--gold); }
+  .stat-box .big { font-family: 'Cormorant Garamond',serif; font-size: 2.2rem; font-weight: 300; color: var(--green); }
+  .stat-box p { font-size: 0.82rem; color: var(--text-light); margin-top: 0.2rem; }
+
+  /* CONTACT */
+  #contact { background: var(--green); text-align: center; }
+  #contact .section-label { color: var(--gold); }
+  #contact h2 { color: #fff; margin-bottom: 1rem; }
+  #contact > .lead { color: rgba(255,255,255,0.72); max-width: 480px; margin: 0 auto 3rem; }
+  .contact-cards { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; margin-bottom: 3rem; }
+  .contact-card {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: var(--radius); padding: 2rem 2.5rem; min-width: 240px;
+    backdrop-filter: blur(10px); transition: background 0.3s, transform 0.3s;
+  }
+  .contact-card:hover { background: rgba(255,255,255,0.14); transform: translateY(-4px); }
+  .contact-card .icon { font-size: 2rem; margin-bottom: 1rem; }
+  .contact-card h4 { color: var(--gold-light); font-family: 'DM Sans',sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .contact-card p { color: rgba(255,255,255,0.85); font-weight: 500; font-size: 1rem; }
+  .contact-ctas { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  .btn-wa {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: #25D366; color: #fff;
+    padding: 0.95rem 2rem; border-radius: 50px;
+    font-weight: 600; font-size: 0.92rem; text-decoration: none;
+    transition: all 0.28s; box-shadow: 0 4px 20px rgba(37,211,102,0.35);
+  }
+  .btn-wa:hover { background: #1ebe5d; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,211,102,0.45); }
+  .btn-outline-white {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,0.4);
+    padding: 0.95rem 2rem; border-radius: 50px;
+    font-weight: 500; font-size: 0.92rem; text-decoration: none; transition: all 0.28s;
+  }
+  .btn-outline-white:hover { background: rgba(255,255,255,0.1); border-color: #fff; transform: translateY(-2px); }
+
+  /* FOOTER */
+  footer { background: var(--green-dark); color: rgba(255,255,255,0.6); padding: 3rem 6%; }
+  .footer-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2rem;
+  }
+  .footer-brand .logo { font-family: 'Cormorant Garamond',serif; font-size: 1.8rem; color: #fff; font-weight: 600; letter-spacing: 0.05em; }
+  .footer-brand .tag { font-size: 0.82rem; color: var(--gold); margin-top: 0.2rem; }
+  .footer-nav { display: flex; flex-wrap: wrap; gap: 1.5rem; list-style: none; }
+  .footer-nav a { text-decoration: none; color: rgba(255,255,255,0.55); font-size: 0.85rem; transition: color 0.3s; }
+  .footer-nav a:hover { color: var(--gold); }
+  .footer-copy { font-size: 0.78rem; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.08); max-width: 1200px; margin: 2rem auto 0; }
+
+  /* FADE-UP */
+  .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  .fade-up.delay-1 { transition-delay: 0.1s; }
+  .fade-up.delay-2 { transition-delay: 0.2s; }
+  .fade-up.delay-3 { transition-delay: 0.3s; }
+  .fade-up.delay-4 { transition-delay: 0.4s; }
+
+  /* MOBILE MENU */
+  .mobile-menu {
+    display: none; flex-direction: column;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 99;
+    background: var(--green-dark); padding: 6rem 2rem 3rem;
+    align-items: center; justify-content: center; gap: 2rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a { font-family: 'Cormorant Garamond',serif; font-size: 2rem; color: #fff; text-decoration: none; }
+  .mobile-menu a:hover { color: var(--gold); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .trust-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .trust-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.12); padding-right: 0; padding-bottom: 1.5rem; }
+    .trust-item:last-child { border-bottom: none; }
+    .food-grid { grid-template-columns: 1fr; }
+    .food-visual { display: none; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-image { aspect-ratio: 16/9; }
+    .about-badge { left: 1rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+  }
+  @media (max-width: 600px) {
+    section { padding: 4rem 5%; }
+    .hero-btns { flex-direction: column; }
+    .hero-btns a { text-align: center; justify-content: center; }
+    .packages-grid { grid-template-columns: 1fr; }
+    .about-stats { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">VIETANA</a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#packages">Packages</a></li>
+    <li><a href="#food">Food</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="https://wa.me/84000000000?text=Hi%20VIETANA%2C%20I%27m%20interested%20in%20planning%20a%20trip%20to%20Vietnam!" class="nav-cta" target="_blank">WhatsApp Us</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services" onclick="toggleMenu()">Services</a>
+  <a href="#packages" onclick="toggleMenu()">Packages</a>
+  <a href="#food" onclick="toggleMenu()">Food</a>
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
+  <a href="https://wa.me/84000000000" style="color:var(--gold);" target="_blank">📱 WhatsApp Us</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-label">🇻🇳 &nbsp;India–Vietnam Travel Experts</div>
+    <h1>Feel <em>Vietnam</em>,<br>Your Way</h1>
+    <p class="hero-sub">Travel Vietnam stress-free — we handle everything locally, right from Ho Chi Minh City.</p>
+    <div class="hero-btns">
+      <a href="https://wa.me/84000000000?text=Hi%20VIETANA%2C%20I%27d%20like%20to%20plan%20my%20Vietnam%20trip!" class="btn-primary" target="_blank">💬 Plan My Trip</a>
+      <a href="#packages" class="btn-outline">✦ Explore Packages</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div id="trust">
+  <div class="trust-grid">
+    <div class="trust-item fade-up">
+      <div class="trust-icon">🇮🇳🇻🇳</div>
+      <div>
+        <h4>India + Vietnam Presence</h4>
+        <p>Trusted by Indian travelers. Locally rooted in Ho Chi Minh City.</p>
+      </div>
+    </div>
+    <div class="trust-item fade-up delay-1">
+      <div class="trust-icon">📍</div>
+      <div>
+        <h4>Local Support in HCMC</h4>
+        <p>Real on-ground team available 24/7 in Vietnam — not just a call center.</p>
+      </div>
+    </div>
+    <div class="trust-item fade-up delay-2">
+      <div class="trust-icon">⚡</div>
+      <div>
+        <h4>Fast Visa Assistance (24h)</h4>
+        <p>We process your Vietnam e-visa quickly so you can focus on planning fun.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-header fade-up">
+    <span class="section-label">What We Offer</span>
+    <h2>Everything You Need,<br>Handled Locally</h2>
+    <p>From visa to your last dinner — VIETANA makes your Vietnam journey completely stress-free.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card fade-up delay-1">
+      <div class="service-icon">📋</div>
+      <h3>Visa Assistance</h3>
+      <p>Fast, reliable Vietnam e-visa processing. We guide you step by step with zero confusion.</p>
+    </div>
+    <div class="service-card fade-up delay-2">
+      <div class="service-icon">🗺️</div>
+      <h3>Custom Travel Planning</h3>
+      <p>Your itinerary, your pace. We craft personalized plans based on your interests and budget.</p>
+    </div>
+    <div class="service-card fade-up delay-3">
+      <div class="service-icon">🌴</div>
+      <h3>Tour Packages</h3>
+      <p>Curated 3, 5 & 7-day packages covering Vietnam's top highlights — hassle-free and value-packed.</p>
+    </div>
+    <div class="service-card fade-up delay-1">
+      <div class="service-icon">🚗</div>
+      <h3>Airport Pickup</h3>
+      <p>Arrive relaxed. Our team greets you at the airport with a comfortable, air-conditioned ride.</p>
+    </div>
+    <div class="service-card fade-up delay-2">
+      <div class="service-icon">🏨</div>
+      <h3>Hotel Booking</h3>
+      <p>Hand-picked hotels from budget-friendly gems to luxury stays — all vetted for Indian travelers.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section id="packages">
+  <div class="section-header fade-up">
+    <span class="section-label">Our Packages</span>
+    <h2>Experiences Crafted<br>for Indian Travelers</h2>
+    <p>Curated itineraries at prices that make sense — ₹30,000 to ₹80,000 range.</p>
+  </div>
+  <div class="packages-grid">
+    <div class="pkg-card fade-up delay-1">
+      <div class="pkg-bg" style="background-image:url('https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800&q=80')"></div>
+      <div class="pkg-overlay"></div>
+      <div class="pkg-content">
+        <span class="pkg-badge">3 Days</span>
+        <h3>Vietnam Quick Escape</h3>
+        <p class="pkg-price">Starting ₹18,000 per person</p>
+        <a href="https://wa.me/84000000000?text=I%27m%20interested%20in%20the%203-Day%20Vietnam%20package!" class="pkg-btn" target="_blank">Get Details →</a>
+      </div>
+    </div>
+    <div class="pkg-card fade-up delay-2">
+      <div class="pkg-bg" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80')"></div>
+      <div class="pkg-overlay"></div>
+      <div class="pkg-content">
+        <span class="pkg-badge">5 Days</span>
+        <h3>Vietnam Explorer</h3>
+        <p class="pkg-price">Starting ₹30,000 per person</p>
+        <a href="https://wa.me/84000000000?text=I%27m%20interested%20in%20the%205-Day%20Vietnam%20package!" class="pkg-btn" target="_blank">Get Details →</a>
+      </div>
+    </div>
+    <div class="pkg-card fade-up delay-3">
+      <div class="pkg-bg" style="background-image:url('https://images.unsplash.com/photo-1540202404-a2f29016b523?w=800&q=80')"></div>
+      <div class="pkg-overlay"></div>
+      <div class="pkg-content">
+        <span class="pkg-badge">7 Days</span>
+        <h3>Complete Vietnam</h3>
+        <p class="pkg-price">Starting ₹50,000 per person</p>
+        <a href="https://wa.me/84000000000?text=I%27m%20interested%20in%20the%207-Day%20Vietnam%20package!" class="pkg-btn" target="_blank">Get Details →</a>
+      </div>
+    </div>
+    <div class="pkg-card fade-up delay-4">
+      <div class="pkg-bg" style="background-image:url('https://images.unsplash.com/photo-1562602833-0f4ab2fc46e3?w=800&q=80')"></div>
+      <div class="pkg-overlay"></div>
+      <div class="pkg-content">
+        <span class="pkg-badge">Island Escape</span>
+        <h3>Phu Quoc Experience</h3>
+        <p class="pkg-price">Starting ₹45,000 per person</p>
+        <a href="https://wa.me/84000000000?text=I%27m%20interested%20in%20the%20Phu%20Quoc%20package!" class="pkg-btn" target="_blank">Get Details →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CUSTOM TRIP -->
+<section id="custom">
+  <span class="section-label">Flexible Travel</span>
+  <h2>Your Trip, Your Rules</h2>
+  <p>Not every trip fits a box. Tell us what you dream of — we'll build it exactly the way you want it.</p>
+  <div class="custom-features">
+    <div class="custom-pill"><div class="dot"></div> Any Number of Days</div>
+    <div class="custom-pill"><div class="dot"></div> Budget to Luxury</div>
+    <div class="custom-pill"><div class="dot"></div> Solo, Couple or Group</div>
+    <div class="custom-pill"><div class="dot"></div> Fully Personalized</div>
+    <div class="custom-pill"><div class="dot"></div> Honeymoon Special</div>
+    <div class="custom-pill"><div class="dot"></div> Family Friendly</div>
+  </div>
+  <a href="https://wa.me/84000000000?text=Hi%20VIETANA%2C%20I%27d%20like%20to%20plan%20a%20custom%20trip%20to%20Vietnam!" class="btn-gold" target="_blank">💬 Plan Custom Trip</a>
+</section>
+
+<!-- FOOD -->
+<section id="food">
+  <div class="food-grid">
+    <div class="food-visual">
+      <div class="food-img">
+        <img src="https://images.unsplash.com/photo-1563379091339-03246963d6c4?w=600&q=80" alt="Vietnamese food" loading="lazy">
+      </div>
+      <div class="food-img">
+        <img src="https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=600&q=80" alt="Indian food" loading="lazy">
+      </div>
+    </div>
+    <div class="food-text fade-up">
+      <span class="section-label">Food & Dining</span>
+      <h2>Never Worry About<br>What to Eat</h2>
+      <p>We know Indian travelers care deeply about food. That's why VIETANA makes sure you always have delicious options — whether you want a taste of home or want to explore Vietnamese cuisine.</p>
+      <ul class="food-highlights">
+        <li><div class="tick">✓</div><span><strong>Indian food available</strong> — find comfort in familiar flavors whenever you need it</span></li>
+        <li><div class="tick">✓</div><span><strong>Veg & non-veg options</strong> — fully catered with dietary needs in mind</span></li>
+        <li><div class="tick">✓</div><span><strong>Vietnamese local food experiences</strong> — guided tastings and street food walks</span></li>
+      </ul>
+      <div class="food-spots">
+        <div class="food-spot">🍛 The Spicy Spoon</div>
+        <div class="food-spot">🍜 Mi Quảng Cô Viên</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCAL EXPERIENCES -->
+<section id="local">
+  <div class="section-header fade-up">
+    <span class="section-label">Local Experiences</span>
+    <h2>Go Beyond the Tourist Trail</h2>
+    <p>VIETANA takes you to places most travelers never discover — curated by locals, designed for curious souls.</p>
+  </div>
+  <div class="exp-grid">
+    <div class="exp-card fade-up delay-1">
+      <div class="exp-img"><img src="https://images.unsplash.com/photo-1554797589-7241bb691973?w=600&q=80" alt="Street food" loading="lazy"></div>
+      <div class="exp-body">
+        <h3>🍢 Street Food Tours</h3>
+        <p>Dive into the real flavors of Vietnam with guided evening street food walks through HCMC's most vibrant alleys.</p>
+      </div>
+    </div>
+    <div class="exp-card fade-up delay-2">
+      <div class="exp-img"><img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80" alt="Night market" loading="lazy"></div>
+      <div class="exp-body">
+        <h3>🌙 Night Markets</h3>
+        <p>Shop, eat and soak in the electric atmosphere of Bến Thành and Bùi Viện — Vietnam's most iconic night scenes.</p>
+      </div>
+    </div>
+    <div class="exp-card fade-up delay-3">
+      <div class="exp-img"><img src="https://images.unsplash.com/photo-1548023487-1cbb394f28ba?w=600&q=80" alt="Cultural" loading="lazy"></div>
+      <div class="exp-body">
+        <h3>🏛️ Cultural Experiences</h3>
+        <p>Visit war museums, ancient pagodas, and the Cu Chi tunnels — stories that stay with you forever.</p>
+      </div>
+    </div>
+    <div class="exp-card fade-up delay-4">
+      <div class="exp-img"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" alt="Hidden spots" loading="lazy"></div>
+      <div class="exp-body">
+        <h3>🗺️ Hidden Locations</h3>
+        <p>Secret cafés, rooftop views and off-the-map spots only locals know — you'll feel like you truly lived in Vietnam.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-image fade-up">
+      <img src="https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=800&q=80" alt="HCMC" loading="lazy">
+      <div class="about-badge">
+        <div class="num">500+</div>
+        <span>Happy Indian Travelers</span>
+      </div>
+    </div>
+    <div class="about-text fade-up delay-2">
+      <span class="section-label">Our Story</span>
+      <h2>Built Between<br>India & Vietnam</h2>
+      <p>VIETANA was born from a simple realization — Indian travelers deserve a Vietnam experience that feels safe, familiar, and truly joyful. Not just a tour operator, but a friend on the ground.</p>
+      <p>With a local team in Ho Chi Minh City and deep roots in the Indian travel mindset, we bridge two cultures to create something genuinely special: stress-free travel that gets better every time.</p>
+      <div class="about-stats">
+        <div class="stat-box"><div class="big">2+</div><p>Years of local presence in HCMC</p></div>
+        <div class="stat-box"><div class="big">24h</div><p>Visa assistance turnaround time</p></div>
+        <div class="stat-box"><div class="big">🇮🇳</div><p>Indian-friendly services & language</p></div>
+        <div class="stat-box"><div class="big">5★</div><p>Rated by travelers on Google</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <span class="section-label">Get in Touch</span>
+  <h2>Let's Plan Your<br>Vietnam Adventure</h2>
+  <p class="lead">Drop us a message on WhatsApp — we respond fast and speak your language.</p>
+  <div class="contact-cards">
+    <div class="contact-card fade-up delay-1">
+      <div class="icon">🇮🇳</div>
+      <h4>India Contact</h4>
+      <p>+91 98765 43210</p>
+    </div>
+    <div class="contact-card fade-up delay-2">
+      <div class="icon">🇻🇳</div>
+      <h4>Vietnam Contact</h4>
+      <p>+84 0902434006</p>
+    </div>
+    <div class="contact-card fade-up delay-3">
+      <div class="icon">✉️</div>
+      <h4>Email Us</h4>
+      <p>hello@vietana.com</p>
+    </div>
+  </div>
+  <div class="contact-ctas">
+    <a href="https://wa.me/919953294543?text=Hi%20VIETANA%2C%20I%27m%20planning%20a%20Vietnam%20trip!" class="btn-wa" target="_blank">💬 WhatsApp India</a>
+    <a href="https://wa.me/84902434006?text=Hi%20VIETANA%2C%20I%27m%20planning%20a%20Vietnam%20trip!" class="btn-wa" target="_blank">💬 WhatsApp Vietnam</a>
+    <a href="mailto:hello@vietana.com" class="btn-outline-white">✉️ Send Email</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">VIETANA</div>
+      <div class="tag">Feel Vietnam, Your Way 🇻🇳</div>
+      <div style="font-size:0.8rem;color:rgba(255,255,255,0.4);margin-top:0.3rem;">Travel Gets Better with VIETANA</div>
+    </div>
+    <ul class="footer-nav">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#packages">Packages</a></li>
+      <li><a href="#food">Food</a></li>
+      <li><a href="#local">Experiences</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+  <div class="footer-copy">© 2025 VIETANA. All rights reserved. Designed for Indian travelers who love Vietnam. &nbsp;|&nbsp; Privacy Policy</div>
+</footer>
+
+<script>
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
