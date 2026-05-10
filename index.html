@@ -447,6 +447,626 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
   #btt{bottom:1.5rem;right:1.5rem}
   .con-tile{padding:2rem 1.8rem;min-width:unset;width:100%;max-width:360px}
 }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   AI TRIP PLANNER — FLOATING BUTTON
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#ai-fab {
+  position: fixed;
+  bottom: 5rem;
+  right: 2rem;
+  z-index: 450;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  background: linear-gradient(135deg, #1a7a4a 0%, #0D4F2E 60%, #C9A84C 140%);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: .85rem 1.55rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .84rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(13,79,46,.45), 0 2px 8px rgba(201,168,76,.25), inset 0 1px 0 rgba(255,255,255,.15);
+  transition: all .45s cubic-bezier(.16,1,.3,1);
+  overflow: hidden;
+  white-space: nowrap;
+}
+#ai-fab::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.12), transparent);
+  border-radius: inherit;
+  pointer-events: none;
+}
+#ai-fab:hover {
+  transform: translateY(-4px) scale(1.04);
+  box-shadow: 0 18px 50px rgba(13,79,46,.55), 0 4px 16px rgba(201,168,76,.35);
+}
+#ai-fab .fab-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,.18) 50%, transparent 60%);
+  background-size: 200% 100%;
+  animation: fabShimmer 3s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes fabShimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+#ai-fab .fab-dot {
+  width: 7px; height: 7px;
+  background: #C9A84C;
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: fabPulse 2s ease-in-out infinite;
+}
+@keyframes fabPulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: .5; transform: scale(1.6); }
+}
+@media(max-width:600px) {
+  #ai-fab { bottom: 1.5rem; right: 1.2rem; padding: .72rem 1.2rem; font-size: .78rem; }
+  #ai-fab .fab-txt { display: none; }
+  #ai-fab { gap: 0; padding: .8rem 1rem; }
+  #ai-fab .fab-emoji { font-size: 1.1rem; }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   AI MODAL OVERLAY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#ai-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .55s cubic-bezier(.16,1,.3,1);
+}
+#ai-modal.open {
+  opacity: 1;
+  pointer-events: all;
+}
+.ai-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4,10,6,.78);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+}
+.ai-bg-img {
+  position: absolute;
+  inset: 0;
+  background: url('https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1600&q=75') center/cover no-repeat;
+  opacity: .18;
+  filter: blur(4px);
+  transform: scale(1.06);
+}
+/* floating orbs */
+.ai-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: aiOrbFloat 8s ease-in-out infinite;
+}
+.ai-orb1 { width: 500px; height: 500px; top: -150px; left: -120px; background: radial-gradient(circle, rgba(13,79,46,.35) 0%, transparent 70%); animation-delay: 0s; }
+.ai-orb2 { width: 380px; height: 380px; bottom: -100px; right: -80px; background: radial-gradient(circle, rgba(201,168,76,.18) 0%, transparent 70%); animation-delay: -3.5s; }
+.ai-orb3 { width: 280px; height: 280px; top: 40%; left: 55%; background: radial-gradient(circle, rgba(26,122,74,.2) 0%, transparent 70%); animation-delay: -6s; }
+@keyframes aiOrbFloat {
+  0%,100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(18px, -22px) scale(1.04); }
+  66%      { transform: translate(-12px, 16px) scale(.97); }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   AI MODAL CARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ai-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: rgba(8, 26, 16, .82);
+  border: 1px solid rgba(201,168,76,.22);
+  border-radius: 28px;
+  padding: 2.8rem 2.6rem 2.4rem;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.04) inset,
+    0 40px 120px rgba(0,0,0,.7),
+    0 0 80px rgba(13,79,46,.25);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  transform: translateY(40px) scale(.97);
+  transition: transform .65s cubic-bezier(.16,1,.3,1);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(201,168,76,.3) transparent;
+}
+.ai-card::-webkit-scrollbar { width: 4px; }
+.ai-card::-webkit-scrollbar-thumb { background: rgba(201,168,76,.25); border-radius: 2px; }
+#ai-modal.open .ai-card {
+  transform: none;
+}
+/* top gold line */
+.ai-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,.7), transparent);
+  border-radius: 1px;
+}
+
+/* Header */
+.ai-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 2.2rem;
+}
+.ai-header-left { flex: 1; }
+.ai-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  background: rgba(201,168,76,.1);
+  border: 1px solid rgba(201,168,76,.25);
+  color: #e8cc6a;
+  font-size: .63rem;
+  font-weight: 600;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  padding: .34rem 1rem;
+  border-radius: 50px;
+  margin-bottom: .9rem;
+  backdrop-filter: blur(10px);
+}
+.ai-brand-dot { width: 5px; height: 5px; background: #C9A84C; border-radius: 50%; animation: fabPulse 2s infinite; }
+.ai-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.55rem, 4vw, 1.95rem);
+  font-weight: 400;
+  color: #fff;
+  line-height: 1.12;
+  margin: 0;
+}
+.ai-title em { color: #e8cc6a; font-style: italic; }
+.ai-close {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.65);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .3s;
+  flex-shrink: 0;
+  margin-left: 1rem;
+  margin-top: .2rem;
+}
+.ai-close:hover { background: rgba(255,255,255,.14); color: #fff; border-color: rgba(255,255,255,.35); }
+
+/* Progress bar */
+.ai-progress {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  margin-bottom: 2rem;
+}
+.ai-progress-bar {
+  flex: 1;
+  height: 3px;
+  background: rgba(255,255,255,.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.ai-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1a7a4a, #C9A84C);
+  border-radius: 2px;
+  transition: width .55s cubic-bezier(.16,1,.3,1);
+  box-shadow: 0 0 10px rgba(201,168,76,.5);
+}
+.ai-step-label {
+  font-size: .67rem;
+  color: rgba(255,255,255,.38);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Question screen */
+.ai-screen {
+  display: none;
+  animation: aiSlideIn .5s cubic-bezier(.16,1,.3,1) both;
+}
+.ai-screen.active { display: block; }
+@keyframes aiSlideIn {
+  from { opacity: 0; transform: translateX(28px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes aiSlideInLeft {
+  from { opacity: 0; transform: translateX(-28px); }
+  to   { opacity: 1; transform: none; }
+}
+.ai-q-label {
+  font-size: .64rem;
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,.75);
+  display: block;
+  margin-bottom: .7rem;
+}
+.ai-q-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+  color: #fff;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 1.8rem;
+}
+
+/* Option grid */
+.ai-opts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .8rem;
+  margin-bottom: 1.6rem;
+}
+.ai-opts.ai-opts-4 { grid-template-columns: 1fr 1fr; }
+.ai-opts.ai-opts-3 { grid-template-columns: 1fr 1fr 1fr; }
+.ai-opt {
+  background: rgba(255,255,255,.055);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 14px;
+  padding: 1.1rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all .35s cubic-bezier(.16,1,.3,1);
+  position: relative;
+  overflow: hidden;
+  color: rgba(255,255,255,.82);
+  font-size: .84rem;
+  font-weight: 400;
+  letter-spacing: .01em;
+  user-select: none;
+}
+.ai-opt::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(13,79,46,.3), rgba(201,168,76,.08));
+  opacity: 0;
+  transition: opacity .35s;
+  border-radius: inherit;
+}
+.ai-opt:hover {
+  border-color: rgba(201,168,76,.4);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.3);
+}
+.ai-opt:hover::before { opacity: 1; }
+.ai-opt.selected {
+  border-color: rgba(201,168,76,.75);
+  background: rgba(201,168,76,.12);
+  color: #e8cc6a;
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 1px rgba(201,168,76,.2), 0 8px 24px rgba(0,0,0,.3);
+}
+.ai-opt.selected::before { opacity: 1; }
+.ai-opt .opt-ico { display: block; font-size: 1.5rem; margin-bottom: .45rem; }
+.ai-opt .opt-lbl { display: block; line-height: 1.3; }
+
+/* Custom days input */
+.ai-custom-input {
+  display: none;
+  margin-top: .8rem;
+}
+.ai-custom-input.show { display: block; }
+.ai-custom-input input {
+  width: 100%;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(201,168,76,.3);
+  border-radius: 12px;
+  padding: .9rem 1.2rem;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .92rem;
+  outline: none;
+  transition: border-color .3s, box-shadow .3s;
+}
+.ai-custom-input input::placeholder { color: rgba(255,255,255,.3); }
+.ai-custom-input input:focus {
+  border-color: rgba(201,168,76,.6);
+  box-shadow: 0 0 0 3px rgba(201,168,76,.08);
+}
+
+/* Nav row */
+.ai-nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.4rem;
+  gap: 1rem;
+}
+.ai-back {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.14);
+  color: rgba(255,255,255,.55);
+  font-family: 'DM Sans', sans-serif;
+  font-size: .8rem;
+  padding: .65rem 1.3rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all .3s;
+}
+.ai-back:hover { background: rgba(255,255,255,.08); color: rgba(255,255,255,.85); }
+.ai-next {
+  flex: 1;
+  background: linear-gradient(135deg, #1a7a4a, #0D4F2E);
+  border: none;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .86rem;
+  font-weight: 600;
+  padding: .85rem 1.8rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all .4s cubic-bezier(.16,1,.3,1);
+  letter-spacing: .03em;
+  box-shadow: 0 4px 20px rgba(13,79,46,.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+}
+.ai-next:hover { background: linear-gradient(135deg, #1f9058, #1a7a4a); transform: translateY(-2px); box-shadow: 0 10px 32px rgba(13,79,46,.55); }
+.ai-next:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   AI GENERATING SCREEN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ai-generating {
+  text-align: center;
+  padding: 2.5rem 1rem;
+}
+.ai-gen-orb {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(13,79,46,.8) 0%, rgba(201,168,76,.3) 100%);
+  margin: 0 auto 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  animation: genOrbPulse 1.8s ease-in-out infinite;
+  box-shadow: 0 0 40px rgba(13,79,46,.5), 0 0 80px rgba(201,168,76,.15);
+}
+@keyframes genOrbPulse {
+  0%,100% { transform: scale(1); box-shadow: 0 0 40px rgba(13,79,46,.5), 0 0 80px rgba(201,168,76,.15); }
+  50%      { transform: scale(1.1); box-shadow: 0 0 60px rgba(13,79,46,.7), 0 0 110px rgba(201,168,76,.25); }
+}
+.ai-gen-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.45rem;
+  color: #fff;
+  margin-bottom: .5rem;
+}
+.ai-gen-sub { color: rgba(255,255,255,.45); font-size: .83rem; }
+.ai-gen-dots {
+  display: flex;
+  justify-content: center;
+  gap: .5rem;
+  margin-top: 1.6rem;
+}
+.ai-gen-dots span {
+  width: 6px; height: 6px;
+  background: #C9A84C;
+  border-radius: 50%;
+  animation: genDot 1.4s ease-in-out infinite;
+}
+.ai-gen-dots span:nth-child(2) { animation-delay: .2s; }
+.ai-gen-dots span:nth-child(3) { animation-delay: .4s; }
+@keyframes genDot {
+  0%,100% { opacity: .2; transform: scale(.7); }
+  50%      { opacity: 1; transform: scale(1.3); }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   AI RESULT CARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#ai-result {
+  display: none;
+  animation: aiSlideIn .7s cubic-bezier(.16,1,.3,1) both;
+}
+#ai-result.show { display: block; }
+
+.result-header {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  margin-bottom: 1.6rem;
+}
+.result-flag { font-size: 1.4rem; }
+.result-title-wrap { flex: 1; }
+.result-eyebrow {
+  font-size: .62rem;
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,.7);
+  display: block;
+  margin-bottom: .25rem;
+}
+.result-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.1rem, 3vw, 1.35rem);
+  color: #fff;
+  font-weight: 500;
+  line-height: 1.15;
+}
+.result-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-bottom: 1.5rem;
+}
+.rbadge {
+  background: rgba(201,168,76,.1);
+  border: 1px solid rgba(201,168,76,.22);
+  color: #e8cc6a;
+  font-size: .63rem;
+  font-weight: 600;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  padding: .28rem .8rem;
+  border-radius: 50px;
+}
+
+.result-itinerary {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 1.4rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.05);
+}
+.result-top-bar {
+  background: linear-gradient(90deg, rgba(13,79,46,.8), rgba(8,38,24,.6));
+  padding: .9rem 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  border-bottom: 1px solid rgba(201,168,76,.12);
+}
+.result-top-bar span {
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,.8);
+}
+.result-top-bar::before { content: '✦'; color: #C9A84C; font-size: .75rem; }
+
+.result-days { padding: .5rem 0; }
+.result-day {
+  display: flex;
+  align-items: flex-start;
+  gap: .9rem;
+  padding: .85rem 1.4rem;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  transition: background .25s;
+  animation: dayReveal .5s cubic-bezier(.16,1,.3,1) both;
+}
+.result-day:last-child { border-bottom: none; }
+.result-day:hover { background: rgba(255,255,255,.04); }
+@keyframes dayReveal {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: none; }
+}
+.day-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(13,79,46,.9), rgba(201,168,76,.3));
+  border: 1px solid rgba(201,168,76,.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .64rem;
+  font-weight: 700;
+  color: #e8cc6a;
+  flex-shrink: 0;
+  margin-top: .05rem;
+}
+.day-content { flex: 1; }
+.day-label {
+  font-size: .6rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,.55);
+  display: block;
+  margin-bottom: .2rem;
+}
+.day-text {
+  color: rgba(255,255,255,.82);
+  font-size: .87rem;
+  line-height: 1.55;
+}
+
+/* Result footer note */
+.result-note {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .85rem 1.4rem;
+  background: rgba(13,79,46,.2);
+  border: 1px solid rgba(13,79,46,.4);
+  border-radius: 12px;
+  margin-bottom: 1.4rem;
+}
+.result-note-ico { font-size: 1rem; flex-shrink: 0; }
+.result-note p { font-size: .78rem; color: rgba(255,255,255,.55); line-height: 1.5; margin: 0; }
+
+/* WhatsApp CTA */
+.ai-wa-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #1DB954, #16a34a);
+  border: none;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .9rem;
+  font-weight: 600;
+  padding: 1.05rem 2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .65rem;
+  letter-spacing: .02em;
+  box-shadow: 0 4px 24px rgba(29,185,84,.35);
+  transition: all .4s cubic-bezier(.16,1,.3,1);
+  text-decoration: none;
+  margin-bottom: .9rem;
+}
+.ai-wa-btn:hover { background: linear-gradient(135deg, #22d862, #1DB954); transform: translateY(-3px); box-shadow: 0 14px 40px rgba(29,185,84,.45); }
+.ai-restart {
+  width: 100%;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.12);
+  color: rgba(255,255,255,.45);
+  font-family: 'DM Sans', sans-serif;
+  font-size: .8rem;
+  padding: .7rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all .3s;
+}
+.ai-restart:hover { border-color: rgba(255,255,255,.28); color: rgba(255,255,255,.7); background: rgba(255,255,255,.05); }
+
+@media(max-width:600px) {
+  .ai-card { padding: 2rem 1.5rem 1.8rem; border-radius: 22px; }
+  .ai-opts { grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .ai-opts.ai-opts-3 { grid-template-columns: 1fr 1fr; }
+  .ai-opt { padding: .9rem .7rem; font-size: .8rem; }
+  .ai-opt .opt-ico { font-size: 1.3rem; }
+}
 </style>
 </head>
 <body>
@@ -790,7 +1410,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
     <p>Modern tools to help you plan the perfect Vietnam trip — even before you speak to us.</p>
   </div>
   <div class="tools-g">
-    <div class="tool-card r d1"><span class="tool-ico">🤖</span><h3>AI Trip Planner</h3><p>Tell us your travel style, budget and dates — get a custom Vietnam itinerary in seconds.</p><span class="tool-tag">Coming Soon</span></div>
+    <div class="tool-card r d1" onclick="openAI()" style="cursor:pointer"><span class="tool-ico">🤖</span><h3>AI Trip Planner</h3><p>Tell us your travel style, budget and dates — get a custom Vietnam itinerary in seconds.</p><span class="tool-tag" style="background:rgba(13,79,46,.14);color:#0D4F2E">✨ Live Now — Try It!</span></div>
     <div class="tool-card r d2"><span class="tool-ico">🧮</span><h3>Budget Calculator</h3><p>Estimate your full Vietnam trip cost — accommodation, food, transport and experiences.</p><span class="tool-tag">Coming Soon</span></div>
     <div class="tool-card r d3"><span class="tool-ico">🗺️</span><h3>Vietnam Map</h3><p>Interactive map of all VIETANA-curated spots, restaurants, experiences and hidden places.</p><span class="tool-tag">Coming Soon</span></div>
     <div class="tool-card r d4"><span class="tool-ico">⭐</span><h3>VIETANA Picks</h3><p>Our handpicked selection of the best stays, foods and experiences — updated weekly.</p><span class="tool-tag">Coming Soon</span></div>
@@ -885,6 +1505,176 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
     <span>www.vietana.com &nbsp;·&nbsp; Privacy Policy</span>
   </div>
 </footer>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   AI TRIP PLANNER FLOATING BUTTON
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<button id="ai-fab" onclick="openAI()" aria-label="Open AI Trip Planner">
+  <div class="fab-shimmer"></div>
+  <div class="fab-dot"></div>
+  <span class="fab-emoji">✨</span>
+  <span class="fab-txt">AI Trip Planner</span>
+</button>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   AI TRIP PLANNER MODAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<div id="ai-modal" role="dialog" aria-modal="true" aria-label="AI Vietnam Trip Planner">
+  <div class="ai-bg-img"></div>
+  <div class="ai-backdrop" onclick="closeAI()"></div>
+  <div class="ai-orb ai-orb1"></div>
+  <div class="ai-orb ai-orb2"></div>
+  <div class="ai-orb ai-orb3"></div>
+
+  <div class="ai-card">
+    <div class="ai-header">
+      <div class="ai-header-left">
+        <div class="ai-brand"><div class="ai-brand-dot"></div>VIETANA AI &middot; Vietnam Planner</div>
+        <h2 class="ai-title">Plan Your <em>Perfect</em><br>Vietnam Journey</h2>
+      </div>
+      <button class="ai-close" onclick="closeAI()" aria-label="Close">&#x2715;</button>
+    </div>
+
+    <div class="ai-progress" id="ai-prog-wrap">
+      <div class="ai-progress-bar"><div class="ai-progress-fill" id="ai-prog-fill" style="width:0%"></div></div>
+      <span class="ai-step-label" id="ai-step-lbl">Step 1 of 6</span>
+    </div>
+
+    <!-- Q1 -->
+    <div class="ai-screen active" id="ai-q1">
+      <span class="ai-q-label">Question 1 &middot; Duration</span>
+      <p class="ai-q-text">How many days are you planning your Vietnam adventure?</p>
+      <div class="ai-opts">
+        <div class="ai-opt" data-q="1" data-val="3 Days" onclick="selectOpt(this,1)"><span class="opt-ico">&#127749;</span><span class="opt-lbl">3 Days</span></div>
+        <div class="ai-opt" data-q="1" data-val="5 Days" onclick="selectOpt(this,1)"><span class="opt-ico">&#9992;&#65039;</span><span class="opt-lbl">5 Days</span></div>
+        <div class="ai-opt" data-q="1" data-val="7 Days" onclick="selectOpt(this,1)"><span class="opt-ico">&#128506;</span><span class="opt-lbl">7 Days</span></div>
+        <div class="ai-opt" data-q="1" data-val="Custom" onclick="selectOpt(this,1,true)"><span class="opt-ico">&#9999;&#65039;</span><span class="opt-lbl">Custom</span></div>
+      </div>
+      <div class="ai-custom-input" id="ai-custom-days">
+        <input type="number" id="custom-days-val" min="1" max="30" placeholder="Enter number of days (e.g. 10)" oninput="onCustomDays()">
+      </div>
+      <div class="ai-nav-row">
+        <button class="ai-next" id="ai-next1" onclick="goNext(1)" disabled>Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="ai-screen" id="ai-q2">
+      <span class="ai-q-label">Question 2 &middot; Travelers</span>
+      <p class="ai-q-text">Who are you exploring Vietnam with?</p>
+      <div class="ai-opts">
+        <div class="ai-opt" data-q="2" data-val="Solo" onclick="selectOpt(this,2)"><span class="opt-ico">&#129523;</span><span class="opt-lbl">Solo</span></div>
+        <div class="ai-opt" data-q="2" data-val="Couple" onclick="selectOpt(this,2)"><span class="opt-ico">&#128145;</span><span class="opt-lbl">Couple</span></div>
+        <div class="ai-opt" data-q="2" data-val="Family" onclick="selectOpt(this,2)"><span class="opt-ico">&#128106;</span><span class="opt-lbl">Family</span></div>
+        <div class="ai-opt" data-q="2" data-val="Friends" onclick="selectOpt(this,2)"><span class="opt-ico">&#127867;</span><span class="opt-lbl">Friends</span></div>
+      </div>
+      <div class="ai-nav-row">
+        <button class="ai-back" onclick="goBack(2)">&larr; Back</button>
+        <button class="ai-next" id="ai-next2" onclick="goNext(2)" disabled>Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="ai-screen" id="ai-q3">
+      <span class="ai-q-label">Question 3 &middot; Travel Style</span>
+      <p class="ai-q-text">What travel style speaks to your soul?</p>
+      <div class="ai-opts ai-opts-3">
+        <div class="ai-opt" data-q="3" data-val="Budget" onclick="selectOpt(this,3)"><span class="opt-ico">&#128154;</span><span class="opt-lbl">Budget</span></div>
+        <div class="ai-opt" data-q="3" data-val="Comfort" onclick="selectOpt(this,3)"><span class="opt-ico">&#127807;</span><span class="opt-lbl">Comfort</span></div>
+        <div class="ai-opt" data-q="3" data-val="Luxury" onclick="selectOpt(this,3)"><span class="opt-ico">&#10024;</span><span class="opt-lbl">Luxury</span></div>
+      </div>
+      <div class="ai-nav-row">
+        <button class="ai-back" onclick="goBack(3)">&larr; Back</button>
+        <button class="ai-next" id="ai-next3" onclick="goNext(3)" disabled>Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- Q4 multi -->
+    <div class="ai-screen" id="ai-q4">
+      <span class="ai-q-label">Question 4 &middot; Experiences</span>
+      <p class="ai-q-text">What experiences light you up? <em style="font-size:.78rem;color:rgba(255,255,255,.38);font-style:normal">(pick all that apply)</em></p>
+      <div class="ai-opts">
+        <div class="ai-opt multi" data-val="Food" onclick="selectMulti(this,4)"><span class="opt-ico">&#127836;</span><span class="opt-lbl">Food</span></div>
+        <div class="ai-opt multi" data-val="Beaches" onclick="selectMulti(this,4)"><span class="opt-ico">&#127958;&#65039;</span><span class="opt-lbl">Beaches</span></div>
+        <div class="ai-opt multi" data-val="Nightlife" onclick="selectMulti(this,4)"><span class="opt-ico">&#127749;</span><span class="opt-lbl">Nightlife</span></div>
+        <div class="ai-opt multi" data-val="Culture" onclick="selectMulti(this,4)"><span class="opt-ico">&#127981;</span><span class="opt-lbl">Culture</span></div>
+        <div class="ai-opt multi" data-val="Hidden Places" onclick="selectMulti(this,4)"><span class="opt-ico">&#128506;</span><span class="opt-lbl">Hidden Places</span></div>
+        <div class="ai-opt multi" data-val="Relaxation" onclick="selectMulti(this,4)"><span class="opt-ico">&#129340;</span><span class="opt-lbl">Relaxation</span></div>
+      </div>
+      <div class="ai-nav-row">
+        <button class="ai-back" onclick="goBack(4)">&larr; Back</button>
+        <button class="ai-next" id="ai-next4" onclick="goNext(4)" disabled>Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="ai-screen" id="ai-q5">
+      <span class="ai-q-label">Question 5 &middot; Food Preference</span>
+      <p class="ai-q-text">What's your food preference? Every meal will be perfect.</p>
+      <div class="ai-opts">
+        <div class="ai-opt" data-q="5" data-val="Veg" onclick="selectOpt(this,5)"><span class="opt-ico">&#129367;</span><span class="opt-lbl">Vegetarian</span></div>
+        <div class="ai-opt" data-q="5" data-val="Non-Veg" onclick="selectOpt(this,5)"><span class="opt-ico">&#127831;</span><span class="opt-lbl">Non-Veg</span></div>
+        <div class="ai-opt" data-q="5" data-val="Jain" onclick="selectOpt(this,5)"><span class="opt-ico">&#127807;</span><span class="opt-lbl">Jain</span></div>
+        <div class="ai-opt" data-q="5" data-val="Mixed" onclick="selectOpt(this,5)"><span class="opt-ico">&#127869;&#65039;</span><span class="opt-lbl">Mixed</span></div>
+      </div>
+      <div class="ai-nav-row">
+        <button class="ai-back" onclick="goBack(5)">&larr; Back</button>
+        <button class="ai-next" id="ai-next5" onclick="goNext(5)" disabled>Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="ai-screen" id="ai-q6">
+      <span class="ai-q-label">Question 6 &middot; Accommodation</span>
+      <p class="ai-q-text">What kind of stay feels like home to you?</p>
+      <div class="ai-opts">
+        <div class="ai-opt" data-q="6" data-val="Hostel" onclick="selectOpt(this,6)"><span class="opt-ico">&#128716;</span><span class="opt-lbl">Hostel</span></div>
+        <div class="ai-opt" data-q="6" data-val="Hotel" onclick="selectOpt(this,6)"><span class="opt-ico">&#127970;</span><span class="opt-lbl">Hotel</span></div>
+        <div class="ai-opt" data-q="6" data-val="Luxury Resort" onclick="selectOpt(this,6)"><span class="opt-ico">&#127796;</span><span class="opt-lbl">Luxury Resort</span></div>
+        <div class="ai-opt" data-q="6" data-val="Glamping" onclick="selectOpt(this,6)"><span class="opt-ico">&#9978;</span><span class="opt-lbl">Glamping</span></div>
+      </div>
+      <div class="ai-nav-row">
+        <button class="ai-back" onclick="goBack(6)">&larr; Back</button>
+        <button class="ai-next" id="ai-next6" onclick="generateItinerary()" disabled>&#10024; Generate My Trip</button>
+      </div>
+    </div>
+
+    <!-- Generating -->
+    <div class="ai-screen" id="ai-generating">
+      <div class="ai-generating">
+        <div class="ai-gen-orb">&#127483;&#65039;</div>
+        <p class="ai-gen-title">Crafting Your Journey&hellip;</p>
+        <p class="ai-gen-sub">Our AI is weaving together your perfect Vietnam experience</p>
+        <div class="ai-gen-dots"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+
+    <!-- Result -->
+    <div class="ai-screen" id="ai-result">
+      <div class="result-header">
+        <span class="result-flag">&#127483;&#65039;</span>
+        <div class="result-title-wrap">
+          <span class="result-eyebrow">Your Personalised Itinerary</span>
+          <div class="result-title" id="result-headline"></div>
+        </div>
+      </div>
+      <div class="result-badge-row" id="result-badges"></div>
+      <div class="result-itinerary">
+        <div class="result-top-bar"><span>Day-by-Day Experience</span></div>
+        <div class="result-days" id="result-days"></div>
+      </div>
+      <div class="result-note">
+        <span class="result-note-ico">&#128172;</span>
+        <p>This is your personalised starting point. Our local team in HCMC will refine every detail to make it truly yours.</p>
+      </div>
+      <a id="ai-wa-link" href="#" target="_blank" class="ai-wa-btn">
+        <span>&#128172;</span> Continue on WhatsApp
+      </a>
+      <button class="ai-restart" onclick="restartAI()">&#8635; Start Over &mdash; Plan Another Trip</button>
+    </div>
+
+  </div>
+</div>
 
 <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    JAVASCRIPT
@@ -1356,6 +2146,205 @@ function setLang(lang) {
   document.querySelector('.fbot span:first-child').textContent = t.ftCopy;
 
   document.getElementById('langSw').classList.remove('open');
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   AI TRIP PLANNER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+const aiAnswers = { 1: null, 2: null, 3: null, 4: [], 5: null, 6: null };
+let aiCurrentStep = 1;
+
+function openAI() {
+  document.getElementById('ai-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeAI() {
+  document.getElementById('ai-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAI(); });
+
+function updateProgress(step) {
+  const pct = step > 6 ? 100 : Math.round(((step - 1) / 6) * 100);
+  document.getElementById('ai-prog-fill').style.width = pct + '%';
+  document.getElementById('ai-step-lbl').textContent = step <= 6 ? 'Step ' + step + ' of 6' : 'Complete';
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.ai-screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+}
+
+function selectOpt(el, q, custom) {
+  document.querySelectorAll('[data-q="' + q + '"]').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  aiAnswers[q] = el.dataset.val;
+  if (custom) {
+    document.getElementById('ai-custom-days').classList.add('show');
+    document.getElementById('custom-days-val').focus();
+    document.getElementById('ai-next' + q).disabled = true;
+  } else {
+    if (q === 1) document.getElementById('ai-custom-days').classList.remove('show');
+    document.getElementById('ai-next' + q).disabled = false;
+  }
+}
+
+function onCustomDays() {
+  const v = document.getElementById('custom-days-val').value;
+  if (v && parseInt(v) > 0) {
+    aiAnswers[1] = v + ' Days';
+    document.getElementById('ai-next1').disabled = false;
+  } else {
+    document.getElementById('ai-next1').disabled = true;
+  }
+}
+
+function selectMulti(el, q) {
+  el.classList.toggle('selected');
+  aiAnswers[4] = Array.from(document.querySelectorAll('#ai-q4 .ai-opt.selected')).map(o => o.dataset.val);
+  document.getElementById('ai-next4').disabled = aiAnswers[4].length === 0;
+}
+
+function goNext(step) {
+  aiCurrentStep = step + 1;
+  updateProgress(aiCurrentStep);
+  showScreen('ai-q' + aiCurrentStep);
+}
+function goBack(step) {
+  aiCurrentStep = step - 1;
+  updateProgress(aiCurrentStep);
+  showScreen('ai-q' + aiCurrentStep);
+}
+
+/* ── Itinerary generator ── */
+const ITIN_DB = {
+  base: {
+    "3 Days": [
+      { lbl: "Day 1", txt: "Arrive in Ho Chi Minh City — private AC pickup, check-in & evening stroll through Bến Thành Market" },
+      { lbl: "Day 2", txt: "Hidden café trail through Quận 1, street food walk at Phạm Ngũ Lão & rooftop sundowner" },
+      { lbl: "Day 3", txt: "Morning at War Remnants Museum, lunch at The Spicy Spoon, afternoon free + airport transfer" }
+    ],
+    "5 Days": [
+      { lbl: "Day 1", txt: "Arrive in Ho Chi Minh City — private pickup, city orientation walk & welcome dinner" },
+      { lbl: "Day 2", txt: "Deep dive into HCMC — Reunification Palace, War Museum, hidden cafés & night market" },
+      { lbl: "Day 3", txt: "Morning flight to Đà Nẵng — check-in beachfront, Golden Bridge & Dragon Bridge at night" },
+      { lbl: "Day 4", txt: "Hội An Ancient Town day trip — lantern streets, tailor shopping & river cruise sunset" },
+      { lbl: "Day 5", txt: "Free morning at the beach, late checkout + airport transfer home" }
+    ],
+    "7 Days": [
+      { lbl: "Day 1", txt: "Arrive in Ho Chi Minh City — private pickup, welcome dinner at rooftop Vietnamese restaurant" },
+      { lbl: "Day 2", txt: "HCMC deep-dive — Cu Chi Tunnels, Bến Thành Market & evening Bùi Viện street" },
+      { lbl: "Day 3", txt: "Morning flight to Hà Nội — Old Quarter walk, Hoàn Kiếm Lake & Cha Ca La Vong dinner" },
+      { lbl: "Day 4", txt: "Ha Long Bay overnight cruise — emerald waters, kayaking & fresh seafood under the stars" },
+      { lbl: "Day 5", txt: "Ha Long cruise continues — sunrise on deck, return to Hanoi & afternoon free" },
+      { lbl: "Day 6", txt: "Fly to Phu Quoc Island — beach evening, waterfront dinner & night market exploration" },
+      { lbl: "Day 7", txt: "Free island morning, snorkeling optional, afternoon checkout + departure transfer" }
+    ]
+  },
+  extras: {
+    Beaches: [" + island snorkeling excursion", " + Phu Quoc beach sunset", " + coastal walk at golden hour"],
+    Nightlife: [" + rooftop bar evening", " + Bùi Viện walking street", " + night cruise on Saigon River"],
+    Culture: [" + temple visit at dawn", " + traditional áo dài experience", " + lantern making workshop"],
+    Food: [" + street food masterclass", " + cooking class with local chef", " + hidden pho spot breakfast"],
+    "Hidden Places": [" + secret courtyard café", " + local market with guide", " + off-map rooftop discovery"],
+    Relaxation: [" + spa afternoon", " + hammock beach time", " + sunrise yoga session"]
+  },
+  stayLabel: { Hostel: "Social hostel", Hotel: "Boutique hotel", "Luxury Resort": "5-star luxury resort", Glamping: "Eco glamping retreat" },
+  foodNote: { Veg: " (fully vegetarian meals arranged)", "Non-Veg": " (local & Indian non-veg options)", Jain: " (jain-friendly meals curated)", Mixed: " (mix of local & familiar flavours)" },
+  styleEmoji: { Budget: "💚", Comfort: "🌿", Luxury: "✨" },
+  whoLabel: { Solo: "Solo Explorer", Couple: "Couple Escape", Family: "Family Adventure", Friends: "Squad Trip" }
+};
+
+function generateItinerary() {
+  showScreen('ai-generating');
+  updateProgress(7);
+  document.getElementById('ai-prog-wrap').style.display = 'none';
+
+  setTimeout(() => {
+    buildResult();
+  }, 2400);
+}
+
+function buildResult() {
+  const d = aiAnswers[1] || '5 Days';
+  const who = aiAnswers[2] || 'Couple';
+  const style = aiAnswers[3] || 'Comfort';
+  const exp = aiAnswers[4] || ['Food'];
+  const food = aiAnswers[5] || 'Mixed';
+  const stay = aiAnswers[6] || 'Hotel';
+
+  const daysKey = (d === '3 Days' || d === '5 Days' || d === '7 Days') ? d : (parseInt(d) <= 4 ? '3 Days' : parseInt(d) <= 6 ? '5 Days' : '7 Days');
+  let days = JSON.parse(JSON.stringify(ITIN_DB.base[daysKey]));
+
+  // Enrich days with selected experience extras
+  exp.forEach((e, i) => {
+    const extras = ITIN_DB.extras[e];
+    if (extras) {
+      const idx = Math.min(i + 1, days.length - 1);
+      days[idx].txt += extras[Math.floor(Math.random() * extras.length)];
+    }
+  });
+
+  // Add food note to a relevant day
+  days[1].txt += ITIN_DB.foodNote[food] || '';
+
+  // Add stay upgrade note
+  days[0].txt += ' · ' + ITIN_DB.stayLabel[stay] + ' check-in';
+
+  // Headline
+  const styleEmoji = ITIN_DB.styleEmoji[style] || '✨';
+  const headline = d + ' Vietnam ' + ITIN_DB.whoLabel[who] + ' ' + styleEmoji;
+  document.getElementById('result-headline').textContent = headline;
+
+  // Badges
+  const badgeData = [d, who, style + ' style', stay];
+  document.getElementById('result-badges').innerHTML = badgeData.map(b => '<span class="rbadge">' + b + '</span>').join('');
+
+  // Days
+  const daysEl = document.getElementById('result-days');
+  daysEl.innerHTML = days.map((day, i) => `
+    <div class="result-day" style="animation-delay:${i * 0.1 + 0.2}s">
+      <div class="day-num">${i + 1}</div>
+      <div class="day-content">
+        <span class="day-label">${day.lbl}</span>
+        <span class="day-text">${day.txt}</span>
+      </div>
+    </div>
+  `).join('');
+
+  // WhatsApp message
+  const waMsg = encodeURIComponent(
+    'Hi VIETANA! I\'ve used your AI Trip Planner and here\'s what I\'m looking for:\n\n' +
+    '🗓️ Duration: ' + d + '\n' +
+    '👥 Travelers: ' + who + '\n' +
+    '💎 Style: ' + style + '\n' +
+    '🎯 Interests: ' + (exp.join(', ') || 'General') + '\n' +
+    '🍽️ Food: ' + food + '\n' +
+    '🏨 Stay: ' + stay + '\n\n' +
+    '📋 Generated Itinerary:\n' +
+    days.map((d, i) => (i + 1) + '. ' + d.lbl + ': ' + d.txt).join('\n') + '\n\n' +
+    'Please help me plan this! 🇻🇳'
+  );
+  document.getElementById('ai-wa-link').href = 'https://wa.me/84000000000?text=' + waMsg;
+
+  showScreen('ai-result');
+}
+
+function restartAI() {
+  // Reset answers
+  for (let k in aiAnswers) aiAnswers[k] = k === '4' ? [] : null;
+  aiCurrentStep = 1;
+
+  // Clear UI selections
+  document.querySelectorAll('.ai-opt').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('.ai-next').forEach(b => b.disabled = true);
+  document.getElementById('ai-custom-days').classList.remove('show');
+  document.getElementById('custom-days-val').value = '';
+  document.getElementById('ai-prog-wrap').style.display = 'flex';
+
+  updateProgress(1);
+  showScreen('ai-q1');
 }
 </script>
 </body>
