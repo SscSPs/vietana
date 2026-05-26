@@ -478,12 +478,12 @@ section{padding:8rem 7%}
 
 #evPlane { display: none; }
 
-.ev-pin { position: absolute; width: 12px; height: 12px; background: #fff; border: 3px solid #0056b3; border-radius: 50%; cursor: pointer; z-index: 10; transform: translate(-50%, -50%); transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 10px rgba(0,86,179,0.3); }
-.ev-pin:hover { transform: translate(-50%, -50%) scale(1.3); box-shadow: 0 6px 15px rgba(0,86,179,0.5); }
-.ev-pin.active { background: #0056b3; border-color: #fff; transform: translate(-50%, -50%) scale(1.4); }
-
-.ev-pin-label { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 0.7rem; font-weight: 600; color: #333; white-space: nowrap; opacity: 0; transition: opacity 0.2s; pointer-events: none; background: rgba(255,255,255,0.8); padding: 2px 6px; border-radius: 4px; backdrop-filter: blur(4px); }
-.ev-pin:hover .ev-pin-label { opacity: 1; }
+.ev-pin { position: absolute; width: 14px; height: 14px; background: var(--gold1); border: 2px solid #fff; border-radius: 50%; cursor: pointer; z-index: 10; transform: translate(-50%, -50%); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+.ev-pin:hover { transform: translate(-50%, -50%) scale(1.3); background: var(--gold3); box-shadow: 0 6px 15px rgba(0,0,0,0.6); z-index: 15; }
+.ev-pin.active { background: #fff; border: 3px solid var(--gold3); transform: translate(-50%, -50%) scale(1.5); box-shadow: 0 0 0 0 rgba(220, 169, 102, 0.7); animation: pulsePin 1.5s infinite; z-index: 20; }
+@keyframes pulsePin { 0% { box-shadow: 0 0 0 0 rgba(220, 169, 102, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(220, 169, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(220, 169, 102, 0); } }
+.ev-pin-label { position: absolute; top: -24px; left: 50%; transform: translateX(-50%); font-size: 0.75rem; font-weight: 700; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.8); white-space: nowrap; opacity: 0; transition: opacity 0.2s; pointer-events: none; background: rgba(0,0,0,0.6); padding: 3px 8px; border-radius: 6px; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.2); }
+.ev-pin:hover .ev-pin-label, .ev-pin.active .ev-pin-label { opacity: 1; }
 
 .ev-popup { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); background: rgba(255, 255, 255, 0.45); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.7); border-radius: 20px; padding: 1.5rem; width: 340px; box-shadow: 0 16px 48px rgba(0,0,0,0.12); z-index: 20; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); }
 .ev-popup.show { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
@@ -551,6 +551,27 @@ section{padding:8rem 7%}
 
 .bc-cta { display: block; width: 100%; padding: 0.8rem; background: linear-gradient(135deg, var(--gold2), var(--gold3)); color: #000; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; }
 .bc-cta:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(201,168,76,0.3); }
+
+/* CUSTOM TRIP BUILDER MODAL */
+.ct-modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 100000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s; padding: 1rem; }
+.ct-modal-overlay.active { opacity: 1; pointer-events: auto; }
+.ct-modal { background: #0c1813; border: 1px solid rgba(201,168,76,0.3); border-radius: 16px; width: 100%; max-width: 650px; max-height: 90vh; overflow-y: auto; position: relative; transform: translateY(20px); transition: transform 0.4s; box-shadow: 0 30px 60px rgba(0,0,0,0.8); }
+.ct-modal-overlay.active .ct-modal { transform: translateY(0); }
+.ct-modal-close { position: absolute; top: 1.5rem; right: 1.5rem; background: rgba(255,255,255,0.1); border: none; color: #fff; width: 32px; height: 32px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: background 0.3s; }
+.ct-modal-close:hover { background: rgba(255,255,255,0.2); }
+.ct-modal-header { padding: 2rem 2rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.ct-modal-header h2 { color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 2rem; margin-bottom: 0.5rem; }
+.ct-modal-header p { color: rgba(255,255,255,0.6); font-size: 0.9rem; }
+.ct-modal-body { padding: 2rem; }
+.ct-section { margin-bottom: 2rem; }
+.ct-section h3 { font-size: 1rem; color: #fff; margin-bottom: 1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+.ct-city-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.8rem; }
+.ct-city-btn { display: block; position: relative; cursor: pointer; }
+.ct-city-btn input { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
+.ct-city-btn span { display: block; padding: 0.8rem 1rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; text-align: center; color: rgba(255,255,255,0.6); font-size: 0.85rem; font-weight: 500; transition: all 0.2s; background: rgba(255,255,255,0.02); }
+.ct-city-btn:hover span { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
+.ct-city-btn input:checked ~ span { background: rgba(201,168,76,0.15); border-color: var(--gold); color: var(--gold); box-shadow: 0 0 15px rgba(201,168,76,0.2); }
+.ct-modal-footer { padding: 1.5rem 2rem; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.3); }
 
 /* CONTACT */
 #contact{background:var(--gx);text-align:center;position:relative;overflow:hidden;padding:8rem 7%}
@@ -1008,6 +1029,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
   pointer-events: auto;
   animation: orbRestore 0.7s forwards;
 }
+    .inline-logo { height: 1.2em; vertical-align: middle; margin-right: 4px; margin-top:-2px;}
 </style>
 </head>
 <body>
@@ -1030,8 +1052,8 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
     <div class="ai-close" onclick="closePlannerModal()">×</div>
     <div class="planner-left">
       <div class="ai-modal-header">
-        <h3>🌿 VIETANA Smart Concierge</h3>
-        <p>Travel Gets Better with VIETANA</p>
+        <h3>🌿 <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA Smart Concierge</h3>
+        <p>Travel Gets Better with <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA</p>
       </div>
       <div class="planner-chat" id="pcMsgs"></div>
       <div class="pc-input-area">
@@ -1054,7 +1076,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
          <h4>Live Itinerary</h4>
          <div class="ldp-items"></div>
          <div class="ldp-actions" id="ldpActions">
-            <a href="mailto:info@vietana.com" class="ldp-btn email" id="ldpEmail">✉ Email VIETANA™</a>
+            <a href="mailto:info@vietana.com" class="ldp-btn email" id="ldpEmail">✉ Email <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA™</a>
          </div>
       </div>
     </div>
@@ -1063,7 +1085,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#" class="nl">VIETANA</a>
+  <a href="#" class="nl" style="display: inline-flex; align-items: center; gap: 8px;"><img src="vietana_logo.png" style="height: 45px;" alt="Vietana Logo">VIETANA</a>
   <ul class="nlinks">
     <li><a href="#services" data-translate="navServices">Services</a></li>
     <li><a href="#packages" data-translate="navPackages">Packages</a></li>
@@ -1167,29 +1189,61 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 <!-- HIDDEN VIETNAM -->
 <div id="hidden"></div>
 <!-- EXPERIENCES -->
-<section id="experiences" class="sc-exp-sec">
-  <div class="exp-bg-gradient"></div>
-  <div class="exp-blob exp-blob-blue"></div>
-  <div class="exp-blob exp-blob-green"></div>
-  <div class="exp-flash" id="expFlash"></div>
-  <div class="exp-orb-container" id="expOrb">
-    <div class="exp-orb">
-      <h2>Unlock<br>15 Hidden Experiences</h2>
-      <p>Tap to Explore</p>
+<section id="combo-section" style="display: flex; flex-wrap: wrap; width: 100%; min-height: 800px; background: #fff;">
+  <!-- LEFT: EXPERIENCES -->
+  <div id="experiences" class="sc-exp-sec" style="flex: 1; min-width: 320px; position: relative; padding: 4rem 2%; height: 800px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-right: 1px solid rgba(0,0,0,0.05);">
+    <div class="exp-bg-gradient" style="opacity:1;"></div>
+    <div class="exp-blob exp-blob-blue"></div>
+    <div class="exp-blob exp-blob-green"></div>
+    <div class="exp-flash" id="expFlash"></div>
+    <div class="exp-orb-container" id="expOrb">
+      <div class="exp-orb">
+        <span style="font-size:0.8rem; font-weight:700; letter-spacing:2px; color:var(--blue); text-transform:uppercase; margin-bottom:0.5rem; display:block;" data-translate="hidLbl">Beyond the Tourist Trail</span>
+        <h2>Unlock<br>15 Hidden Experiences</h2>
+        <p>Tap to Explore</p>
+      </div>
+      <div class="exp-orb-glow"></div>
     </div>
-    <div class="exp-orb-glow"></div>
+    <div class="exp-nodes-container" id="expNodes"></div>
+    <button class="exp-reset-btn" id="expResetBtn">← Back</button>
+    <a href="https://wa.me/919953294543?text=Hi%20VIETANA%2C%20I'm%20interested%20in%20your%20experiences!" target="_blank" class="exp-wa-btn">💬</a>
+    <div class="exp-modal-overlay" id="expModal">
+      <div class="exp-modal">
+        <button class="exp-modal-close" onclick="closeExpModal()">×</button>
+        <img id="expModalImg" src="" alt="Experience">
+        <div class="exp-modal-content">
+          <h3 id="expModalTitle"></h3>
+          <p id="expModalDesc"></p>
+          <a id="expModalLink" href="" target="_blank" class="exp-modal-btn">📍 View on Google Maps</a>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="exp-nodes-container" id="expNodes"></div>
-  <button class="exp-reset-btn" id="expResetBtn">← Back</button>
-  <a href="https://wa.me/919953294543?text=Hi%20VIETANA%2C%20I'm%20interested%20in%20your%20experiences!" target="_blank" class="exp-wa-btn">💬</a>
-  <div class="exp-modal-overlay" id="expModal">
-    <div class="exp-modal">
-      <button class="exp-modal-close" onclick="closeExpModal()">×</button>
-      <img id="expModalImg" src="" alt="Experience">
-      <div class="exp-modal-content">
-        <h3 id="expModalTitle"></h3>
-        <p id="expModalDesc"></p>
-        <a id="expModalLink" href="" target="_blank" class="exp-modal-btn">📍 View on Google Maps</a>
+
+  <!-- RIGHT: MAP -->
+  <div id="explore-vietnam" class="ev-section" style="flex: 1; min-width: 320px; position: relative; padding: 2rem 2% 4rem; background: #f8fbfa; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: visible;">
+    <div class="ev-header" style="position: absolute; top: 1.5rem; left: 0; width: 100%; text-align: center; z-index: 50;">
+      <h2 data-translate="evTitle" style="font-size:2.5rem; margin-bottom:0.5rem;">Explore Vietnam</h2>
+    </div>
+    <div class="ev-content" style="position: relative; width: 100%; max-width: 650px; display: flex; justify-content: center; align-items: center;">
+      <div class="ev-map-wrapper" style="border-radius: 24px; overflow: hidden; box-shadow: 0 16px 40px rgba(0,86,179,0.2); border: 6px solid #fff; width: 100%; aspect-ratio: 1/1; max-height: 650px; position: relative;">
+        <div id="vMap" style="width: 100%; height: 100%;"></div>
+      </div>
+      <div style="position: absolute; right: -15px; top: 50%; writing-mode: vertical-rl; text-orientation: mixed; font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; color: var(--gold3); font-weight: 700; font-style: italic; transform: translateY(-50%) rotate(180deg); white-space: nowrap; pointer-events: none; letter-spacing: 4px; text-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        FEEL VIETNAM YOUR WAY
+      </div>
+      
+      <div class="ev-popup" id="evPopup">
+         <div class="ev-popup-close" onclick="closeEvPopup()" style="z-index:30;">×</div>
+         <img id="evpImg" src="" alt="Destination" style="width:100%;height:140px;object-fit:cover;border-radius:12px;margin-bottom:1rem;display:block;box-shadow:0 4px 12px rgba(0,0,0,0.08);">
+         <h3 id="evpName">Destination</h3>
+         <p class="evp-time" id="evpTime">Best time</p>
+         <p class="evp-desc" id="evpDesc">Description</p>
+         
+         <div style="display:flex; flex-direction:column;">
+           <a href="#" class="evp-btn" onclick="openPlannerModal(); return false;">Plan My Trip</a>
+           <a id="evpGmap" href="#" target="_blank" class="evp-btn-sec">View on Google Maps</a>
+         </div>
       </div>
     </div>
   </div>
@@ -1199,11 +1253,113 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 <section id="packages">
   <div class="sh r"><span class="lbl" data-translate="pkgLbl">Our Packages</span><h2 data-translate="pkgTitle">Inspiration, Not Fixed Products</h2><p data-translate="pkgSub">Every package is a starting point. We customize everything around your travel style.</p></div>
   <div class="pkg-g">
-    <div class="pc r d1"><div class="pc-img" style="background-image:url('https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=900&q=85')"></div><div class="pc-fog"></div><div class="pc-flare"></div><div class="pc-body"><span class="pc-badge">Custom</span><h3 data-translate="p1T">Your Vietnam Story</h3><p class="pc-price" data-translate="p1P" style="color: rgba(255,255,255,0.7); font-style: italic;">A blank canvas waiting for your narrative.</p><p class="pc-note" style="margin-bottom: 1.5rem;">Let us craft every detail around your unique pace and interests.</p><a href="https://wa.me/919953294543?text=Hi%20VIETANA%2C%20I%20want%20a%20custom%20Vietnam%20trip!" class="pc-cta" target="_blank" data-translate="btnPlanC">Begin the Story <span class="pca-arr">→</span></a></div></div>
-    <div class="pc r d2"><div class="pc-img" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85')"></div><div class="pc-fog"></div><div class="pc-flare"></div><div class="pc-body"><span class="pc-badge">Culture & Heritage</span><h3 data-translate="p2T">The Northern Whispers</h3><p class="pc-price" data-translate="p2P" style="color: rgba(255,255,255,0.7); font-style: italic;">Where legends sleep in mist.</p><p class="pc-note" style="margin-bottom: 1.5rem;">Lose yourself in the misty mountains of Sapa and the silent waters of Halong Bay.</p><a href="https://wa.me/919953294543?text=Hi%20VIETANA%2C%20interested%20in%20The%20Northern%20Whispers!" class="pc-cta" target="_blank" data-translate="btnDet">Discover More <span class="pca-arr">→</span></a></div></div>
-    <div class="pc r d3"><div class="pc-img" style="background-image:url('https://images.unsplash.com/photo-1540202404-a2f29016b523?w=900&q=85')"></div><div class="pc-fog"></div><div class="pc-flare"></div><div class="pc-body"><span class="pc-badge">Coastline Journey</span><h3 data-translate="p3T">The Ancient Pulse</h3><p class="pc-price" data-translate="p3P" style="color: rgba(255,255,255,0.7); font-style: italic;">Follow the lanterns' glow.</p><p class="pc-note" style="margin-bottom: 1.5rem;">Walk through the glowing streets of Hoi An and feel the royal heartbeat of Hue.</p><a href="https://wa.me/919953294543?text=Hi%20VIETANA%2C%20interested%20in%20The%20Ancient%20Pulse!" class="pc-cta" target="_blank" data-translate="btnDet">Discover More <span class="pca-arr">→</span></a></div></div>
+    <!-- 6 Pre-built Official Packages -->
+    <div class="pc r d1" onclick="openCustomBuilder('Heritage')"><div class="pc-img" style="background-image:url('https://image.vietnam.travel/sites/default/files/styles/large/public/2021-04/World%20heritage%20sites%20Vietnam%20travel_0.jpg')"></div><div class="pc-fog"></div><div class="pc-flare"></div><div class="pc-body"><span class="pc-badge">Culture & History</span><h3 data-translate="p2T">Best Heritage Sites</h3><p class="pc-price" style="color: rgba(255,255,255,0.7); font-style: italic;">Explore UNESCO attractions.</p><p class="pc-note" style="margin-bottom: 1.5rem;">From Ha Long Bay to Hoi An.</p><button class="pc-cta">Customize Trip <span class="pca-arr">→</span></button></div></div>
+    
+    <div class="pc r d2" onclick="openCustomBuilder('Adventure')"><div class="pc-img" style="background-image:url('https://image.vietnam.travel/sites/default/files/styles/large/public/2021-04/Adventure%20itinerary%20Vietnam.jpg')"></div><div class="pc-fog"></div><div class="pc-flare"></div><div class="pc-body"><span class="pc-badge">Thrills</span><h3 data-translate="p3T">Adventure Trails</h3><p class="pc-price" style="color: rgba(255,255,255,0.7); font-style: italic;">Exciting outdoor experiences.</p><p class="pc-note" style="margin-bottom: 1.5rem;">Ha Giang loop and Phong Nha caves.</p><button class="pc-cta">Customize Trip <span class="pca-arr">→</span></button></div></div>
+
+    <div class="pc r d3" onclick="openCustomBuilder('Couples')"><div class="pc-img" style="background-image:url('https://image.vietnam.travel/sites/default/files/styles/large/public/2021-04/Romantic%20getaway%20Vietnam.jpg')"></div><div class="pc-fog"></div><div class="pc-flare"></div><div class="pc-body"><span class="pc-badge">Romantic</span><h3>Couples’ Retreat</h3><p class="pc-price" style="color: rgba(255,255,255,0.7); font-style: italic;">Timeless romantic getaways.</p><p class="pc-note" style="margin-bottom: 1.5rem;">Sunsets in Phu Quoc, misty walks in Da Lat.</p><button class="pc-cta">Customize Trip <span class="pca-arr">→</span></button></div></div>
+
+    <div class="pc r d1" onclick="openCustomBuilder('Coast')"><div class="pc-img" style="background-image:url('https://image.vietnam.travel/sites/default/files/styles/large/public/2021-04/Vietnam%20beach%20holiday.jpg')"></div><div class="pc-fog"></div><div class="pc-flare"></div><div class="pc-body"><span class="pc-badge">Beaches</span><h3>Coast and Islands</h3><p class="pc-price" style="color: rgba(255,255,255,0.7); font-style: italic;">Soak up the sun.</p><p class="pc-note" style="margin-bottom: 1.5rem;">Nha Trang, Da Nang, and Con Dao.</p><button class="pc-cta">Customize Trip <span class="pca-arr">→</span></button></div></div>
+
+    <div class="pc r d2" onclick="openCustomBuilder('Family')"><div class="pc-img" style="background-image:url('https://image.vietnam.travel/sites/default/files/styles/large/public/2021-04/Family%20holiday%20in%20Vietnam.jpg')"></div><div class="pc-fog"></div><div class="pc-flare"></div><div class="pc-body"><span class="pc-badge">All Ages</span><h3>Family Vacation</h3><p class="pc-price" style="color: rgba(255,255,255,0.7); font-style: italic;">Nature and culture for all ages.</p><p class="pc-note" style="margin-bottom: 1.5rem;">Safe, easy, and unforgettable spots.</p><button class="pc-cta">Customize Trip <span class="pca-arr">→</span></button></div></div>
+
+    <div class="pc r d3" onclick="openCustomBuilder('Green')"><div class="pc-img" style="background-image:url('https://image.vietnam.travel/sites/default/files/styles/large/public/2021-04/Green%20travel%20ideas%20Vietnam.jpg')"></div><div class="pc-fog"></div><div class="pc-flare"></div><div class="pc-body"><span class="pc-badge">Eco-Tourism</span><h3>Green Getaway</h3><p class="pc-price" style="color: rgba(255,255,255,0.7); font-style: italic;">Pristine, sustainable travel.</p><p class="pc-note" style="margin-bottom: 1.5rem;">Eco-lodges in Mai Chau and Ninh Binh.</p><button class="pc-cta">Customize Trip <span class="pca-arr">→</span></button></div></div>
+
+    <!-- Custom Built -->
+    <div class="pc r d1 custom-pkg" onclick="openCustomBuilder('Custom')" style="grid-column: 1 / -1; display: flex; flex-direction: row; align-items: center; padding: 4rem 2rem; background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('vietana_custom_trip_bg.png') center/cover no-repeat; border: 1px solid var(--gold); cursor: pointer; border-radius: var(--r);"><div style="flex:1;"><span class="pc-badge">Fully Custom</span><h3 style="font-size: 2.5rem; margin-top: 0.5rem; color: var(--gold); font-family: 'Cormorant Garamond', serif; text-shadow: 0 2px 10px rgba(0,0,0,0.8);">Build Your Own Story</h3><p style="color: rgba(255,255,255,0.9); margin-bottom: 0; font-size: 1.1rem; text-shadow: 0 2px 10px rgba(0,0,0,0.8);">Select your cities, travel style, and let us do the rest.</p></div><button class="pc-cta" style="width: auto; padding: 1rem 2rem; backdrop-filter: blur(10px); background: rgba(201,168,76,0.2); border: 1px solid var(--gold); color: #fff;">Open Trip Builder <span class="pca-arr">→</span></button></div>
   </div>
 </section>
+
+<!-- CUSTOM TRIP BUILDER MODAL -->
+<div id="customTripModal" class="ct-modal-overlay">
+  <div class="ct-modal">
+    <button class="ct-modal-close" onclick="closeCustomBuilder()">×</button>
+    <div class="ct-modal-header">
+      <h2>Build Your Trip</h2>
+      <p>Select your destinations and get a real-time estimate.</p>
+    </div>
+    
+    <div class="ct-modal-body">
+      <!-- Destinations Section -->
+      <div class="ct-section">
+        <h3>📍 Select Destinations</h3>
+        <div class="ct-city-grid">
+          <label class="ct-city-btn"><input type="checkbox" value="Hanoi" class="ct-city-chk"> <span>Hanoi</span></label>
+          <label class="ct-city-btn"><input type="checkbox" value="Sapa" class="ct-city-chk"> <span>Sapa</span></label>
+          <label class="ct-city-btn"><input type="checkbox" value="Halong Bay" class="ct-city-chk"> <span>Halong Bay</span></label>
+          <label class="ct-city-btn"><input type="checkbox" value="Ninh Binh" class="ct-city-chk"> <span>Ninh Binh</span></label>
+          <label class="ct-city-btn"><input type="checkbox" value="Da Nang" class="ct-city-chk"> <span>Da Nang</span></label>
+          <label class="ct-city-btn"><input type="checkbox" value="Hoi An" class="ct-city-chk"> <span>Hoi An</span></label>
+          <label class="ct-city-btn"><input type="checkbox" value="Hue" class="ct-city-chk"> <span>Hue</span></label>
+          <label class="ct-city-btn"><input type="checkbox" value="Nha Trang" class="ct-city-chk"> <span>Nha Trang</span></label>
+          <label class="ct-city-btn"><input type="checkbox" value="Da Lat" class="ct-city-chk"> <span>Da Lat</span></label>
+          <label class="ct-city-btn"><input type="checkbox" value="Ho Chi Minh City" class="ct-city-chk"> <span>Ho Chi Minh City</span></label>
+          <label class="ct-city-btn"><input type="checkbox" value="Phu Quoc" class="ct-city-chk"> <span>Phu Quoc</span></label>
+        </div>
+      </div>
+      
+      <!-- Calculator Section -->
+      <div class="ct-section" style="background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(201,168,76,0.2);">
+        <h3>💰 Trip Settings & Estimate</h3>
+        <div style="display: flex; gap: 2rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+          <div style="flex:1; min-width: 200px;">
+             <label style="display:block; font-size:0.8rem; margin-bottom:0.5rem; color:#ccc;">Travel Style</label>
+             <div class="bc-toggle-group">
+               <button class="bc-toggle active ct-style" data-style="budget">Backpacker</button>
+               <button class="bc-toggle ct-style" data-style="comfort">Comfort</button>
+               <button class="bc-toggle ct-style" data-style="luxury">Luxury</button>
+             </div>
+          </div>
+          <div style="flex:1; min-width: 200px;">
+             <label style="display:block; font-size:0.8rem; margin-bottom:0.5rem; color:#ccc;">Duration: <span id="ctDaysVal" style="color:var(--gold);">7 Days</span></label>
+             <input type="range" id="ctDays" min="3" max="30" value="7" class="bc-slider ct-slider">
+             
+             <label style="display:block; font-size:0.8rem; margin-top:1rem; margin-bottom:0.5rem; color:#ccc;">Travelers: <span id="ctPaxVal" style="color:var(--gold);">2 People</span></label>
+             <input type="range" id="ctPax" min="1" max="10" value="2" class="bc-slider ct-slider">
+          </div>
+        </div>
+        
+        <div style="background: rgba(0,0,0,0.4); padding: 1rem; border-radius: 8px;">
+           <div style="display:flex; justify-content:space-between; margin-bottom: 0.5rem;">
+             <span style="font-size:0.85rem; color:#ccc;">✈️ Flights (India ↔ VN)</span>
+             <span id="ctFlt" style="font-weight:600; color:#fff;">₹0</span>
+           </div>
+           <div style="display:flex; justify-content:space-between; margin-bottom: 0.5rem;">
+             <span style="font-size:0.85rem; color:#ccc;">🛂 E-Visa</span>
+             <span id="ctVisa" style="font-weight:600; color:#fff;">₹0</span>
+           </div>
+           <div style="display:flex; justify-content:space-between; margin-bottom: 0.5rem;">
+             <span style="font-size:0.85rem; color:#ccc;">🚄 Inter-city Transit <span style="font-size:0.6rem; color:var(--gold);">(₹3,000/hop - exact API coming soon)</span></span>
+             <span id="ctTransit" style="font-weight:600; color:#fff;">₹0</span>
+           </div>
+           <div style="display:flex; justify-content:space-between; margin-bottom: 0.5rem;">
+             <span style="font-size:0.85rem; color:#ccc;">🏨 Daily Expenses</span>
+             <span id="ctDaily" style="font-weight:600; color:#fff;">₹0</span>
+           </div>
+           <hr style="border:none; border-top:1px solid rgba(255,255,255,0.1); margin:0.8rem 0;">
+           <div style="display:flex; justify-content:space-between;">
+             <span style="font-size:1rem; color:var(--gold);">Total Estimate</span>
+             <span id="ctTotal" style="font-size:1.5rem; font-weight:700; color:var(--gold);">₹0</span>
+           </div>
+        </div>
+      </div>
+      
+      <!-- Notes Section -->
+      <div class="ct-section">
+        <h3>📝 Additional Notes</h3>
+        <textarea id="ctNotes" placeholder="Tell us about special requests, dietary restrictions, preferred flight cities, etc..." style="width: 100%; height: 80px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 1rem; color: #fff; font-family: inherit; font-size: 0.9rem; resize: vertical;"></textarea>
+      </div>
+    </div>
+    
+    <div class="ct-modal-footer">
+      <button class="bc-cta" onclick="sendCustomTripToWhatsApp()" style="display:flex; justify-content:center; align-items:center; gap: 0.5rem;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.489-1.761-1.662-2.06-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.052 0C5.495 0 .16 5.333.158 11.893c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.332 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg>
+        Send Custom Trip to WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
 
 <!-- FOOD -->
 <section id="food">
@@ -1230,37 +1386,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 </section>
 
 
-<!-- EXPLORE VIETNAM (LIGHT) -->
-<section id="explore-vietnam" class="ev-section">
-  <div class="ev-header">
-    <h2 data-translate="evTitle">Explore Vietnam</h2>
-    <p data-translate="evSub">Discover destinations across Vietnam</p>
-  </div>
 
-  <div class="ev-content">
-    <div class="ev-map-wrapper" style="border-radius: 24px; overflow: hidden; box-shadow: 0 16px 40px rgba(0,86,179,0.2); border: 6px solid #fff;">
-      <div id="vMap" style="width: 100%; height: 100%;"></div>
-    </div>
-    </div>
-
-    <div class="ev-popup" id="evPopup">
-       <div class="ev-popup-close" onclick="closeEvPopup()" style="z-index:30;">×</div>
-       <img id="evpImg" src="" alt="Destination" style="width:100%;height:140px;object-fit:cover;border-radius:12px;margin-bottom:1rem;display:block;box-shadow:0 4px 12px rgba(0,0,0,0.08);">
-       <h3 id="evpName">Destination</h3>
-       <p class="evp-time" id="evpTime">Best time</p>
-       <p class="evp-desc" id="evpDesc">Description</p>
-       
-       <div style="display:flex; flex-direction:column;">
-         <a href="#" class="evp-btn" onclick="openPlannerModal(); return false;">Plan My Trip</a>
-         <a id="evpGmap" href="#" target="_blank" class="evp-btn-sec">View on Google Maps</a>
-       </div>
-    </div>
-  </div>
-
-  <div class="ev-footer">
-    <p>Travel Gets Better with Vietana</p>
-  </div>
-</section>
 
 <!-- BUDGET CALCULATOR -->
 <section id="budget-calculator" class="bc-section">
@@ -1332,12 +1458,12 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
         <div class="faq-icon">+</div>
       </div>
       <div class="faq-a">
-        <p>Yes. Most Indian travelers require a Vietnam visa. VIETANA helps simplify the process and provides fast support, often within 24 hours depending on requirements.</p>
+        <p>Yes. Most Indian travelers require a Vietnam visa. <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA helps simplify the process and provides fast support, often within 24 hours depending on requirements.</p>
       </div>
     </div>
     <div class="faq-item">
       <div class="faq-q">
-        <h4>Can VIETANA customize my entire trip?</h4>
+        <h4>Can <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA customize my entire trip?</h4>
         <div class="faq-icon">+</div>
       </div>
       <div class="faq-a">
@@ -1407,36 +1533,8 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
   <span class="lbl r" data-translate="conLbl">Talk to Us</span>
   <h2 class="r" data-translate="conTitle">Talk to Someone Who<br>Understands Your Travel Style</h2>
   <p class="lead r" data-translate="conSub">Message us on WhatsApp — we reply fast in Hindi &amp; English.</p>
-  <div class="con-row">
-    <div class="con-tile r d1">
-      <span class="con-ico">🇮🇳</span>
-      <h4 data-translate="c1T">India Presence — New Delhi</h4>
-      <span class="cn">Vikram Sonker</span>
-      <p>+91 9953294543</p>
-      <span class="ca">Rz 35/36, Indra Park Ext.,<br>Uttam Nagar, Delhi</span>
-      <a href="https://maps.google.com/?q=Uttam+Nagar+East+Delhi" class="maps-link" target="_blank">📍 View on Maps</a>
-    </div>
-    <div class="con-tile r d2">
-      <span class="con-ico">🇻🇳</span>
-      <h4 data-translate="c2T">Vietnam Presence — Ho Chi Minh City</h4>
-      <span class="cn">Chayan Soni</span>
-      <p>+84 902434006</p>
-      <span class="ca">45 Nguyễn Quý Đức, An Phú,<br>Hồ Chí Minh</span>
-      <a href="https://maps.google.com/?q=45+Nguyen+Quy+Duc+Ho+Chi+Minh" class="maps-link" target="_blank">📍 View on Maps</a>
-    </div>
-    <div class="con-tile r d3">
-      <span class="con-ico">🌐</span>
-      <h4 data-translate="c3T">Online</h4>
-      <span class="cn">www.vietana.com</span>
-      <p>Support@vietana.com</p>
-      <span class="ca">Open every day · Fast response<br>Hindi &amp; English spoken</span>
-      <a href="mailto:Support@vietana.com" class="maps-link">✉️ Send Email</a>
-    </div>
-  </div>
-  <div class="cta-row r d1">
-    <a href="https://wa.me/919953294543?text=Hi%20VIETANA%2C%20I%27m%20ready%20to%20plan%20my%20Vietnam%20trip!" class="bwa2" target="_blank">💬 WhatsApp India</a>
-    <a href="https://wa.me/84902434006?text=Hi%20VIETANA%2C%20I%27m%20ready%20to%20plan%20my%20Vietnam%20trip!" class="bwa2" target="_blank">💬 WhatsApp Vietnam</a>
-    <a href="mailto:Support@vietana.com" class="bghc">✉️ Email Us</a>
+  <div class="cta-row r d1" style="justify-content: center; margin-top: 2rem;">
+    <a href="javascript:void(0)" onclick="openContactPanel()" class="bwa2" style="background: var(--blue);">CONTACT US</a>
   </div>
 </section>
 
@@ -1444,13 +1542,13 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 <footer>
   <div class="fi">
     <div class="fb">
-      <span class="flo">VIETANA</span>
+      <span class="flo" style="display:inline-flex; align-items:center; gap:8px;"><img src="vietana_logo.png" style="height: 50px;">VIETANA</span>
       <span class="ft" data-translate="footT">Feel Vietnam, Your Way 🇻🇳</span>
       <span class="fs" data-translate="footS">Travel Gets Better with VIETANA</span>
     </div>
   </div>
   <div class="fbot">
-    <span>© 2026 VIETANA. All rights reserved.</span>
+    <span>© 2026 <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA. All rights reserved.</span>
     <span>www.vietana.com</span>
   </div>
 </footer>
@@ -1462,60 +1560,60 @@ const translations = {
     navServices: 'Services', navPackages: 'Packages', navAI: 'AI Planner', navFood: 'Food', navHidden: 'Experiences', navContact: 'Contact', navCta: 'Plan My Trip',
     heroLocLabel: 'India–Vietnam Travel Experts · Ho Chi Minh City',
     heroTitle: 'Feel <em style="color:var(--blue)">Vietnam</em>,<span class="b" style="color:var(--gold3)">Your Way 🇻🇳</span>',
-    heroTag: 'Travel Gets Better with VIETANA',
+    heroTag: 'Travel Gets Better with <img src="vietana_logo.png" class="inline-logo" alt="">VIETANA',
     heroSub: 'Vietnam made easy for Indian travelers — from visas and hotels to hidden places, food experiences and local support.',
     heroSupport: 'We handle everything from your visa until you\'re back home.',
     btnPlan: '💬 Plan My Trip — India', btnDiscover: '✦ Discover Vietnam', scrollEx: 'Scroll to explore',
     cityVN: 'Ho Chi Minh City', cityIN: 'New Delhi',
     servLbl: 'We Handle Everything', servTitle: 'From Visa to Your<br>Last Dinner',
-    hidLbl: 'Beyond the Tourist Trail', hidTitle: 'Places Most Travelers<br>Never Find', hidSub: 'VIETANA takes you to the real Vietnam — curated by locals, discovered through years on the ground.',
+    hidLbl: 'Beyond the Tourist Trail', hidTitle: 'Places Most Travelers<br>Never Find', hidSub: '<img src="vietana_logo.png" class="inline-logo" alt="">VIETANA takes you to the real Vietnam — curated by locals, discovered through years on the ground.',
     pkgLbl: 'Our Packages', pkgTitle: 'Inspiration, Not Fixed Products', pkgSub: 'Every package is a starting point. We customize everything around your travel style.',
     p1T: 'Personalized Trip', p1P: 'Starting from ₹15,000*', btnPlanC: 'Plan Yours →',
     p2T: 'Vietnam Quick Escape', p2P: 'Starting from ₹18,000*', btnDet: 'Get Details →',
     p3T: 'Vietnam Explorer', p3P: 'Starting from ₹30,000*',
-    foodLbl: 'Food & Dining', foodTitle: 'Never Worry About<br>What to Eat', foodSub: 'We know food is the heart of Indian travel. VIETANA ensures you always have exactly what you need — whether it\'s a taste of home or a deep plunge into Vietnamese flavours.',
+    foodLbl: 'Food & Dining', foodTitle: 'Never Worry About<br>What to Eat', foodSub: 'We know food is the heart of Indian travel. <img src="vietana_logo.png" class="inline-logo" alt="">VIETANA ensures you always have exactly what you need — whether it\'s a taste of home or a deep plunge into Vietnamese flavours.',
     conLbl: 'Talk to Us', conTitle: 'Talk to Someone Who<br>Understands Your Travel Style', conSub: 'Message us on WhatsApp — we reply fast in Hindi & English.',
-     mapSub: 'Discover the electrifying energy of Ho Chi Minh City and the serene sunsets of Phú Quốc.', bcTitle: 'Trip Calculator', bcSub: 'Estimate your perfect Vietnam journey.', evTitle: 'Explore Vietnam', evSub: 'Discover destinations across Vietnam', footT: 'Feel Vietnam, Your Way 🇻🇳', footS: 'Travel Gets Better with VIETANA',
+     mapSub: 'Discover the electrifying energy of Ho Chi Minh City and the serene sunsets of Phú Quốc.', bcTitle: 'Trip Calculator', bcSub: 'Estimate your perfect Vietnam journey.', evTitle: 'Explore Vietnam', evSub: 'Discover destinations across Vietnam', footT: 'Feel Vietnam, Your Way 🇻🇳', footS: 'Travel Gets Better with <img src="vietana_logo.png" class="inline-logo" alt="">VIETANA',
     aiTitle: '✨ Premium AI Planner', aiOrbLabel: 'AI PLANNER', aiSub: 'A warm, intelligent consultation to craft your perfect Vietnam journey.', aiSend: 'Send →'
   },
   hi: {
     navServices: 'सेवाएं', navPackages: 'पैकेज', navAI: 'एआई प्लानर', navFood: 'भोजन', navHidden: 'अनुभव', navContact: 'संपर्क', navCta: 'यात्रा प्लान करें',
     heroLocLabel: 'भारत-वियतनाम यात्रा विशेषज्ञ · हो ची मिन्ह सिटी',
     heroTitle: 'महसूस करें <em style="color:var(--blue)">वियतनाम</em>,<span class="b" style="color:var(--gold3)">अपने तरीके से 🇻🇳</span>',
-    heroTag: 'VIETANA के साथ यात्रा बेहतर हो जाती है',
+    heroTag: '<img src="vietana_logo.png" class="inline-logo" alt="">VIETANA के साथ यात्रा बेहतर हो जाती है',
     heroSub: 'भारतीय यात्रियों के लिए वियतनाम आसान — वीज़ा और होटल से लेकर छिपी जगहों, खाने और स्थानीय सपोर्ट तक।',
     heroSupport: 'हम वीज़ा से लेकर आपकी वापसी तक सब कुछ संभालते हैं।',
     btnPlan: '💬 मेरी यात्रा प्लान करें', btnDiscover: '✦ वियतनाम खोजें', scrollEx: 'एक्सप्लोर करने के लिए स्क्रॉल करें',
     cityVN: 'हो ची मिन्ह सिटी', cityIN: 'नई दिल्ली',
     servLbl: 'हम सब संभालते हैं', servTitle: 'वीज़ा से लेकर आपके<br>आखिरी डिनर तक',
-    hidLbl: 'पर्यटक पथ से परे', hidTitle: 'ऐसी जगहें जो<br>ज्यादातर यात्री कभी नहीं पाते', hidSub: 'VIETANA आपको असली वियतनाम ले जाता है — स्थानीय लोगों द्वारा तैयार।',
+    hidLbl: 'पर्यटक पथ से परे', hidTitle: 'ऐसी जगहें जो<br>ज्यादातर यात्री कभी नहीं पाते', hidSub: '<img src="vietana_logo.png" class="inline-logo" alt="">VIETANA आपको असली वियतनाम ले जाता है — स्थानीय लोगों द्वारा तैयार।',
     pkgLbl: 'हमारे पैकेज', pkgTitle: 'प्रेरणा, कोई निश्चित उत्पाद नहीं', pkgSub: 'हर पैकेज एक शुरुआत है। हम आपकी यात्रा शैली के अनुसार सब कुछ कस्टमाइज़ करते हैं।',
     p1T: 'कस्टम ट्रिप', p1P: '₹15,000* से शुरू', btnPlanC: 'प्लान करें →',
     p2T: 'वियतनाम क्विक एस्केप', p2P: '₹18,000* से शुरू', btnDet: 'विवरण देखें →',
     p3T: 'वियतनाम एक्सप्लोरर', p3P: '₹30,000* से शुरू',
-    foodLbl: 'भोजन', foodTitle: 'खाने की चिंता<br>कभी न करें', foodSub: 'हम जानते हैं कि भारतीय यात्रा में भोजन मुख्य है। VIETANA सुनिश्चित करता है कि आपको हमेशा वह मिले जो आपको चाहिए।',
+    foodLbl: 'भोजन', foodTitle: 'खाने की चिंता<br>कभी न करें', foodSub: 'हम जानते हैं कि भारतीय यात्रा में भोजन मुख्य है। <img src="vietana_logo.png" class="inline-logo" alt="">VIETANA सुनिश्चित करता है कि आपको हमेशा वह मिले जो आपको चाहिए।',
     conLbl: 'हमसे बात करें', conTitle: 'उस व्यक्ति से बात करें जो<br>आपकी यात्रा शैली को समझता है', conSub: 'हमें WhatsApp करें — हम हिंदी और अंग्रेजी में तेजी से जवाब देते हैं।',
-     mapSub: 'हो ची मिन्ह सिटी की ऊर्जा और फु क्वोक के शांत सूर्यास्त की खोज करें।', bcTitle: 'यात्रा कैलकुलेटर', bcSub: 'अपनी संपूर्ण वियतनाम यात्रा का अनुमान लगाएं।', evTitle: 'वियतनाम का अन्वेषण करें', evSub: 'वियतनाम भर में गंतव्यों की खोज करें', footT: 'महसूस करें वियतनाम, अपने तरीके से 🇻🇳', footS: 'VIETANA के साथ यात्रा बेहतर',
+     mapSub: 'हो ची मिन्ह सिटी की ऊर्जा और फु क्वोक के शांत सूर्यास्त की खोज करें।', bcTitle: 'यात्रा कैलकुलेटर', bcSub: 'अपनी संपूर्ण वियतनाम यात्रा का अनुमान लगाएं।', evTitle: 'वियतनाम का अन्वेषण करें', evSub: 'वियतनाम भर में गंतव्यों की खोज करें', footT: 'महसूस करें वियतनाम, अपने तरीके से 🇻🇳', footS: '<img src="vietana_logo.png" class="inline-logo" alt="">VIETANA के साथ यात्रा बेहतर',
     aiTitle: '✨ प्रीमियम एआई प्लानर', aiOrbLabel: 'एआई प्लानर', aiSub: 'आपकी आदर्श वियतनाम यात्रा तैयार करने के लिए एक गर्म, बुद्धिमान परामर्श।', aiSend: 'भेजें →'
   },
   vi: {
     navServices: 'Dịch vụ', navPackages: 'Gói Tour', navAI: 'AI Lên Kế Hoạch', navFood: 'Ẩm thực', navHidden: 'Trải nghiệm', navContact: 'Liên hệ', navCta: 'Lên Kế Hoạch',
     heroLocLabel: 'Chuyên gia Du lịch Ấn Độ–Việt Nam · TP.HCM',
     heroTitle: 'Cảm nhận <em style="color:var(--blue)">Việt Nam</em>,<span class="b" style="color:var(--gold3)">Theo cách của bạn 🇻🇳</span>',
-    heroTag: 'Du lịch tuyệt vời hơn cùng VIETANA',
+    heroTag: 'Du lịch tuyệt vời hơn cùng <img src="vietana_logo.png" class="inline-logo" alt="">VIETANA',
     heroSub: 'Du lịch Việt Nam dễ dàng cho du khách Ấn Độ — từ visa, khách sạn đến địa điểm ẩn giấu, ẩm thực và hỗ trợ.',
     heroSupport: 'Chúng tôi lo mọi thứ từ visa đến khi bạn về nhà.',
     btnPlan: '💬 Lên Kế Hoạch Chuyến Đi', btnDiscover: '✦ Khám phá Việt Nam', scrollEx: 'Cuộn để khám phá',
     cityVN: 'TP. Hồ Chí Minh', cityIN: 'New Delhi',
     servLbl: 'Chúng tôi lo mọi thứ', servTitle: 'Từ Visa đến<br>Bữa tối cuối cùng',
-    hidLbl: 'Vượt ra khỏi lối mòn', hidTitle: 'Những nơi du khách<br>hiếm khi tìm thấy', hidSub: 'VIETANA đưa bạn đến một Việt Nam chân thực nhất.',
+    hidLbl: 'Vượt ra khỏi lối mòn', hidTitle: 'Những nơi du khách<br>hiếm khi tìm thấy', hidSub: '<img src="vietana_logo.png" class="inline-logo" alt="">VIETANA đưa bạn đến một Việt Nam chân thực nhất.',
     pkgLbl: 'Các Gói Tour', pkgTitle: 'Cảm hứng, Không Cố Định', pkgSub: 'Mỗi gói chỉ là điểm bắt đầu. Chúng tôi tùy chỉnh theo phong cách của bạn.',
     p1T: 'Chuyến Đi Tùy Chỉnh', p1P: 'Bắt đầu từ ₹15,000*', btnPlanC: 'Lên Kế Hoạch →',
     p2T: 'Khám Phá Nhanh', p2P: 'Bắt đầu từ ₹18,000*', btnDet: 'Xem Chi Tiết →',
     p3T: 'Khám Phá Việt Nam', p3P: 'Bắt đầu từ ₹30,000*',
-    foodLbl: 'Ẩm thực', foodTitle: 'Không Bao Giờ<br>Lo Về Đồ Ăn', foodSub: 'VIETANA đảm bảo bạn luôn có chính xác món bạn cần — món Ấn hay món Việt.',
+    foodLbl: 'Ẩm thực', foodTitle: 'Không Bao Giờ<br>Lo Về Đồ Ăn', foodSub: '<img src="vietana_logo.png" class="inline-logo" alt="">VIETANA đảm bảo bạn luôn có chính xác món bạn cần — món Ấn hay món Việt.',
     conLbl: 'Trò chuyện với chúng tôi', conTitle: 'Trò chuyện cùng người<br>hiểu phong cách du lịch của bạn', conSub: 'Nhắn tin WhatsApp — chúng tôi trả lời nhanh bằng tiếng Hindi & tiếng Anh.',
-    mapLbl: 'Trái tim của hành trình', mapTitle: 'Thành phố Sôi động &<br>Thiên đường Biển đảo', mapSub: 'Khám phá năng lượng của TP.HCM và hoàng hôn thanh bình tại Phú Quốc.', bcTitle: 'Máy tính chi phí', bcSub: 'Dự toán chuyến đi hoàn hảo của bạn.', evTitle: 'Khám phá Việt Nam', evSub: 'Khám phá các điểm đến trên khắp Việt Nam', footT: 'Cảm nhận Việt Nam, Theo cách của bạn 🇻🇳', footS: 'Du lịch tuyệt vời hơn cùng VIETANA',
+    mapLbl: 'Trái tim của hành trình', mapTitle: 'Thành phố Sôi động &<br>Thiên đường Biển đảo', mapSub: 'Khám phá năng lượng của TP.HCM và hoàng hôn thanh bình tại Phú Quốc.', bcTitle: 'Máy tính chi phí', bcSub: 'Dự toán chuyến đi hoàn hảo của bạn.', evTitle: 'Khám phá Việt Nam', evSub: 'Khám phá các điểm đến trên khắp Việt Nam', footT: 'Cảm nhận Việt Nam, Theo cách của bạn 🇻🇳', footS: 'Du lịch tuyệt vời hơn cùng <img src="vietana_logo.png" class="inline-logo" alt="">VIETANA',
     aiTitle: '✨ AI Lên Kế Hoạch Cao Cấp', aiOrbLabel: 'AI PLANNER', aiSub: 'Tư vấn thông minh, ấm áp để tạo chuyến đi Việt Nam hoàn hảo.', aiSend: 'Gửi →'
   }
 };
@@ -1710,7 +1808,7 @@ function generateItinerary() {
     div.innerHTML = `
       <div class="msg-avatar"></div>
       <div class="msg-bubble" style="max-width: 90%;">
-        <h3>YOUR VIETANA™ MATCH is ready! 🇻🇳</h3>
+        <h3>YOUR <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA™ MATCH is ready! 🇻🇳</h3>
         <p>I have built the perfect framework for your journey. A dedicated Vietana expert will now finalize the bookings.</p>
         <div style="margin-top:15px; display:flex; flex-direction:column; gap:10px;">
           <a href="https://wa.me/919810156456?text=${waMsg}" target="_blank" class="pc-chip" style="text-align:center; background: #25D366; color:#fff; border:none; display:flex; justify-content:center; gap:8px;">
@@ -1912,15 +2010,16 @@ const leafMarkers = [];
 if (document.getElementById('vMap')) {
   evMap = L.map('vMap', {
     center: [16.0, 106.0],
-    zoom: 5,
+    zoom: 5.5,
+    zoomSnap: 0.5,
     zoomControl: false,
     attributionControl: false,
-    dragging: false,
+    dragging: true,
     scrollWheelZoom: false,
-    doubleClickZoom: false
+    doubleClickZoom: true
   });
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; OpenStreetMap &copy; CARTO'
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: '&copy; Esri'
   }).addTo(evMap);
 
   evDestinations.forEach((d, i) => {
@@ -2122,6 +2221,135 @@ Could you send me a detailed itinerary?`;
 
 // Init
 if(bcTotalEl) updateBcCalc();
+
+// CUSTOM TRIP BUILDER LOGIC
+let ctStyle = 'budget';
+let ctDays = 7;
+let ctPax = 2;
+let ctCities = [];
+
+function openCustomBuilder(theme = 'Custom') {
+  const modal = document.getElementById('customTripModal');
+  if(!modal) return;
+  
+  // Reset
+  document.querySelectorAll('.ct-city-chk').forEach(chk => chk.checked = false);
+  
+  // Pre-select based on theme
+  const selects = {
+    'Heritage': ['Hanoi', 'Halong Bay', 'Hue', 'Hoi An'],
+    'Adventure': ['Hanoi', 'Sapa', 'Ninh Binh'],
+    'Couples': ['Da Lat', 'Nha Trang', 'Phu Quoc'],
+    'Coast': ['Da Nang', 'Hoi An', 'Nha Trang'],
+    'Family': ['Hanoi', 'Halong Bay', 'Da Nang', 'Hoi An', 'Ho Chi Minh City'],
+    'Green': ['Sapa', 'Ninh Binh', 'Da Lat']
+  };
+  
+  if (selects[theme]) {
+    document.querySelectorAll('.ct-city-chk').forEach(chk => {
+      if(selects[theme].includes(chk.value)) chk.checked = true;
+    });
+  }
+  
+  updateCtCalc();
+  modal.classList.add('active');
+}
+
+function closeCustomBuilder() {
+  document.getElementById('customTripModal').classList.remove('active');
+}
+
+function updateCtCalc() {
+  ctCities = Array.from(document.querySelectorAll('.ct-city-chk:checked')).map(cb => cb.value);
+  
+  const flightTot = bcConstants.flight * ctPax;
+  const visaTot = bcConstants.visa * ctPax;
+  
+  // Transit: (Cities - 1) hops * 3000 * pax
+  const hops = Math.max(0, ctCities.length - 1);
+  const transitTot = hops * 3000 * ctPax;
+  
+  const dailyTot = bcRates[ctStyle] * ctDays * ctPax;
+  const total = flightTot + visaTot + transitTot + dailyTot;
+  
+  const fltEl = document.getElementById('ctFlt');
+  if(fltEl) fltEl.textContent = '₹' + flightTot.toLocaleString('en-IN');
+  
+  const visaEl = document.getElementById('ctVisa');
+  if(visaEl) visaEl.textContent = '₹' + visaTot.toLocaleString('en-IN');
+  
+  const transitEl = document.getElementById('ctTransit');
+  if(transitEl) transitEl.textContent = '₹' + transitTot.toLocaleString('en-IN');
+  
+  const dailyEl = document.getElementById('ctDaily');
+  if(dailyEl) dailyEl.textContent = '₹' + dailyTot.toLocaleString('en-IN');
+  
+  const totalEl = document.getElementById('ctTotal');
+  if(totalEl) totalEl.textContent = '₹' + total.toLocaleString('en-IN');
+  
+  const daysVal = document.getElementById('ctDaysVal');
+  if(daysVal) daysVal.textContent = ctDays + (ctDays === 1 ? ' Day' : ' Days');
+  
+  const paxVal = document.getElementById('ctPaxVal');
+  if(paxVal) paxVal.textContent = ctPax + (ctPax === 1 ? ' Person' : ' People');
+}
+
+// Event Listeners for Custom Trip Builder
+document.querySelectorAll('.ct-city-chk').forEach(chk => {
+  chk.addEventListener('change', updateCtCalc);
+});
+
+document.querySelectorAll('.ct-style').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    // Only target the buttons within the custom trip builder
+    if (!e.target.closest('#customTripModal')) return;
+    
+    document.querySelectorAll('#customTripModal .ct-style').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    ctStyle = e.target.getAttribute('data-style');
+    updateCtCalc();
+  });
+});
+
+const ctDaysEl = document.getElementById('ctDays');
+if(ctDaysEl) {
+  ctDaysEl.addEventListener('input', (e) => {
+    ctDays = parseInt(e.target.value);
+    updateCtCalc();
+  });
+}
+
+const ctPaxEl = document.getElementById('ctPax');
+if(ctPaxEl) {
+  ctPaxEl.addEventListener('input', (e) => {
+    ctPax = parseInt(e.target.value);
+    updateCtCalc();
+  });
+}
+
+function sendCustomTripToWhatsApp() {
+  const total = document.getElementById('ctTotal').textContent;
+  const notes = document.getElementById('ctNotes').value.trim();
+  const styleBtn = document.querySelector('#customTripModal .ct-style.active');
+  const styleText = styleBtn ? styleBtn.textContent : 'Budget';
+  
+  let msg = `Hi VIETANA! I just built a custom trip on your website.\n\n`;
+  msg += `*Details:*\n`;
+  msg += `- Destinations: ${ctCities.length > 0 ? ctCities.join(', ') : 'Not selected'}\n`;
+  msg += `- Style: ${styleText}\n`;
+  msg += `- Duration: ${ctDays} Days\n`;
+  msg += `- Travelers: ${ctPax} People\n\n`;
+  msg += `*Estimated Budget:* ${total}\n`;
+  
+  if(notes) {
+    msg += `\n*My Notes:*\n${notes}\n`;
+  }
+  
+  msg += `\nCould you send me a detailed itinerary?`;
+  
+  const encoded = encodeURIComponent(msg);
+  window.open('https://wa.me/919953294543?text=' + encoded, '_blank');
+}
 
 // NAV
 const nav=document.getElementById('nav'),pg=document.getElementById('pg'),btt=document.getElementById('btt');
@@ -2344,49 +2572,49 @@ function stopContactGallery() {
 }
 const srvData = [
   {
-    title: "📋 Visa Assistance — VIETANA™",
+    title: "📋 Visa Assistance — <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA™",
     content: "<strong>Documents</strong><br>✓ Passport (6+ months)<br>✓ Passport photo<br>✓ Passport scan<br>✓ Travel dates<br><br><strong>Time</strong><br>⏱ 3–5 working days<br>⚡ Urgent: 24–48 hrs<br><br><strong>Official:</strong><br><a href='https://evisa.gov.vn' target='_blank'>https://evisa.gov.vn</a>",
-    cta: "💬 VIETANA™ can guide you"
+    cta: "💬 <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA™ can guide you"
   },
   {
-    title: "🗺️ Custom Planning — VIETANA™",
+    title: "🗺️ Custom Planning — <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA™",
     content: "<strong>Perfect for</strong><br>💕 Honeymoon<br>👨‍👩‍👧 Family<br>✨ Luxury<br>🌴 Hidden experiences<br><br><strong>Built around</strong><br>💰 Budget<br>🍛 Food<br>🎯 Travel style",
-    cta: "✨🤖 Plan with VIETANA™"
+    cta: "✨🤖 Plan with <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA™"
   },
   {
-    title: "🚗 Airport Pickup — VIETANA™",
+    title: "🚗 Airport Pickup — <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA™",
     content: "<strong>Included</strong><br>✓ AC vehicle<br>✓ Flight tracking<br>✓ Hotel drop-off<br>✓ Arrival assistance<br><br>🚘 Sedan • SUV • Van",
-    cta: "💬 Book with VIETANA™"
+    cta: "💬 Book with <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA™"
   },
   {
-    title: "🏨 Hotel Booking — VIETANA™",
+    title: "🏨 Hotel Booking — <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA™",
     content: "<strong>Stay options</strong><br>✓ Budget<br>✓ Premium<br>✓ Family<br>✓ Honeymoon<br><br>🍛 Indian food nearby available",
-    cta: "✨🤖 Find my stay with VIETANA™"
+    cta: "✨🤖 Find my stay with <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA™"
   },
   {
-    title: "📶 SIM & Travel Essentials — VIETANA™",
+    title: "📶 SIM & Travel Essentials — <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA™",
     content: "<strong>Ready instantly</strong><br>✓ eSIM support<br>✓ Local SIM<br>✓ Grab setup<br>✓ Maps help<br><br>📱 Stay connected from arrival",
-    cta: "💬 Setup with VIETANA™"
+    cta: "💬 Setup with <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA™"
   },
   {
-    title: "🎫 Tickets & Guides — VIETANA™",
+    title: "🎫 Tickets & Guides — <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA™",
     content: "<strong>Popular bookings</strong><br>✓ Ba Na Hills<br>✓ Ha Long Cruise<br>✓ VinWonders<br>✓ Local guides<br><br>🎟 Book before landing",
-    cta: "💬 Reserve with VIETANA™"
+    cta: "💬 Reserve with <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA™"
   },
   {
-    title: "🍛 Food Support — VIETANA™",
+    title: "🍛 Food Support — <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA™",
     content: "<strong>Available</strong><br>✓ Vegetarian<br>✓ Jain<br>✓ North Indian<br>✓ South Indian<br><br>🍜 Hidden food recommendations included",
-    cta: "✨🤖 Eat better with VIETANA™"
+    cta: "✨🤖 Eat better with <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA™"
   },
   {
-    title: "✨ Tailored Experiences — VIETANA™",
+    title: "✨ Tailored Experiences — <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA™",
     content: "<strong>Choose your vibe</strong><br>💕 Honeymoon<br>🌃 Nightlife<br>📸 Hidden gems<br>👨‍👩‍👧 Family journeys<br><br>🌴 Built around you",
-    cta: "✨🤖 Travel your way with VIETANA™"
+    cta: "✨🤖 Travel your way with <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA™"
   },
   {
-    title: "🛡️ Local Support — VIETANA™",
+    title: "🛡️ Local Support — <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA™",
     content: "<strong>Always available</strong><br>✓ Hindi & English<br>✓ India + Vietnam support<br>✓ Local guidance<br><br>📍 Real people on the ground",
-    cta: "💬 Talk with VIETANA™"
+    cta: "💬 Talk with <img src='vietana_logo.png' class='inline-logo' alt=''>VIETANA™"
   }
 ];
 
