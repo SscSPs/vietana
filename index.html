@@ -1362,25 +1362,73 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;back
 </div>
 
 <!-- FOOD -->
-<section id="food">
-  <div class="fwrap">
-    <div class="fgal">
-      <div class="ff r left d1"><img src="https://images.unsplash.com/photo-1563379091339-03246963d6c4?w=600&q=80" alt="Vietnamese food" loading="lazy"></div>
-      <div class="ff r left d2"><img src="https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=600&q=80" alt="Indian food" loading="lazy"></div>
-    </div>
-    <div class="fcopy r right">
-      <span class="lbl" data-translate="foodLbl">Food &amp; Dining</span>
-      <h2 data-translate="foodTitle">Never Worry About<br>What to Eat</h2>
-      <p data-translate="foodSub">We know food is the heart of Indian travel. VIETANA ensures you always have exactly what you need — whether it\'s a taste of home or a deep plunge into Vietnamese flavours.</p>
-      <ul class="flist">
-        <li><div class="fck">✓</div><span data-translate="f1"><strong>Indian Food Ready</strong> — North Indian, South Indian, Gujarati, veg &amp; non-veg accessible</span></li>
-        <li><div class="fck">✓</div><span data-translate="f2"><strong>All Dietary Needs</strong> — pure veg, jain, vegan, gluten-free options</span></li>
-        <li><div class="fck">✓</div><span data-translate="f3"><strong>Authentic Vietnamese</strong> — safe, delicious local specialties and hidden street spots</span></li>
-      </ul>
-      <div class="fpartners">
-        <div class="fptag">🍛 The Spicy Spoon</div>
-        <div class="fptag">🍜 Mì Quảng Cô Viên</div>
+<section id="food" style="background: var(--wm); padding: 8rem 7%; position: relative; overflow: hidden;">
+  <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 6rem; align-items: center;">
+    
+    <!-- LEFT SIDE: Food Lists -->
+    <div style="flex: 1; min-width: 320px;">
+      <span class="lbl" data-translate="foodLbl" style="display:block; margin-bottom: 0.5rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; font-size: 0.8rem;">Food &amp; Dining</span>
+      <h2 data-translate="foodTitle" style="margin-bottom: 3rem; font-size: 3rem; color: #111; line-height: 1.1;">Flavours of<br>Vietnam</h2>
+      
+      <!-- Veg List -->
+      <div style="margin-bottom: 3rem;">
+        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--gold3); margin-bottom: 1rem; border-bottom: 1px solid rgba(201,168,76,0.3); padding-bottom: 0.5rem;">Vegetarian (Vietnamese &amp; Indian)</h3>
+        <ul style="list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; font-size: 0.95rem; color: #555; font-weight: 500;">
+          <li><span style="color:var(--gold);">✓</span> Phở Chay (Veg Pho)</li>
+          <li><span style="color:var(--gold);">✓</span> Bánh Mì Chay</li>
+          <li><span style="color:var(--gold);">✓</span> Gỏi Cuốn Chay</li>
+          <li><span style="color:var(--gold);">✓</span> Cơm Tấm Chay</li>
+          <li><span style="color:var(--gold);">✓</span> Bún Chay</li>
+          <li><span style="color:var(--gold);">✓</span> Đậu Hũ Sốt Cà Chua</li>
+          <li><span style="color:var(--gold);">✓</span> Nộm Hoa Chuối</li>
+          <li><span style="color:var(--gold);">✓</span> Chè &amp; Xôi (Desserts)</li>
+          <li><span style="color:var(--gold);">✓</span> Rau Muống Xào Tỏi</li>
+          <li><span style="color:var(--gold);">✓</span> North &amp; South Indian Veg</li>
+        </ul>
       </div>
+      
+      <!-- Non-Veg List -->
+      <div style="margin-bottom: 3rem;">
+        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--gold3); margin-bottom: 1rem; border-bottom: 1px solid rgba(201,168,76,0.3); padding-bottom: 0.5rem;">Non-Vegetarian Favorites</h3>
+        <ul style="list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; font-size: 0.95rem; color: #555; font-weight: 500;">
+          <li><span style="color:var(--gold);">✓</span> Phở Bò (Beef Pho)</li>
+          <li><span style="color:var(--gold);">✓</span> Bún Chả (Grilled Pork)</li>
+          <li><span style="color:var(--gold);">✓</span> Bánh Xèo (Crispy Pancake)</li>
+          <li><span style="color:var(--gold);">✓</span> Cao Lầu (Hoi An Noodles)</li>
+          <li><span style="color:var(--gold);">✓</span> Bún Bò Huế (Spicy Beef)</li>
+          <li><span style="color:var(--gold);">✓</span> Cơm Tấm Sườn Nướng</li>
+          <li><span style="color:var(--gold);">✓</span> Bánh Mì Thịt Nướng</li>
+          <li><span style="color:var(--gold);">✓</span> Nem Rán (Spring Rolls)</li>
+          <li><span style="color:var(--gold);">✓</span> Chả Cá Lã Vọng</li>
+          <li><span style="color:var(--gold);">✓</span> Gà Nướng Mật Ong</li>
+        </ul>
+      </div>
+
+      <!-- Famous Cafes -->
+      <div>
+        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--gold3); margin-bottom: 1.5rem; border-bottom: 1px solid rgba(201,168,76,0.3); padding-bottom: 0.5rem;">Famous Cafes</h3>
+        <ul style="list-style: none; display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.95rem; color: #555; font-weight: 600;">
+          <li style="background: rgba(201,168,76,0.1); padding: 0.6rem 1.2rem; border-radius: 50px; border: 1px solid rgba(201,168,76,0.2);">☕ The Note Coffee</li>
+          <li style="background: rgba(201,168,76,0.1); padding: 0.6rem 1.2rem; border-radius: 50px; border: 1px solid rgba(201,168,76,0.2);">☕ Cộng Cà Phê</li>
+          <li style="background: rgba(201,168,76,0.1); padding: 0.6rem 1.2rem; border-radius: 50px; border: 1px solid rgba(201,168,76,0.2);">☕ Cafe Giảng (Egg Coffee)</li>
+          <li style="background: rgba(201,168,76,0.1); padding: 0.6rem 1.2rem; border-radius: 50px; border: 1px solid rgba(201,168,76,0.2);">☕ Ru Nam Bistro</li>
+          <li style="background: rgba(201,168,76,0.1); padding: 0.6rem 1.2rem; border-radius: 50px; border: 1px solid rgba(201,168,76,0.2);">☕ L'Usine</li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- RIGHT SIDE: Images and Coming Soon -->
+    <div style="flex: 1; min-width: 320px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #fff; padding: 4rem 3rem; border-radius: 32px; box-shadow: 0 30px 60px rgba(0,0,0,0.08); position: relative; border: 1px solid rgba(0,0,0,0.03);">
+      
+      <!-- Logo Image -->
+      <img src="vietana_food_logos.png" alt="Mì Quảng Cô Viên &amp; The Spicy Spoon" style="max-width: 100%; height: auto; margin-bottom: 2rem;">
+      
+      <div style="text-align: center;">
+        <div style="display: inline-block; padding: 1rem 2.5rem; background: linear-gradient(135deg, var(--gold2), var(--gold3)); color: #000; border-radius: 50px; font-weight: 700; font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; box-shadow: 0 10px 20px rgba(201,168,76,0.4);">
+          Coming Soon
+        </div>
+      </div>
+      
     </div>
   </div>
 </section>
