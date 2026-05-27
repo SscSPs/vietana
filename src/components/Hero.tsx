@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { HERO_SLIDES, WHATSAPP_DEFAULT } from '../config';
+import { useTranslation } from '../contexts/LanguageContext';
 import './Hero.css';
 
 interface HeroProps {
@@ -7,6 +8,7 @@ interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ onOpenMagic }) => {
+  const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [vnTime, setVnTime] = useState('--:--');
   const [vnDate, setVnDate] = useState('---');
@@ -60,17 +62,17 @@ const Hero: React.FC<HeroProps> = ({ onOpenMagic }) => {
       <div className="hcontent">
         <div className="hey">
           <div className="hd"></div>
-          <span>India–Vietnam Travel Experts · Ho Chi Minh City</span>
+          <span>{t.hero.welcome}</span>
         </div>
         <h1 className="hh1">
-          Feel <em style={{ color: 'var(--blue)' }}>Vietnam</em>,
-          <span className="b" style={{ color: 'var(--gold3)' }}>Your Way 🇻🇳</span>
+          {t.hero.tagline.split(',')[0]},
+          <span className="b" style={{ color: 'var(--gold3)' }}>{t.hero.tagline.split(',')[1]} 🇻🇳</span>
         </h1>
         <p className="hero-tagline">Travel Gets Better with VIETANA</p>
-        <p className="hsub">Vietnam made easy for Indian travelers — from visas and hotels to hidden places, food experiences and local support.</p>
+        <p className="hsub">{t.hero.sub}</p>
         <div className="hbtns">
-          <a href={WHATSAPP_DEFAULT} className="bwa" target="_blank" rel="noreferrer">💬 Plan My Trip — India</a>
-          <a href="#" className="bgh" onClick={(e) => { e.preventDefault(); onOpenMagic(); }}>✦ Discover Vietnam</a>
+          <a href={WHATSAPP_DEFAULT} className="bwa" target="_blank" rel="noreferrer">💬 {t.nav.cta}</a>
+          <a href="#" className="bgh" onClick={(e) => { e.preventDefault(); onOpenMagic(); }}>✦ {t.hero.discover}</a>
         </div>
       </div>
       <div className="hero-dots">

@@ -1,0 +1,16 @@
+#food { padding: 8rem 6%; background: var(--cr); position: relative; }
+.food-filters { display: flex; justify-content: center; gap: 1rem; margin-bottom: 4rem; }
+.food-filters button { background: #fff; border: 1px solid rgba(13,79,46,.1); padding: .7rem 1.8rem; border-radius: 50px; font-size: .85rem; font-weight: 500; cursor: pointer; transition: all .4s var(--e2); color: var(--tm); }
+.food-filters button.active { background: var(--g); color: #fff; border-color: var(--g); box-shadow: var(--sh1); }
+
+.food-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
+.food-card { background: #fff; border-radius: var(--r); overflow: hidden; border: 1px solid rgba(13,79,46,.06); box-shadow: var(--sh0); transition: all .5s var(--e2); }
+.food-card:hover { transform: translateY(-10px); box-shadow: var(--sh3); }
+.fc-img { height: 220px; background-size: cover; background-position: center; }
+.fc-body { padding: 1.8rem; }
+.fc-type { display: inline-block; font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; padding: .3rem .8rem; border-radius: 50px; margin-bottom: 1rem; }
+.fc-type.veg { background: #e8f5e9; color: #2e7d32; }
+.fc-type.non-veg { background: #ffebee; color: #c62828; }
+.fc-type.mix { background: #f3e5f5; color: #7b1fa2; }
+.fc-body h3 { font-size: 1.35rem; margin-bottom: .6rem; color: var(--g); }
+.fc-body p { font-size: .88rem; color: var(--ts); line-height: 1.7; }

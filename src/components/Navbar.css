@@ -11,7 +11,12 @@
 .ncta{background:var(--gold)!important;color:var(--gd)!important;padding:.5rem 1.4rem;border-radius:50px;font-weight:600!important;font-size:.79rem!important;letter-spacing:.04em;box-shadow:0 2px 18px rgba(201,168,76,.4);transition:all .4s var(--e2)!important;text-decoration:none;}
 .ncta::after{display:none!important}
 .ncta:hover{background:var(--gold3)!important;transform:translateY(-2px)!important;box-shadow:0 8px 28px rgba(201,168,76,.5)!important}
-.nav-right{display:flex;align-items:center;gap:1rem;flex-shrink:0}
+.nav-right{display:flex;align-items:center;gap:1.5rem;flex-shrink:0}
+
+.lang-switcher{display:flex;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:50px;padding:3px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.lang-switcher button{background:transparent;border:none;color:rgba(255,255,255,.45);font-size:.62rem;font-weight:600;padding:.35rem .7rem;border-radius:50px;cursor:pointer;transition:all .3s var(--e1)}
+.lang-switcher button:hover{color:#fff}
+.lang-switcher button.active{background:rgba(201,168,76,.15);color:var(--gold3);box-shadow:0 2px 10px rgba(0,0,0,.2)}
 
 /* MOBILE MENU */
 #mob{position:fixed;inset:0;z-index:350;background:var(--gd);display:flex;flex-direction:column;padding:8rem 10% 4rem;gap:1.8rem;opacity:0;pointer-events:none;transition:all .5s var(--e2);transform:translateY(-20px)}
@@ -19,6 +24,10 @@
 #mob a{font-family:'Cormorant Garamond',serif;font-size:2.8rem;color:#fff;text-decoration:none;font-weight:300;transition:all .3s}
 #mob a:hover{color:var(--gold);transform:translateX(10px)}
 .mdv{width:40px;height:1px;background:var(--gold);margin:.5rem 0}
+
+.mob-lang{display:flex;flex-wrap:wrap;gap:.8rem;margin-bottom:1rem}
+.mob-lang button{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.7);padding:.5rem 1rem;border-radius:50px;font-size:.75rem;cursor:pointer;border:1px solid rgba(255,255,255,.1);transition:all .3s}
+.mob-lang button.active{background:rgba(201,168,76,.15);color:var(--gold);border-color:rgba(201,168,76,.3)}
 
 /* HAMBURGER */
 .hbg{width:30px;height:20px;position:relative;cursor:pointer;z-index:500}

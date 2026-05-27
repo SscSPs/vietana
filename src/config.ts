@@ -13,15 +13,15 @@ export const NAV_LINKS = [
 ];
 
 export const SERVICES = [
-  { ico: '📋', t: 'Visa Assistance', d: 'Fast Vietnam e-visa processing. Step-by-step guidance.' },
-  { ico: '🗺️', t: 'Custom Planning', d: 'Your itinerary, your pace. Fully personalized.' },
-  { ico: '🚗', t: 'Airport Pickup', d: 'Comfortable AC vehicle ready when you land.' },
-  { ico: '🏨', t: 'Hotel Booking', d: 'Budget gems to luxury stays vetted for Indians.' },
-  { ico: '📶', t: 'SIM & Essentials', d: 'eSIM, local SIM, Grab setup, and maps help.' },
-  { ico: '🎫', t: 'Tickets & Guides', d: 'Book Ba Na Hills, Ha Long Cruise before landing.' },
-  { ico: '🍛', t: 'Food Support', d: 'Indian & Vietnamese dining recommendations.' },
-  { ico: '✨', t: 'Tailored Experiences', d: 'Honeymoon, nightlife, and family journeys.' },
-  { ico: '🛡️', t: 'Local Support', d: 'Hindi & English support available anytime.' }
+  { ico: '📋', key: 'visa' },
+  { ico: '🗺️', key: 'planning' },
+  { ico: '🚗', key: 'pickup' },
+  { ico: '🏨', key: 'hotel' },
+  { ico: '📶', key: 'sim' },
+  { ico: '🎫', key: 'tickets' },
+  { ico: '🍛', key: 'food' },
+  { ico: '✨', key: 'tailored' },
+  { ico: '🛡️', key: 'support' }
 ];
 
 export const PACKAGES = [
