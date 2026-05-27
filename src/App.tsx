@@ -1,463 +1,250 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { 
-  MapPin, 
-  Plane, 
-  ShieldCheck, 
-  Clock, 
-  Utensils, 
-  Hotel, 
-  MessageCircle, 
-  Menu, 
-  X, 
-  ChevronRight,
-  Star,
-  Camera,
-  Coffee,
-  Heart,
-  Globe
-} from 'lucide-react';
+import { AnimatePresence } from 'motion/react';
+import AIPlanner from './components/AIPlanner';
 
-const WHATSAPP_INDIA = "https://wa.me/91XXXXXXXXXX?text=Hi Vietana, I'm interested in planning a trip to Vietnam!";
-const WHATSAPP_VIETNAM = "https://wa.me/84XXXXXXXXXX?text=Hi Vietana, I'm interested in planning a trip to Vietnam!";
-const WHATSAPP_DEFAULT = WHATSAPP_INDIA;
-
-// --- Animation Variants ---
-const fadeIn = {
-  initial: { opacity: 0, y: 20 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.6 }
-};
-
-const staggerContainer = {
-  initial: { opacity: 0 },
-  whileInView: { opacity: 1 },
-  viewport: { once: true },
-  transition: { staggerChildren: 0.1 }
-};
-
-// --- Components ---
-
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const navLinks = [
-    { name: 'Services', href: '#services' },
-    { name: 'Packages', href: '#packages' },
-    { name: 'Food', href: '#food' },
-    { name: 'About', href: '#about' },
-    { name: 'Contact', href: '#contact' },
-  ];
-
-  return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md py-3 shadow-sm' : 'bg-transparent py-6'}`}>
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <div className="flex flex-col group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <div className={`text-2xl font-black tracking-tighter transition-colors ${scrolled ? 'text-brand-primary' : 'text-white'}`}>
-            VIETANA
-          </div>
-          <div className="h-1 w-full bg-brand-accent rounded-full -mt-1 scale-x-110 origin-left opacity-90 group-hover:bg-brand-primary transition-colors" />
-        </div>
-
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center space-x-8">
-          {navLinks.map((link) => (
-            <a 
-              key={link.name} 
-              href={link.href} 
-              className={`text-sm font-bold tracking-wide transition-colors ${scrolled ? 'text-brand-text hover:text-brand-primary' : 'text-white/90 hover:text-white'}`}
-            >
-              {link.name}
-            </a>
-          ))}
-          <a 
-            href={WHATSAPP_DEFAULT} 
-            className="bg-brand-primary text-white px-6 py-2.5 rounded-lg text-sm font-bold hover:scale-105 transition-all shadow-md active:scale-95 border-b-2 border-black/10"
-          >
-            Enquire Now
-          </a>
-        </div>
-
-        {/* Mobile Toggle */}
-        <button className={`md:hidden ${scrolled ? 'text-brand-text' : 'text-white'}`} onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div 
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="absolute top-full left-0 w-full bg-white shadow-xl py-8 px-6 md:hidden flex flex-col space-y-4"
-          >
-            {navLinks.map((link) => (
-              <a 
-                key={link.name} 
-                href={link.href} 
-                className="text-lg font-bold text-brand-text border-b border-brand-bg pb-2"
-                onClick={() => setIsOpen(false)}
-              >
-                {link.name}
-              </a>
-            ))}
-            <a 
-              href={WHATSAPP_DEFAULT}
-              className="w-full bg-brand-primary text-white py-4 rounded-xl text-center font-bold text-lg"
-            >
-              WhatsApp Inquiry
-            </a>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
-  );
-};
-
-const Hero = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const images = [
-    "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=2000",
-    "https://images.unsplash.com/photo-1555661515-8bb18624b13d?auto=format&fit=crop&q=80&w=2000",
-    "https://images.unsplash.com/photo-1598967534947-f2731783303d?auto=format&fit=crop&q=80&w=2000"
-  ];
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % images.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
-
-  return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden bg-brand-text">
-      {/* Background Slider */}
-      {images.map((img, idx) => (
-        <motion.div 
-          key={idx}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: currentSlide === idx ? 1 : 0 }}
-          transition={{ duration: 1.5 }}
-          className="absolute inset-0 z-0"
-        >
-          <img src={img} alt="Vietnam" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-          <div className="absolute inset-0 bg-black/45" />
-        </motion.div>
-      ))}
-
-      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          <div className="flex flex-col items-center mb-6">
-            <span className="text-white font-bold tracking-[0.5em] text-sm mb-2 block uppercase opacity-80 italic">Vietana Premium</span>
-          </div>
-          
-          <div className="relative inline-block mb-4">
-            <h1 className="text-7xl md:text-9xl font-black text-white leading-none tracking-tighter">
-              VIETANA
-            </h1>
-            <div className="h-2 w-full bg-brand-accent rounded-full mt-1 scale-x-110" />
-          </div>
-
-          <div className="mb-14">
-            <span className="text-4xl md:text-6xl text-brand-accent font-script drop-shadow-lg block">
-              Feel Vietnam, Your Way
-            </span>
-          </div>
-
-          <p className="text-lg md:text-xl text-white/95 mb-14 max-w-2xl mx-auto font-medium leading-relaxed">
-            Seamless travel from India to Vietnam with premium support, curated tours, and legitimate local heritage.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-            <a 
-              href={WHATSAPP_DEFAULT}
-              className="w-full sm:w-auto bg-brand-primary text-white px-12 py-5 rounded-xl font-bold text-lg hover:scale-110 transition-all shadow-2xl border-b-4 border-black/10"
-            >
-              Plan My Trip
-            </a>
-            <a 
-              href="#packages"
-              className="w-full sm:w-auto px-12 py-5 rounded-xl font-bold text-lg text-white border-2 border-white/40 hover:bg-white/10 transition-all backdrop-blur-sm"
-            >
-              Explore Packages
-            </a>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-};
-
-const TrustStrip = () => {
-  const items = [
-    { icon: <Globe size={24} />, text: "Dual Presence: India & Vietnam" },
-    { icon: <ShieldCheck size={24} />, text: "Fast Visa Support" },
-    { icon: <Star size={24} />, text: "Verified Local Experts" },
-  ];
-
-  return (
-    <div className="bg-white border-b border-brand-bg py-6">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
-        {items.map((item, idx) => (
-          <div key={idx} className="flex items-center justify-center space-x-3 text-brand-text">
-            <div className="text-brand-accent">{item.icon}</div>
-            <span className="font-semibold text-sm tracking-wide">{item.text}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const Services = () => {
-  const services = [
-    { icon: <ShieldCheck size={32} />, title: "Visa Assistance", desc: "Smooth and reliable processing" },
-    { icon: <MapPin size={32} />, title: "Vietnam Tours", desc: "Crafted itineraries north to south" },
-    { icon: <Plane size={32} />, title: "Airport Pickup", desc: "Comfort from the moment you land" },
-    { icon: <Hotel size={32} />, title: "Hotel Booking", desc: "Handpicked premium stays" },
-    { icon: <Utensils size={32} />, title: "Food Experiences", desc: "Taste the heart of Vietnam" },
-  ];
-
-  return (
-    <section id="services" className="py-24 bg-brand-bg">
-      <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-4xl font-bold text-center mb-16">Customized Services</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-          {services.map((item, idx) => (
-            <motion.div 
-              key={idx}
-              {...fadeIn}
-              whileHover={{ y: -5 }}
-              className="bg-white p-8 rounded-xl shadow-sm border border-transparent hover:border-brand-primary/20 hover:shadow-xl transition-all text-center"
-            >
-              <div className="text-brand-accent mb-6 flex justify-center">{item.icon}</div>
-              <h3 className="text-lg font-bold mb-3">{item.title}</h3>
-              <p className="text-brand-muted text-sm leading-relaxed">{item.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const Packages = () => {
-  const packages = [
-    {
-      title: "Vietnam 5 Days Starter",
-      tagline: "City • Culture • Easy",
-      image: "https://images.unsplash.com/photo-1598967534947-f2731783303d?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      title: "Heritage Explorer",
-      tagline: "History • Scenery • Slow",
-      image: "https://images.unsplash.com/photo-1555661515-8bb18624b13d?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      title: "Luxury Northern Escape",
-      tagline: "Bay • Mountains • Premium",
-      image: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=800"
-    }
-  ];
-
-  return (
-    <section id="packages" className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-4xl font-bold text-center mb-16 font-serif underline decoration-brand-accent decoration-4 underline-offset-8">Curated Packages</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {packages.map((pkg, idx) => (
-            <motion.div 
-              key={idx}
-              {...fadeIn}
-              whileHover={{ scale: 1.02 }}
-              className="group relative h-[500px] rounded-2xl overflow-hidden shadow-lg cursor-pointer"
-            >
-              <img src={pkg.image} alt={pkg.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              <div className="absolute bottom-0 left-0 p-8 w-full">
-                <h3 className="text-2xl font-bold text-white mb-2">{pkg.title}</h3>
-                <p className="text-white/80 mb-6 font-medium">{pkg.tagline}</p>
-                <a 
-                  href={WHATSAPP_DEFAULT}
-                  className="inline-block border border-white rounded-full px-6 py-2 text-white text-sm font-bold hover:bg-white hover:text-brand-text transition-colors"
-                >
-                  Enquire Now
-                </a>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const FoodExperience = () => {
-  return (
-    <section id="food" className="py-24 bg-brand-bg">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <motion.div {...fadeIn}>
-            <img 
-              src="https://images.unsplash.com/photo-1617062168141-75081c2bbd36?auto=format&fit=crop&q=80&w=1000" 
-              alt="Vietnamese Food" 
-              className="rounded-2xl shadow-2xl border-b-8 border-brand-accent/50"
-              referrerPolicy="no-referrer"
-            />
-          </motion.div>
-          <motion.div {...fadeIn}>
-            <h2 className="text-5xl font-bold mb-8 leading-tight">Eat Like a Local</h2>
-            <p className="text-lg text-brand-muted mb-10 leading-relaxed font-medium">
-              Vietnam's soul is in its streets and kitchens. We take you beyond tourist traps to experience legitimate culinary heritage.
-            </p>
-            <div className="space-y-6 mb-12">
-              <div className="flex items-center space-x-4 border-l-4 border-brand-accent pl-6">
-                <div>
-                  <h4 className="text-xl font-bold text-brand-primary">Mi Quảng Cô Viên</h4>
-                  <p className="text-brand-muted">The definitive taste of Central Vietnam</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-4 border-l-4 border-brand-accent pl-6">
-                <div>
-                  <h4 className="text-xl font-bold text-brand-primary">The Spicy Spoon</h4>
-                  <p className="text-brand-muted">Modern twist on traditional heat</p>
-                </div>
-              </div>
-            </div>
-            <a 
-              href={WHATSAPP_DEFAULT}
-              className="inline-block bg-brand-primary text-white px-10 py-5 rounded-xl font-bold hover:scale-105 transition-all shadow-lg"
-            >
-              Ask About Food Tours
-            </a>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const About = () => {
-  return (
-    <section id="about" className="py-24 bg-brand-text text-white">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <motion.div {...fadeIn} className="order-2 lg:order-1">
-            <span className="text-brand-accent font-bold uppercase tracking-widest text-sm mb-6 block underline decoration-2 underline-offset-4">Our Story</span>
-            <h2 className="text-5xl font-bold mb-8 leading-tight">Built Between India & Vietnam</h2>
-            <div className="space-y-6 text-white/80 text-lg leading-relaxed font-serif italic">
-              <p>We understand the specific needs of Indian travelers—from dietary preferences to the desire for authentic cultural immersion.</p>
-              <p>With a robust local network and active involvement in Vietnamese businesses, we provide a bridge that ensures safety, comfort, and real experiences.</p>
-            </div>
-          </motion.div>
-          <motion.div {...fadeIn} className="order-1 lg:order-2">
-            <img 
-              src="https://images.unsplash.com/photo-1509030450996-93f2e1d78682?auto=format&fit=crop&q=80&w=1000" 
-              alt="India Vietnam Bridge" 
-              className="rounded-2xl opacity-70 border-r-8 border-brand-accent/30"
-              referrerPolicy="no-referrer"
-            />
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const Contact = () => {
-  return (
-    <section id="contact" className="py-32 bg-white">
-      <div className="max-w-4xl mx-auto px-6 text-center">
-        <motion.div {...fadeIn}>
-          <h2 className="text-5xl md:text-6xl font-bold mb-10 text-brand-primary">Let’s Plan Your Trip</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-16">
-            <a 
-              href={WHATSAPP_INDIA}
-              className="bg-brand-primary text-white py-6 rounded-xl font-bold text-lg hover:scale-105 transition-all shadow-xl flex items-center justify-center space-x-3"
-            >
-              <MessageCircle size={24} />
-              <span>WhatsApp India</span>
-            </a>
-            <a 
-              href={WHATSAPP_VIETNAM}
-              className="bg-brand-primary text-white py-6 rounded-xl font-bold text-lg hover:scale-105 transition-all shadow-xl flex items-center justify-center space-x-3 border-2 border-brand-accent/20"
-            >
-              <MessageCircle size={24} />
-              <span>WhatsApp Vietnam</span>
-            </a>
-          </div>
-          <div className="space-y-4 text-brand-muted">
-            <p className="font-bold text-brand-primary text-xl">hello@vietana.com</p>
-            <p className="text-sm font-semibold tracking-widest uppercase">Hanoi • Ho Chi Minh City • New Delhi</p>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-};
-
-const Footer = () => {
-  return (
-    <footer className="py-12 bg-brand-bg border-t border-brand-primary/5">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-center text-brand-muted text-sm font-medium">
-          <div className="flex flex-col mb-6 md:mb-0">
-            <span className="font-black text-xl text-brand-primary tracking-tighter">VIETANA</span>
-            <div className="h-0.5 w-full bg-brand-accent/50 rounded-full" />
-          </div>
-          <div className="flex space-x-8 mb-6 md:mb-0">
-            <a href="#services" className="hover:text-brand-primary transition-colors">Services</a>
-            <a href="#packages" className="hover:text-brand-primary transition-colors">Packages</a>
-            <a href="#about" className="hover:text-brand-primary transition-colors">About</a>
-          </div>
-          <div>© {new Date().getFullYear()} Vietana Travel. Designed for Indian Travelers.</div>
-        </div>
-      </div>
-    </footer>
-  );
-};
+const WHATSAPP_DEFAULT = "https://wa.me/919953294543?text=Hi%20VIETANA%2C%20I%27d%20like%20to%20plan%20my%20Vietnam%20trip!";
 
 export default function App() {
+  const [isPlannerOpen, setIsPlannerOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [vnTime, setVnTime] = useState('--:--');
+  const [vnDate, setVnDate] = useState('---');
+  const [inTime, setInTime] = useState('--:--');
+  const [inDate, setInDate] = useState('---');
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 80);
+      const btt = document.getElementById('btt');
+      if (btt) {
+        if (window.scrollY > 700) btt.classList.add('show');
+        else btt.classList.remove('show');
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    
+    const interval = setInterval(() => {
+      const now = new Date();
+      const fmt = (tz: string) => {
+        const d = new Date(now.toLocaleString('en-US', { timeZone: tz }));
+        const h = String(d.getHours()).padStart(2, '0');
+        const m = String(d.getMinutes()).padStart(2, '0');
+        const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        return {
+          time: `${h}:${m}`,
+          date: `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`
+        };
+      };
+      const vn = fmt('Asia/Ho_Chi_Minh');
+      const ind = fmt('Asia/Kolkata');
+      setVnTime(vn.time); setVnDate(vn.date);
+      setInTime(ind.time); setInDate(ind.date);
+    }, 1000);
+
+    const slideTimer = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % 3);
+    }, 6000);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearInterval(interval);
+      clearInterval(slideTimer);
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen selection:bg-brand-accent selection:text-brand-primary">
-      <Navbar />
-      <main>
-        <Hero />
-        <TrustStrip />
-        <Services />
-        <Packages />
-        <FoodExperience />
-        <About />
-        <Contact />
-      </main>
-      <Footer />
-      
-      {/* Scroll to Top / Floating WhatsApp */}
-      <a 
-        href={WHATSAPP_DEFAULT}
-        className="fixed bottom-8 right-8 z-[60] bg-brand-primary text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform border-4 border-brand-accent/20"
-      >
-        <MessageCircle size={32} />
-      </a>
+    <div className="app-container">
+      <div id="pg" style={{ width: scrolled ? '100%' : '0%' }}></div>
+      <button id="btt" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">
+        <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+      </button>
+
+      {/* FLOATING AI ORB */}
+      <div id="ai-orb" onClick={() => setIsPlannerOpen(true)}>
+        <div className="orb-label">AI PLANNER</div>
+        <div className="orb-core"></div>
+        <div className="orb-glow"></div>
+        <div className="orb-sparkle">✨</div>
+      </div>
+
+      {/* NAV */}
+      <nav id="nav" className={scrolled ? 'glassy' : ''}>
+        <a href="#" className="nl" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+          <img src="/vietana_logo.png" style={{ height: '45px' }} alt="Vietana Logo" />
+          VIETANA
+        </a>
+        <ul className="nlinks">
+          <li><a href="#services">Services</a></li>
+          <li><a href="#packages">Packages</a></li>
+          <li><a href="#" onClick={(e) => { e.preventDefault(); setIsPlannerOpen(true); }}>AI Planner</a></li>
+          <li><a href="#food">Food</a></li>
+          <li><a href="#hidden">Experiences</a></li>
+          <li><a href="#" onClick={(e) => e.preventDefault()}>About</a></li>
+          <li><a href="#" onClick={(e) => e.preventDefault()}>Contact</a></li>
+          <li><a href={WHATSAPP_DEFAULT} className="ncta" target="_blank">Plan My Trip</a></li>
+        </ul>
+        <div className="nav-right">
+          <div className={`hbg ${mobileMenuOpen ? 'o' : ''}`} id="ham" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </nav>
+
+      {/* MOBILE MENU */}
+      <div id="mob" className={mobileMenuOpen ? 'o' : ''}>
+        <a href="#services" onClick={() => setMobileMenuOpen(false)}>Services</a>
+        <a href="#packages" onClick={() => setMobileMenuOpen(false)}>Packages</a>
+        <a href="#" onClick={() => { setMobileMenuOpen(false); setIsPlannerOpen(true); }}>AI Planner</a>
+        <a href="#food" onClick={() => setMobileMenuOpen(false)}>Food</a>
+        <a href="#hidden" onClick={() => setMobileMenuOpen(false)}>Experiences</a>
+        <div className="mdv"></div>
+        <a href="https://wa.me/919953294543" style={{ color: 'var(--gold)' }} target="_blank">💬 +91 9953294543</a>
+      </div>
+
+      {/* HERO */}
+      <section id="hero">
+        <div className="hero-slides">
+          {[
+            'https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?w=1920&q=90',
+            'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1920&q=90',
+            'https://images.unsplash.com/photo-1562602833-0f4ab2fc46e3?w=1920&q=90'
+          ].map((url, idx) => (
+            <div 
+              key={idx} 
+              className={`hero-slide ${currentSlide === idx ? 'active' : ''}`} 
+              style={{ backgroundImage: `url('${url}')` }}
+            ></div>
+          ))}
+        </div>
+        <div className="hv1"></div>
+        <div className="hv2"></div>
+        <div className="h-particles lanterns"></div>
+        <div className="hcontent">
+          <div className="hey">
+            <div className="hd"></div>
+            <span>India–Vietnam Travel Experts · Ho Chi Minh City</span>
+          </div>
+          <h1 className="hh1">
+            Feel <em style={{ color: 'var(--blue)' }}>Vietnam</em>,
+            <span className="b" style={{ color: 'var(--gold3)' }}>Your Way 🇻🇳</span>
+          </h1>
+          <p className="hero-tagline">Travel Gets Better with VIETANA</p>
+          <p className="hsub">Vietnam made easy for Indian travelers — from visas and hotels to hidden places, food experiences and local support.</p>
+          <div className="hbtns">
+            <a href={WHATSAPP_DEFAULT} className="bwa" target="_blank">💬 Plan My Trip — India</a>
+            <a href="#" className="bgh" onClick={(e) => e.preventDefault()}>✦ Discover Vietnam</a>
+          </div>
+        </div>
+        <div className="hero-dots">
+          {[0, 1, 2].map(i => (
+            <div key={i} className={`hero-dot ${currentSlide === i ? 'active' : ''}`} onClick={() => setCurrentSlide(i)}></div>
+          ))}
+        </div>
+        <div className="hbot">
+          <div className="hscroll"><div className="hsl"></div><span>Scroll to explore</span></div>
+          <div className="live-clocks">
+            <div className="lc-card">
+              <span className="lc-flag">🇻🇳</span>
+              <span className="lc-city">Ho Chi Minh City</span>
+              <span className="lc-time">{vnTime}</span>
+              <span className="lc-date">{vnDate}</span>
+            </div>
+            <div className="lc-card">
+              <span className="lc-flag">🇮🇳</span>
+              <span className="lc-city">New Delhi</span>
+              <span className="lc-time">{inTime}</span>
+              <span className="lc-date">{inDate}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SERVICES */}
+      <section id="services">
+        <div className="sg-ghost">WE HANDLE IT</div>
+        <div className="sh r in">
+          <span className="lbl">We Handle Everything</span>
+          <h2>From Visa to Your<br />Last Dinner</h2>
+        </div>
+        <div className="srvg">
+          {[
+            { ico: '📋', t: 'Visa Assistance', d: 'Fast Vietnam e-visa processing. Step-by-step guidance.' },
+            { ico: '🗺️', t: 'Custom Planning', d: 'Your itinerary, your pace. Fully personalized.' },
+            { ico: '🚗', t: 'Airport Pickup', d: 'Comfortable AC vehicle ready when you land.' },
+            { ico: '🏨', t: 'Hotel Booking', d: 'Budget gems to luxury stays vetted for Indians.' },
+            { ico: '📶', t: 'SIM & Essentials', d: 'eSIM, local SIM, Grab setup, and maps help.' },
+            { ico: '🎫', t: 'Tickets & Guides', d: 'Book Ba Na Hills, Ha Long Cruise before landing.' },
+            { ico: '🍛', t: 'Food Support', d: 'Indian & Vietnamese dining recommendations.' },
+            { ico: '✨', t: 'Tailored Experiences', d: 'Honeymoon, nightlife, and hidden gems.' },
+            { ico: '🛡️', t: 'Local Support', d: 'Hindi & English support available anytime.' }
+          ].map((s, i) => (
+            <div key={i} className="sc r in">
+              <div className="sc-ico">{s.ico}</div>
+              <h3>{s.t}</h3>
+              <p>{s.d}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div className="divl"></div>
+
+      {/* PACKAGES */}
+      <section id="packages">
+        <div className="sh r in">
+          <span className="lbl">Our Packages</span>
+          <h2>Inspiration, Not Fixed Products</h2>
+          <p>Every package is a starting point. We customize everything around your travel style.</p>
+        </div>
+        <div className="pkg-g">
+          {[
+            { t: 'Best Heritage Sites', img: 'https://image.vietnam.travel/sites/default/files/styles/large/public/2021-04/World%20heritage%20sites%20Vietnam%20travel_0.jpg', b: 'Culture & History', d: 'Explore UNESCO attractions.' },
+            { t: 'Adventure Trails', img: 'https://image.vietnam.travel/sites/default/files/styles/large/public/2021-04/Adventure%20itinerary%20Vietnam.jpg', b: 'Thrills', d: 'Exciting outdoor experiences.' },
+            { t: 'Couples’ Retreat', img: 'https://image.vietnam.travel/sites/default/files/styles/large/public/2021-04/Romantic%20getaway%20Vietnam.jpg', b: 'Romantic', d: 'Timeless romantic getaways.' },
+            { t: 'Coast and Islands', img: 'https://image.vietnam.travel/sites/default/files/styles/large/public/2021-04/Vietnam%20beach%20holiday.jpg', b: 'Beaches', d: 'Soak up the sun.' },
+            { t: 'Family Vacation', img: 'https://image.vietnam.travel/sites/default/files/styles/large/public/2021-04/Family%20holiday%20in%20Vietnam.jpg', b: 'All Ages', d: 'Nature and culture for all ages.' },
+            { t: 'Green Getaway', img: 'https://image.vietnam.travel/sites/default/files/styles/large/public/2021-04/Green%20travel%20ideas%20Vietnam.jpg', b: 'Eco-Tourism', d: 'Pristine, sustainable travel.' }
+          ].map((p, i) => (
+            <div key={i} className="pc r in">
+              <div className="pc-img" style={{ backgroundImage: `url('${p.img}')` }}></div>
+              <div className="pc-fog"></div>
+              <div className="pc-flare"></div>
+              <div className="pc-body">
+                <span className="pc-badge">{p.b}</span>
+                <h3>{p.t}</h3>
+                <p className="pc-price" style={{ color: 'rgba(255,255,255,0.7)', fontStyle: 'italic' }}>{p.d}</p>
+                <button className="pc-cta">Customize Trip <span className="pca-arr">→</span></button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* AI PLANNER MODAL */}
+      <AnimatePresence>
+        {isPlannerOpen && (
+          <AIPlanner isOpen={isPlannerOpen} onClose={() => setIsPlannerOpen(false)} />
+        )}
+      </AnimatePresence>
+
+      <footer id="contact">
+        <div className="fi">
+          <div className="fb">
+            <span className="flo">VIETANA</span>
+            <span className="ft">Premium India-Vietnam Travel</span>
+            <span className="fs">© 2026 Vietana Travel. Built for Indian Travelers.</span>
+          </div>
+          <ul className="fnav">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#packages">Packages</a></li>
+            <li><a href="#food">Food</a></li>
+            <li><a href="#" onClick={(e) => e.preventDefault()}>About</a></li>
+          </ul>
+        </div>
+      </footer>
     </div>
   );
 }
