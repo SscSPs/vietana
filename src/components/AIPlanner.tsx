@@ -157,9 +157,9 @@ const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestinati
   }, [messages, isTyping]);
 
   return (
-    <div className={`ai-modal-overlay ${isOpen ? 'open' : ''}`} onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="ai-modal-container">
-        <div className="ai-close" onClick={onClose}>×</div>
+    <div className={`m-overlay ${isOpen ? 'open' : ''}`} onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="ai-modal-container m-container">
+        <div className="m-close" onClick={onClose}>×</div>
         <div className="planner-left">
           <div className="ai-modal-header">
             <h3>🌿 {t.planner.title}</h3>
@@ -184,7 +184,7 @@ const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestinati
             {options.length > 0 && (
               <div className="pc-options">
                 {options.map((opt, i) => (
-                  <div key={i} className="pc-chip" onClick={() => handleSend(opt)}>{opt}</div>
+                  <div key={i} className="chip" onClick={() => handleSend(opt)}>{opt}</div>
                 ))}
               </div>
             )}
@@ -244,11 +244,11 @@ const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestinati
                     href={`https://wa.me/919953294543?text=${encodeURIComponent(`Hi VIETANA! I just finished my planning session:\n\nVibe: ${preferences.vibe}\nStyle: ${preferences.style}\nFood: ${preferences.food}\nFocus: ${preferences.focus}\n\nI'd like to discuss this further!`)}`} 
                     target="_blank" 
                     rel="noreferrer" 
-                    className="ldp-btn wa-in"
+                    className="btn-s ldp-btn wa-in"
                 >
                   💬 WhatsApp VIETANA™
                 </a>
-                <a href="mailto:info@vietana.com" className="ldp-btn email">
+                <a href="mailto:info@vietana.com" className="btn-s ldp-btn email">
                   ✉ Email VIETANA™
                 </a>
              </div>

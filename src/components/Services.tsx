@@ -110,13 +110,13 @@ const Services: React.FC<ServicesProps> = ({ onOpenPlanner }) => {
 
       {/* SERVICE MODAL */}
       {selectedSrv && (
-        <div className="srv-modal-overlay show" onClick={(e) => e.target === e.currentTarget && closeSrvModal()}>
-          <div className="srv-modal">
-            <button className="srv-close" onClick={closeSrvModal}>×</button>
+        <div className={`m-overlay ${selectedSrv ? 'open' : ''}`} onClick={(e) => e.target === e.currentTarget && closeSrvModal()}>
+          <div className="srv-modal m-container">
+            <button className="m-close" onClick={closeSrvModal}>×</button>
             <div className="srv-title" dangerouslySetInnerHTML={{ __html: selectedSrv.title }}></div>
             <div className="srv-content" dangerouslySetInnerHTML={{ __html: selectedSrv.content }}></div>
             <button 
-                className="srv-cta-btn"
+                className="btn-p srv-cta-btn"
                 onClick={() => {
                     if (selectedSrv.cta.includes('✨🤖')) {
                         closeSrvModal();

@@ -161,22 +161,22 @@ const ComboSection: React.FC<ComboSectionProps> = ({ onOpenPlanner }) => {
 
         <AnimatePresence>
           {selectedExp && (
-            <div className="exp-modal-overlay" onClick={() => setSelectedExp(null)}>
+            <div className={`m-overlay ${selectedExp ? 'open' : ''}`} onClick={() => setSelectedExp(null)}>
               <motion.div 
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                className="exp-modal"
+                className="exp-modal m-container"
                 onClick={e => e.stopPropagation()}
               >
-                <button className="exp-modal-close" onClick={() => setSelectedExp(null)}>×</button>
+                <button className="m-close" onClick={() => setSelectedExp(null)}>×</button>
                 <img src={selectedExp.img} alt={selectedExp.t} />
                 <div className="exp-modal-content">
                   <h3>{selectedExp.t}</h3>
                   <p>{selectedExp.d}</p>
                   <div className="exp-modal-actions">
-                    <a href={`https://maps.google.com/?q=${encodeURIComponent(selectedExp.t)}`} target="_blank" rel="noreferrer" className="exp-modal-btn">📍 View on Map</a>
-                    <button className="exp-modal-btn secondary" onClick={() => { setSelectedExp(null); onOpenPlanner(selectedExp.t); }}>Plan with AI</button>
+                    <a href={`https://maps.google.com/?q=${encodeURIComponent(selectedExp.t)}`} target="_blank" rel="noreferrer" className="btn-p exp-modal-btn">📍 View on Map</a>
+                    <button className="btn-s exp-modal-btn secondary" onClick={() => { setSelectedExp(null); onOpenPlanner(selectedExp.t); }}>Plan with AI</button>
                   </div>
                 </div>
               </motion.div>
@@ -239,8 +239,8 @@ const ComboSection: React.FC<ComboSectionProps> = ({ onOpenPlanner }) => {
                 <p className="evp-time">Best time: {EV_DESTINATIONS[selectedCityIdx].time}</p>
                 <p className="evp-desc">{EV_DESTINATIONS[selectedCityIdx].desc}</p>
                 <div className="evp-actions">
-                  <button className="evp-btn" onClick={() => onOpenPlanner(EV_DESTINATIONS[selectedCityIdx].name)}>Plan My Trip</button>
-                  <a href={`https://maps.google.com/?q=${encodeURIComponent(EV_DESTINATIONS[selectedCityIdx].name + ' Vietnam')}`} target="_blank" rel="noreferrer" className="evp-btn-sec">View on Map</a>
+                  <button className="btn-p evp-btn" onClick={() => onOpenPlanner(EV_DESTINATIONS[selectedCityIdx].name)}>Plan My Trip</button>
+                  <a href={`https://maps.google.com/?q=${encodeURIComponent(EV_DESTINATIONS[selectedCityIdx].name + ' Vietnam')}`} target="_blank" rel="noreferrer" className="btn-s evp-btn-sec">View on Map</a>
                 </div>
               </motion.div>
             )}
