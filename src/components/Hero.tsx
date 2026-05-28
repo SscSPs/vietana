@@ -84,7 +84,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenMagic }) => {
       </div>
 
       {/* OVERLAYS */}
-      <div className="absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_25%_55%,rgba(8,38,24,0.82)_0%,transparent_65%),linear-gradient(125deg,rgba(5,20,11,0.92)_0%,rgba(13,79,46,0.54)_42%,rgba(0,0,0,0.18)_100%),linear-gradient(180deg,rgba(4,15,8,0.32)_0%,transparent_28%,rgba(4,15,8,0.5)_100%)]" />
+      <div className="absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_25%_55%,rgba(0,0,0,0.5)_0%,transparent_70%),linear-gradient(125deg,rgba(12,10,9,0.9)_0%,rgba(28,25,23,0.7)_42%,rgba(0,0,0,0.4)_100%),linear-gradient(180deg,rgba(0,0,0,0.3)_0%,transparent_30%,rgba(0,0,0,0.7)_100%)] backdrop-blur-[2px]" />
       <div className="absolute inset-0 z-[2] bg-[url('data:image/svg+xml,%3Csvg_viewBox=%220_0_256_256%22_xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter_id=%22n%22%3E%3CfeTurbulence_type=%22fractalNoise%22_baseFrequency=%22.85%22_numOctaves=%224%22_stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect_width=%22100%25%22_height=%22100%25%22_filter=%22url(%23n)%22/%3E%3C/svg%3E')] bg-[length:200px_200px] opacity-[0.022] pointer-events-none" />
       
       {/* CINEMATIC LIGHT LEAKS */}
@@ -122,8 +122,8 @@ const Hero: React.FC<HeroProps> = ({ onOpenMagic }) => {
             variant="none" 
             className="!text-white mb-2 animate-reveal-up [animation-duration:1.1s] [animation-delay:0.58s] drop-shadow-[0_8px_60px_rgba(0,0,0,0.8)] tracking-tight leading-none"
           >
-            Feel <em className="text-brand-blue italic pr-2">Vietnam</em>,
-            <span className="block mt-1 text-brand-gold">Your Way 🇻🇳</span>
+            Feel <em className="text-brand-gold italic pr-2">Vietnam</em>,
+            <span className="block mt-1 text-white">Your Way 🇻🇳</span>
           </Heading>
           
           <Text 

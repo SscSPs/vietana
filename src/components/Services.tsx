@@ -105,8 +105,12 @@ const Services: React.FC<ServicesProps> = ({ onOpenPlanner }) => {
       <div className="absolute top-8 -right-4 font-serif text-[clamp(5rem,14vw,13rem)] font-light text-brand-green/5 tracking-wider pointer-events-none select-none z-0">
         {t.services.ghost}
       </div>
+
+      {/* Morphing Liquid Background Elements */}
+      <div className="absolute top-[20%] right-[10%] w-[40vw] h-[40vw] max-w-[400px] max-h-[400px] bg-brand-gold/10 rounded-full blur-[80px] animate-blob-float pointer-events-none z-0 mix-blend-multiply opacity-70" />
+      <div className="absolute bottom-[10%] left-[5%] w-[30vw] h-[30vw] max-w-[350px] max-h-[350px] bg-brand-green/5 rounded-full blur-[60px] animate-blob-float pointer-events-none z-0 mix-blend-multiply opacity-60" style={{ animationDelay: '2s' }} />
       
-      <Container>
+      <Container className="relative z-10">
         <SectionHeader 
           label={t.services.title}
           title={t.services.subtitle}

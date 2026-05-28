@@ -1,29 +1,29 @@
 @import "tailwindcss";
 
 @theme {
-  /* Colors */
-  --color-brand-green: #0D4F2E;
-  --color-brand-green-light: #1a7a4a;
-  --color-brand-green-dark: #082618;
-  --color-brand-green-extra-dark: #040f08;
+  /* Premium Black + Gold Theme (Liquid Glass) */
+  --color-brand-green: #1C1917;
+  --color-brand-green-light: #44403C;
+  --color-brand-green-dark: #0C0A09;
+  --color-brand-green-extra-dark: #000000;
   
-  --color-brand-gold: #C9A84C;
-  --color-brand-gold-muted: #D4AF37;
-  --color-brand-gold-light: #e8cc6a;
-  --color-brand-gold-extra-light: #f4e4a8;
+  --color-brand-gold: #CA8A04;
+  --color-brand-gold-muted: #A16207;
+  --color-brand-gold-light: #EAB308;
+  --color-brand-gold-extra-light: #FEF08A;
   
-  --color-brand-blue: #7EC8E3;
-  --color-brand-blue-light: #a8dff0;
-  --color-brand-blue-dark: #5bb8d4;
+  --color-brand-blue: #78716C;
+  --color-brand-blue-light: #A8A29E;
+  --color-brand-blue-dark: #57534E;
   
   --color-brand-whatsapp: #25D366;
   
-  --color-surface-cream: #FAFAF7;
-  --color-surface-warm: #F4F2ED;
+  --color-surface-cream: #FAFAF9;
+  --color-surface-warm: #F5F5F4;
   
-  --color-text-dark: #16160e;
-  --color-text-muted: #454540;
-  --color-text-subtle: #7a7a70;
+  --color-text-dark: #0C0A09;
+  --color-text-muted: #44403C;
+  --color-text-subtle: #78716C;
 
   /* Typography Sizing */
   --font-size-xxs: 0.625rem;
@@ -167,7 +167,7 @@ html {
 
 @layer base {
   body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     background-color: var(--color-surface-cream);
     color: var(--color-text-dark);
     overflow-x: hidden;
@@ -223,6 +223,21 @@ html {
 }
 
 /* Utility Classes */
+.glass {
+  background: rgba(250, 250, 249, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+}
+.glass-dark {
+  background: rgba(28, 25, 23, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
 .orb-style {
   background: radial-gradient(circle at 30% 30%, var(--color-brand-gold), var(--color-brand-green));
   box-shadow: 0 0 30px rgba(201, 168, 76, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.3);
