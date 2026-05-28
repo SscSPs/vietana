@@ -25,6 +25,7 @@ export default function App() {
   const [navClass, setNavClass] = useState('');
   const [scrollProgress, setScrollProgress] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,6 +38,7 @@ export default function App() {
       setScrollProgress(progress);
 
       setScrolled(st > 80);
+      setShowBackToTop(st > 700);
 
       // Nav Classes (Glassy vs Light)
       const sections = ['services', 'packages', 'food', 'about', 'contact'];
@@ -54,13 +56,6 @@ export default function App() {
         }
       }
       setNavClass(currentNavClass);
-
-      // Back to top
-      const btt = document.getElementById('btt');
-      if (btt) {
-        if (st > 700) btt.classList.add('show');
-        else btt.classList.remove('show');
-      }
     };
 
     // Intersection Observer for Reveal
@@ -88,18 +83,34 @@ export default function App() {
   };
 
   return (
-    <div className="app-container">
-      <div id="pg" style={{ width: `${scrollProgress}%` }}></div>
-      <button id="btt" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">
-        <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+    <div className="min-h-screen bg-[var(--cr)]">
+      {/* PROGRESS BAR */}
+      <div 
+        className="fixed top-0 left-0 z-[9999] h-0.5 bg-gradient-to-r from-[var(--g2)] via-[var(--gold)] to-[var(--gold3)] shadow-[0_0_12px_rgba(201,168,76,0.55)] transition-[width] duration-75 ease-linear"
+        style={{ width: `${scrollProgress}%` }}
+      ></div>
+
+      {/* BACK TO TOP */}
+      <button 
+        className={`fixed bottom-9 right-30 z-[300] w-11.5 h-11.5 rounded-full border border-[var(--gold)]/35 cursor-pointer bg-[var(--g)] shadow-[var(--sh2)] flex items-center justify-center transition-all duration-500 ease-[var(--e2)] hover:bg-[var(--g2)] hover:-translate-y-1 hover:scale-105 hover:shadow-[var(--sh3)] md:right-30 sm:right-24
+          ${showBackToTop ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-3 scale-90 pointer-events-none'}`}
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
+        aria-label="Back to top"
+      >
+        <svg className="w-3.5 h-3.5 stroke-white fill-none stroke-[2.2] stroke-round" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
       </button>
 
       {/* FLOATING AI ORB */}
-      <div id="ai-orb" onClick={() => openPlanner()}>
-        <div className="orb-label">{t.nav.aiPlanner}</div>
-        <div className="orb-core"></div>
-        <div className="orb-glow"></div>
-        <div className="orb-sparkle">✨</div>
+      <div 
+        className="fixed bottom-8 right-8 z-[310] w-17 h-17 cursor-pointer flex items-center justify-center transition-transform duration-500 ease-[var(--e3)] hover:scale-110 hover:rotate-5 md:bottom-8 md:right-8 sm:bottom-6 sm:right-6 group"
+        onClick={() => openPlanner()}
+      >
+        <div className="absolute top-[-30px] text-[0.6rem] font-bold text-[var(--gold)] tracking-[0.15em] uppercase whitespace-nowrap opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          {t.nav.aiPlanner}
+        </div>
+        <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_30%_30%,var(--gold),var(--g))] shadow-[0_0_30px_rgba(201,168,76,0.4),inset_0_0_15px_rgba(255,255,255,0.3)]"></div>
+        <div className="absolute inset-[-10px] rounded-full bg-[radial-gradient(circle,rgba(201,168,76,0.15)_0%,transparent_70%)] animate-[orbGlow_3s_infinite_alternate]"></div>
+        <div className="absolute text-xl drop-shadow-[0_0_5px_var(--gold)] animate-[orbSpin_8s_linear_infinite]">✨</div>
       </div>
 
       <Navbar 
@@ -113,9 +124,9 @@ export default function App() {
       <main>
         <Hero onOpenMagic={() => setIsMagicModeOpen(true)} />
         <Services onOpenPlanner={(dest) => openPlanner(dest)} />
-        <div className="divl"></div>
+        <div className="h-px mx-[7%] bg-gradient-to-r from-transparent via-[var(--g)]/10 to-transparent"></div>
         <Packages onOpenBuilder={() => setIsBuilderOpen(true)} />
-        <div className="divl"></div>
+        <div className="h-px mx-[7%] bg-gradient-to-r from-transparent via-[var(--gold)]/15 to-transparent"></div>
         <Food />
         <ComboSection onOpenPlanner={(dest) => openPlanner(dest)} />
         <FAQ />
@@ -149,6 +160,12 @@ export default function App() {
       />
 
       <Footer />
+
+      <style>{`
+        @keyframes orbGlow { from { transform: scale(1); opacity: .5; } to { transform: scale(1.3); opacity: .8; } }
+        @keyframes orbSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .stroke-round { stroke-linecap: round; stroke-linejoin: round; }
+      `}</style>
     </div>
   );
 }

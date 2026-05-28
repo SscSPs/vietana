@@ -1,20 +1,28 @@
 import React from 'react';
-import './Footer.css';
 
 const Footer: React.FC = () => {
   return (
-    <footer id="contact">
-      <div className="fi">
-        <div className="fb">
-          <span className="flo">VIETANA</span>
-          <span className="ft">Premium India-Vietnam Travel</span>
-          <span className="fs">© 2026 Vietana Travel. Built for Indian Travelers.</span>
+    <footer className="bg-[var(--gx)] text-white/45 py-16 px-[7%] relative">
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--gold)]/22 to-transparent"></div>
+      
+      <div className="max-w-6xl mx-auto flex flex-wrap items-start justify-between gap-12">
+        <div className="flex flex-col">
+          <span className="font-serif text-[2.2rem] font-medium text-[var(--blue)] tracking-wider mb-1">VIETANA</span>
+          <span className="text-[0.8rem] text-[var(--gold)] mb-1">Premium India-Vietnam Travel</span>
+          <span className="text-[0.72rem] text-white/30">© 2026 Vietana Travel. Built for Indian Travelers.</span>
         </div>
-        <ul className="fnav">
-          <li><a href="#services">Services</a></li>
-          <li><a href="#packages">Packages</a></li>
-          <li><a href="#food">Food</a></li>
-          <li><a href="#about">About</a></li>
+        
+        <ul className="flex flex-wrap gap-x-8 gap-y-4 list-none p-0 pt-1">
+          {['Services', 'Packages', 'Food', 'About'].map((link) => (
+            <li key={link}>
+              <a 
+                href={`#${link.toLowerCase()}`} 
+                className="text-[0.82rem] text-white/40 transition-colors duration-300 no-underline hover:text-[var(--gold)]"
+              >
+                {link}
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
     </footer>

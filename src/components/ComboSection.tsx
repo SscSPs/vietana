@@ -3,7 +3,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { MapContainer, TileLayer, Marker, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { useTranslation } from '../contexts/LanguageContext';
-import './ComboSection.css';
+import Button from './ui/Button';
+import Modal from './ui/Modal';
 import 'leaflet/dist/leaflet.css';
 
 // Fix for Leaflet markers
@@ -76,7 +77,7 @@ const PlaneAnimation = () => {
     }, []);
 
     const planeIcon = L.divIcon({
-        html: `<div class="plane-icon-wrapper" style="transform: rotate(${planeAngle}deg);">✈️</div>`,
+        html: `<div class="text-2xl drop-shadow-md" style="transform: rotate(${planeAngle}deg);">✈️</div>`,
         className: '',
         iconSize: [24, 24],
         iconAnchor: [12, 12]
@@ -121,79 +122,93 @@ const ComboSection: React.FC<ComboSectionProps> = ({ onOpenPlanner }) => {
   };
 
   return (
-    <section id="combo-section">
+    <section id="combo-section" className="flex flex-wrap w-full min-h-[800px] bg-white items-stretch">
       
       {/* LEFT: EXPERIENCES */}
-      <div id="experiences" className="sc-exp-sec">
-        <div className="exp-bg-gradient"></div>
-        <div className="exp-blob exp-blob-blue"></div>
-        <div className="exp-blob exp-blob-green"></div>
+      <div id="experiences" className="flex-1 min-w-[320px] relative py-24 px-[2%] flex items-center justify-center overflow-hidden border-r border-black/5 bg-[#0b110e] min-h-[800px]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(13,79,46,0.2)_0%,transparent_70%)] z-0"></div>
+        <div className="absolute w-[300px] h-[300px] rounded-full blur-[80px] opacity-15 animate-[blobFloat_20s_infinite_alternate] bg-[var(--blue)] top-[10%] left-[10%]"></div>
+        <div className="absolute w-[300px] h-[300px] rounded-full blur-[80px] opacity-15 animate-[blobFloat_20s_infinite_alternate_delay-5s] bg-[var(--g)] bottom-[10%] right-[10%]"></div>
         
         {!shattered ? (
-          <div className="exp-orb-container" onClick={() => setShattered(true)}>
-            <div className="exp-orb">
-              <span className="lbl">{t.exp.title}</span>
-              <h2>Unlock<br />15 Hidden Experiences</h2>
-              <p>Tap to Explore</p>
+          <div className="relative z-10 cursor-pointer transition-transform duration-600 ease-[var(--e3)] text-center hover:scale-105" onClick={() => setShattered(true)}>
+            <div className="w-56 h-56 rounded-full bg-[radial-gradient(circle_at_30%_30%,var(--gold),var(--g))] flex flex-col items-center justify-center p-8 shadow-[0_0_50px_rgba(201,168,76,0.3),inset_0_0_30px_rgba(255,255,255,0.2)]">
+              <span className="text-[0.68rem] font-semibold tracking-[0.28em] uppercase text-[var(--gold)] mb-2">{t.exp.title}</span>
+              <h2 className="font-serif text-3xl text-white mb-2 leading-tight">Unlock<br />15 Hidden Experiences</h2>
+              <p className="text-[0.75rem] font-bold tracking-[0.1em] text-white/60 uppercase">Tap to Explore</p>
             </div>
-            <div className="exp-orb-glow"></div>
+            <div className="absolute inset-[-20px] rounded-full border border-dashed border-[var(--gold)]/30 animate-[spin_15s_linear_infinite]"></div>
           </div>
         ) : (
-          <div className="exp-nodes-container">
+          <div className="absolute inset-0 flex items-center justify-center z-[5]">
             {nodes.map((node) => (
               <div 
                 key={node.id} 
-                className="exp-node-wrap scattered" 
+                className="absolute cursor-pointer transition-all duration-400 group" 
                 style={{ top: node.top, left: node.left }}
                 onClick={() => setSelectedExp(node)}
               >
-                <div className="exp-node-float" style={{ '--float-dur': node.dur, '--float-del': node.del } as any}>
-                  <div className="exp-node">
-                    <span className="exp-node-icon">✨</span>
-                    <div className="exp-tooltip">{node.t}</div>
+                <div className="animate-[nfloat_var(--dur)_var(--del)_infinite_ease-in-out]" style={{ '--float-dur': node.dur, '--float-del': node.del } as any}>
+                  <div className="w-3.5 h-3.5 bg-[var(--gold)] rounded-full shadow-[0_0_15px_var(--gold)] relative group-hover:scale-[1.8] group-hover:bg-white group-hover:shadow-[0_0_25px_#fff] transition-all duration-300">
+                    <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-[0.8rem] opacity-0 group-hover:opacity-100 transition-opacity duration-300">✨</span>
+                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/85 text-white px-4 py-2 rounded-lg text-[0.7rem] whitespace-nowrap opacity-0 pointer-events-none transition-all duration-300 border border-white/10 backdrop-blur-md group-hover:opacity-100 group-hover:bottom-7.5">
+                      {node.t}
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
-            <button className="exp-reset-btn show" onClick={() => setShattered(false)}>← Back</button>
+            <button className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white/5 border border-white/10 text-white px-6 py-2.5 rounded-full text-[0.8rem] cursor-pointer transition-all duration-300 z-20 hover:bg-white/15 hover:border-[var(--gold)]" onClick={() => setShattered(false)}>
+              ← Back
+            </button>
           </div>
         )}
 
-        <AnimatePresence>
+        <Modal 
+          isOpen={!!selectedExp} 
+          onClose={() => setSelectedExp(null)}
+          maxWidth="max-w-[500px]"
+          className="bg-[var(--gd)] border-[var(--gold)]/20 overflow-hidden"
+        >
           {selectedExp && (
-            <div className={`m-overlay ${selectedExp ? 'open' : ''}`} onClick={() => setSelectedExp(null)}>
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                className="exp-modal m-container"
-                onClick={e => e.stopPropagation()}
-              >
-                <button className="m-close" onClick={() => setSelectedExp(null)}>×</button>
-                <img src={selectedExp.img} alt={selectedExp.t} />
-                <div className="exp-modal-content">
-                  <h3>{selectedExp.t}</h3>
-                  <p>{selectedExp.d}</p>
-                  <div className="exp-modal-actions">
-                    <a href={`https://maps.google.com/?q=${encodeURIComponent(selectedExp.t)}`} target="_blank" rel="noreferrer" className="btn-p exp-modal-btn">📍 View on Map</a>
-                    <button className="btn-s exp-modal-btn secondary" onClick={() => { setSelectedExp(null); onOpenPlanner(selectedExp.t); }}>Plan with AI</button>
-                  </div>
+            <>
+              <img src={selectedExp.img} alt={selectedExp.t} className="w-full h-64 object-cover" />
+              <div className="p-8">
+                <h3 className="font-serif text-3xl text-[var(--gold)] mb-4">{selectedExp.t}</h3>
+                <p className="text-white/70 leading-relaxed mb-8">{selectedExp.d}</p>
+                <div className="flex gap-4">
+                  <Button 
+                    variant="primary" 
+                    className="flex-1"
+                    onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent(selectedExp.t)}`, '_blank')}
+                  >
+                    📍 View on Map
+                  </Button>
+                  <Button 
+                    variant="secondary" 
+                    className="flex-1"
+                    onClick={() => { setSelectedExp(null); onOpenPlanner(selectedExp.t); }}
+                  >
+                    Plan with AI
+                  </Button>
                 </div>
-              </motion.div>
-            </div>
+              </div>
+            </>
           )}
-        </AnimatePresence>
+        </Modal>
       </div>
 
       {/* RIGHT: MAP */}
-      <div id="explore-vietnam" className="ev-section">
-        <div className="side-label">FEEL VIETNAM YOUR WAY</div>
-        <div className="ev-header">
-          <h2>Explore Vietnam</h2>
+      <div id="explore-vietnam" className="flex-1 min-w-[320px] relative py-24 px-[2%] bg-[#f8fbfa] flex flex-col items-center justify-center min-h-[800px]">
+        <div className="absolute left-[3%] top-1/2 -translate-y-1/2 -rotate-180 vertical-rl text-center font-serif text-[3rem] text-[var(--gold)]/10 font-bold italic tracking-[4px] whitespace-nowrap pointer-events-none z-0">
+          FEEL VIETNAM YOUR WAY
+        </div>
+        <div className="mb-8 text-center">
+          <h2 className="text-[2.8rem] text-[var(--gd)] font-serif font-normal">Explore Vietnam</h2>
         </div>
         
-        <div className="ev-content-wrap">
-          <div className="ev-map-container r">
+        <div className="relative w-full max-w-[600px] flex flex-col lg:flex-row justify-center items-center">
+          <div className="w-full aspect-square rounded-[30px] overflow-hidden border-8 border-white shadow-[0_20px_60px_rgba(0,0,0,0.1)] relative z-[2] h-[500px]">
             <MapContainer 
               center={[16.0, 106.0]} 
               zoom={5.5} 
@@ -211,7 +226,13 @@ const ComboSection: React.FC<ComboSectionProps> = ({ onOpenPlanner }) => {
                   position={[d.lat, d.lng]} 
                   icon={L.divIcon({
                     className: 'custom-leaflet-pin',
-                    html: `<div class="ev-pin ${selectedCityIdx === i ? 'active' : ''}" data-idx="${i}"><span class="ev-pin-label">${d.name}</span></div>`,
+                    html: `
+                      <div class="relative w-3.5 h-3.5 bg-[var(--gold)] rounded-full border-[3px] border-white shadow-[0_0_15px_rgba(201,168,76,0.5)] cursor-pointer transition-all duration-300 group ${selectedCityIdx === i ? 'bg-white scale-125 shadow-[0_0_20px_var(--gold)]' : ''}">
+                        <span class="absolute -top-6.5 left-1/2 -translate-x-1/2 bg-black/80 text-white px-2 py-0.5 rounded text-[0.65rem] whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 ${selectedCityIdx === i ? 'opacity-100' : ''} transition-opacity duration-300">
+                          ${d.name}
+                        </span>
+                      </div>
+                    `,
                     iconSize: [24, 24],
                     iconAnchor: [12, 12]
                   })}
@@ -231,16 +252,23 @@ const ComboSection: React.FC<ComboSectionProps> = ({ onOpenPlanner }) => {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
-                className="ev-popup show"
+                className="relative lg:absolute lg:top-1/2 lg:-right-15 lg:-translate-y-1/2 w-full lg:w-[260px] bg-white/98 backdrop-blur-2xl rounded-2xl p-6 shadow-[0_15px_45px_rgba(0,0,0,0.12)] z-[100] border border-black/5 mt-8 lg:mt-0"
               >
-                <div className="ev-popup-close" onClick={() => setSelectedCityIdx(null)}>×</div>
-                <img src={EV_DESTINATIONS[selectedCityIdx].img} alt={EV_DESTINATIONS[selectedCityIdx].name} />
-                <h3>{EV_DESTINATIONS[selectedCityIdx].name}</h3>
-                <p className="evp-time">Best time: {EV_DESTINATIONS[selectedCityIdx].time}</p>
-                <p className="evp-desc">{EV_DESTINATIONS[selectedCityIdx].desc}</p>
-                <div className="evp-actions">
-                  <button className="btn-p evp-btn" onClick={() => onOpenPlanner(EV_DESTINATIONS[selectedCityIdx].name)}>Plan My Trip</button>
-                  <a href={`https://maps.google.com/?q=${encodeURIComponent(EV_DESTINATIONS[selectedCityIdx].name + ' Vietnam')}`} target="_blank" rel="noreferrer" className="btn-s evp-btn-sec">View on Map</a>
+                <div className="absolute top-4 right-4 cursor-pointer text-2xl text-gray-400 leading-none" onClick={() => setSelectedCityIdx(null)}>×</div>
+                <img src={EV_DESTINATIONS[selectedCityIdx].img} alt={EV_DESTINATIONS[selectedCityIdx].name} className="w-full h-32 object-cover rounded-xl mb-4" />
+                <h3 className="text-xl text-[var(--gd)] mb-1.5 font-serif font-bold">{EV_DESTINATIONS[selectedCityIdx].name}</h3>
+                <p className="text-[0.7rem] text-[var(--gold)] font-bold uppercase mb-2.5 tracking-wider">Best time: {EV_DESTINATIONS[selectedCityIdx].time}</p>
+                <p className="text-[0.85rem] text-gray-600 leading-relaxed mb-5">{EV_DESTINATIONS[selectedCityIdx].desc}</p>
+                <div className="flex flex-col gap-2.5">
+                  <Button variant="primary" size="sm" className="w-full" onClick={() => onOpenPlanner(EV_DESTINATIONS[selectedCityIdx].name)}>Plan My Trip</Button>
+                  <Button 
+                    variant="secondary" 
+                    size="sm" 
+                    className="w-full"
+                    onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent(EV_DESTINATIONS[selectedCityIdx].name + ' Vietnam')}`, '_blank')}
+                  >
+                    View on Map
+                  </Button>
                 </div>
               </motion.div>
             )}
@@ -248,6 +276,13 @@ const ComboSection: React.FC<ComboSectionProps> = ({ onOpenPlanner }) => {
         </div>
       </div>
 
+      <style>{`
+        .vertical-rl { writing-mode: vertical-rl; }
+        @keyframes blobFloat { from { transform: translate(0,0); } to { transform: translate(50px, 50px); } }
+        @keyframes nfloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .glowing-route { filter: drop-shadow(0 0 10px rgba(0,86,179,0.5)); stroke-dasharray: 5, 10; animation: dash 20s linear infinite; }
+        @keyframes dash { to { stroke-dashoffset: -100; } }
+      `}</style>
     </section>
   );
 };

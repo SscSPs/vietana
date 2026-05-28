@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { WHATSAPP_INDIA } from '../config';
-import './CustomTripBuilder.css';
+import Modal from './ui/Modal';
+import Button from './ui/Button';
 
 interface CustomTripBuilderProps {
   isOpen: boolean;
@@ -11,8 +12,6 @@ const CITIES = [
   "Hanoi", "Sapa", "Halong Bay", "Ninh Binh", "Da Nang", "Hoi An", "Hue", "Nha Trang", "Da Lat", "Ho Chi Minh City", "Phu Quoc"
 ];
 
-// Based on production snippet: ₹4,200 for 2 pax = ₹2,100/pax
-// Daily for 2 pax, 7 days, budget style = ₹46,200 => ₹3,300/pax/day
 const CONSTANTS = { flight: 25000, visa: 2100 };
 const RATES = { budget: 3300, comfort: 6500, luxury: 12000 };
 
@@ -73,100 +72,127 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose }
     window.open(`${WHATSAPP_INDIA}&text=${encodeURIComponent(msg)}`, '_blank');
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className={`m-overlay ${isOpen ? 'show' : ''}`} onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="ct-modal m-container">
-        <button className="m-close" onClick={onClose}>×</button>
-        <div className="ct-modal-header">
-          <h2>Build Your Trip</h2>
-          <p>Select your destinations and get a real-time estimate.</p>
-        </div>
-        
-        <div className="ct-modal-body">
-          {/* Destinations Section */}
-          <div className="ct-section">
-            <h3>📍 Select Destinations</h3>
-            <div className="ct-city-grid">
-              {CITIES.map(city => (
-                <label key={city} className={`ct-city-btn ${selectedCities.includes(city) ? 'active' : ''}`}>
-                  <input 
-                    type="checkbox" 
-                    checked={selectedCities.includes(city)} 
-                    onChange={() => toggleCity(city)}
-                    className="ct-city-chk" 
-                  />
-                  <span>{city}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-          
-          {/* Calculator Section */}
-          <div className="ct-section calc-container">
-            <h3>💰 Trip Settings & Estimate</h3>
-            <div className="ct-settings-grid">
-              <div className="ct-setting">
-                 <label>Travel Style</label>
-                 <div className="bc-toggle-group">
-                   <button className={`bc-toggle ${style === 'budget' ? 'active' : ''}`} onClick={() => setStyle('budget')}>Backpacker</button>
-                   <button className={`bc-toggle ${style === 'comfort' ? 'active' : ''}`} onClick={() => setStyle('comfort')}>Comfort</button>
-                   <button className={`bc-toggle ${style === 'luxury' ? 'active' : ''}`} onClick={() => setStyle('luxury')}>Luxury</button>
-                 </div>
-              </div>
-              <div className="ct-setting">
-                 <label>Duration: <span className="highlight">{days} Days</span></label>
-                 <input type="range" min="3" max="30" value={days} onChange={(e) => setDays(parseInt(e.target.value))} className="bc-slider ct-slider" />
-                 
-                 <label style={{ marginTop: '1rem' }}>Travelers: <span className="highlight">{pax} {pax === 1 ? 'Person' : 'People'}</span></label>
-                 <input type="range" min="1" max="10" value={pax} onChange={(e) => setPax(parseInt(e.target.value))} className="bc-slider ct-slider" />
-              </div>
-            </div>
-            
-            <div className="ct-estimate-box">
-               <div className="est-line">
-                 <span>✈️ Flights (India ↔ VN)</span>
-                 <span>₹{estimate.flight.toLocaleString('en-IN')}</span>
-               </div>
-               <div className="est-line">
-                 <span>🛂 E-Visa</span>
-                 <span>₹{estimate.visa.toLocaleString('en-IN')}</span>
-               </div>
-               <div className="est-line">
-                 <span>🚄 Inter-city Transit <small>(₹3,000/hop - exact API coming soon)</small></span>
-                 <span>₹{estimate.transit.toLocaleString('en-IN')}</span>
-               </div>
-               <div className="est-line">
-                 <span>🏨 Daily Expenses</span>
-                 <span>₹{estimate.daily.toLocaleString('en-IN')}</span>
-               </div>
-               <div className="est-total">
-                 <span>Total Estimate</span>
-                 <span>₹{estimate.total.toLocaleString('en-IN')}</span>
-               </div>
-            </div>
-          </div>
-          
-          {/* Notes Section */}
-          <div className="ct-section">
-            <h3>📝 Additional Notes</h3>
-            <textarea 
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                placeholder="Tell us about special requests, dietary restrictions, preferred flight cities, etc..." 
-            />
+    <Modal 
+      isOpen={isOpen} 
+      onClose={onClose}
+      maxWidth="max-w-2xl"
+      className="h-[90vh] max-h-[800px] flex flex-col p-0 border-[var(--gold)]/20 shadow-[0_30px_100px_rgba(0,0,0,0.8)]"
+    >
+      <div className="p-8 md:p-12 pb-6 border-b border-white/5">
+        <h2 className="font-serif text-4xl text-[var(--gold3)] mb-2">Build Your Trip</h2>
+        <p className="text-white/50 text-[0.95rem] font-light">Select your destinations and get a real-time estimate.</p>
+      </div>
+      
+      <div className="flex-1 overflow-y-auto p-8 md:p-12 flex flex-col gap-10 scrollbar-thin scrollbar-thumb-white/10">
+        {/* Destinations Section */}
+        <div>
+          <h3 className="text-[0.9rem] tracking-[0.1em] text-white/40 uppercase mb-6 flex items-center gap-3">📍 Select Destinations</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {CITIES.map(city => (
+              <label 
+                key={city} 
+                className={`flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition-all duration-300 text-[0.85rem]
+                  ${selectedCities.includes(city) ? 'bg-[var(--gold)]/15 border-[var(--gold)] text-[var(--gold3)]' : 'bg-white/5 border-white/10 text-white/70 hover:border-[var(--gold)]/40 hover:bg-[var(--gold)]/5'}`}
+              >
+                <input 
+                  type="checkbox" 
+                  checked={selectedCities.includes(city)} 
+                  onChange={() => toggleCity(city)}
+                  className="hidden" 
+                />
+                <span>{city}</span>
+              </label>
+            ))}
           </div>
         </div>
         
-        <div className="ct-modal-footer">
-          <button className="btn-p bc-cta" onClick={sendToWhatsApp}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.489-1.761-1.662-2.06-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.052 0C5.495 0 .16 5.333.158 11.893c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.332 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg>
-            Send Custom Trip to WhatsApp
-          </button>
+        {/* Settings Section */}
+        <div className="bg-white/[0.02] p-6 rounded-xl border border-[var(--gold)]/20">
+          <h3 className="text-[0.9rem] tracking-[0.1em] text-white/40 uppercase mb-8 flex items-center gap-3">💰 Trip Settings & Estimate</h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div className="flex flex-col">
+               <label className="text-[0.75rem] text-white/40 uppercase tracking-widest mb-4 font-bold">Travel Style</label>
+               <div className="flex bg-white/5 rounded-xl p-1 gap-1">
+                 {(['budget', 'comfort', 'luxury'] as const).map(s => (
+                   <button 
+                    key={s}
+                    className={`flex-1 py-2.5 rounded-lg text-[0.8rem] font-medium transition-all duration-300 cursor-pointer
+                      ${style === s ? 'bg-[var(--gold)] text-black shadow-lg' : 'bg-transparent text-white/50 hover:text-white'}`} 
+                    onClick={() => setStyle(s)}
+                   >
+                     {s.charAt(0).toUpperCase() + s.slice(1)}
+                   </button>
+                 ))}
+               </div>
+            </div>
+            <div className="flex flex-col gap-6">
+               <div className="flex flex-col gap-3">
+                 <label className="text-[0.75rem] text-white/40 uppercase tracking-widest font-bold flex justify-between">
+                   Duration <span className="text-[var(--gold)]">{days} Days</span>
+                 </label>
+                 <input type="range" min="3" max="30" value={days} onChange={(e) => setDays(parseInt(e.target.value))} className="w-full h-1 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4.5 [&::-webkit-slider-thumb]:h-4.5 [&::-webkit-slider-thumb]:bg-[var(--gold)] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-[3px] [&::-webkit-slider-thumb]:border-[var(--gd)]" />
+               </div>
+               
+               <div className="flex flex-col gap-3">
+                 <label className="text-[0.75rem] text-white/40 uppercase tracking-widest font-bold flex justify-between">
+                   Travelers <span className="text-[var(--gold)]">{pax} {pax === 1 ? 'Person' : 'People'}</span>
+                 </label>
+                 <input type="range" min="1" max="10" value={pax} onChange={(e) => setPax(parseInt(e.target.value))} className="w-full h-1 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4.5 [&::-webkit-slider-thumb]:h-4.5 [&::-webkit-slider-thumb]:bg-[var(--gold)] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-[3px] [&::-webkit-slider-thumb]:border-[var(--gd)]" />
+               </div>
+            </div>
+          </div>
+          
+          <div className="bg-black/40 rounded-lg p-6 flex flex-col gap-3.5">
+             <div className="flex justify-between text-[0.85rem] text-gray-400">
+               <span>✈️ Flights (India ↔ VN)</span>
+               <span className="font-semibold text-white">₹{estimate.flight.toLocaleString('en-IN')}</span>
+             </div>
+             <div className="flex justify-between text-[0.85rem] text-gray-400">
+               <span>🛂 E-Visa</span>
+               <span className="font-semibold text-white">₹{estimate.visa.toLocaleString('en-IN')}</span>
+             </div>
+             <div className="flex justify-between text-[0.85rem] text-gray-400">
+               <span className="flex items-center gap-1.5">
+                 🚄 Inter-city Transit 
+                 <small className="text-[0.6rem] text-[var(--gold)] opacity-70">(₹3k/hop)</small>
+               </span>
+               <span className="font-semibold text-white">₹{estimate.transit.toLocaleString('en-IN')}</span>
+             </div>
+             <div className="flex justify-between text-[0.85rem] text-gray-400">
+               <span>🏨 Daily Expenses</span>
+               <span className="font-semibold text-white">₹{estimate.daily.toLocaleString('en-IN')}</span>
+             </div>
+             <div className="mt-2.5 pt-5 border-t border-white/10 flex justify-between items-center">
+               <span className="text-[var(--gold)] font-medium text-base">Total Estimate</span>
+               <span className="text-[var(--gold)] text-3xl font-serif font-bold">₹{estimate.total.toLocaleString('en-IN')}</span>
+             </div>
+          </div>
+        </div>
+        
+        {/* Notes Section */}
+        <div>
+          <h3 className="text-[0.9rem] tracking-[0.1em] text-white/40 uppercase mb-5 flex items-center gap-3">📝 Additional Notes</h3>
+          <textarea 
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Tell us about special requests, dietary restrictions, preferred flight cities, etc..." 
+              className="w-full h-24 bg-white/5 border border-white/10 rounded-lg p-4 text-white text-[0.9rem] font-light resize-none focus:border-[var(--gold)] focus:outline-none transition-colors"
+          />
         </div>
       </div>
-    </div>
+      
+      <div className="p-8 md:p-10 bg-[var(--gd)] border-t border-white/5">
+        <Button 
+          className="w-full py-4.5 font-bold" 
+          onClick={sendToWhatsApp}
+          icon={<svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.489-1.761-1.662-2.06-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.052 0C5.495 0 .16 5.333.158 11.893c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.332 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg>}
+        >
+          Send Custom Trip to WhatsApp
+        </Button>
+      </div>
+    </Modal>
   );
 };
 
