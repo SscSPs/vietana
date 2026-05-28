@@ -1,11 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from '../contexts/LanguageContext';
-import { buildWhatsAppLink, WHATSAPP_NUMBERS } from '../utils/whatsapp';
 import { MessagingService } from '../services/messagingService';
 import Modal from './ui/Modal';
 import Button from './ui/Button';
 import { Heading, Text } from './ui/Typography';
-import Card from './ui/Card';
 import { useAIPlanner } from '../hooks/useAIPlanner';
 
 interface AIPlannerProps {
@@ -42,55 +40,49 @@ const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestinati
       isOpen={isOpen}
       onClose={onClose}
       maxWidth="max-w-6xl"
-      className="h-[85vh] max-h-[850px] flex flex-col md:flex-row p-0 overflow-hidden"
+      className="h-[85vh] max-h-[850px] flex flex-col md:flex-row p-0 overflow-hidden bg-brand-green-extra-dark/95 border border-white/10 rounded-[32px] shadow-deep backdrop-blur-2xl"
     >
-      <div className="flex-1 md:flex-[0.65] flex flex-col border-r border-white/5 relative z-10 bg-brand-green-extra-dark/95">
-        <div className="p-12 pb-6 text-left">
-          <Heading as="h3" size="lg" variant="white" className="mb-3 flex items-center gap-3 font-normal">
-            🌿 {t.planner.title}
+      {/* Background Orbs for Organic Lush Vibe */}
+      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-brand-green-light/20 rounded-full blur-[100px] pointer-events-none z-0" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-brand-gold/10 rounded-full blur-[100px] pointer-events-none z-0" />
+
+      {/* LEFT: Chat Consultation (Lush Glassmorphism) */}
+      <div className="flex-1 md:flex-[0.65] flex flex-col relative z-10 border-r border-white/5">
+        <div className="p-10 pb-6 text-left relative">
+          <Heading as="h3" variant="white" className="text-3xl font-serif tracking-wide flex items-center gap-3">
+            <span className="text-brand-gold-light">🌿</span> {t.planner.title}
           </Heading>
-          <Text variant="white" size="sm" className="opacity-60 leading-relaxed font-light tracking-wide">
+          <Text variant="none" className="text-white/50 text-sm mt-2 font-light tracking-wide">
             {t.planner.tagline}
           </Text>
         </div>
 
-        <div ref={pcMsgsRef} className="flex-1 overflow-y-auto px-12 flex flex-col gap-7 scroll-smooth scrollbar-thin scrollbar-thumb-white/10">
+        <div ref={pcMsgsRef} className="flex-1 overflow-y-auto px-10 py-4 flex flex-col gap-6 scroll-smooth scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
           {messages.map((msg, i) => {
             if (msg.type === 'blueprint') {
               const whatsappIndiaLink = MessagingService.generateBlueprintWhatsApp(preferences.focus, preferences.vibe, preferences.style, preferences.food, 'INDIA');
               const whatsappVietnamLink = MessagingService.generateBlueprintWhatsApp(preferences.focus, preferences.vibe, preferences.style, preferences.food, 'VIETNAM');
               const emailLink = MessagingService.generateBlueprintEmail(preferences.focus, preferences.vibe, preferences.style, preferences.food);
               return (
-                <div key={i} className="animate-msg-fade-in w-full my-4 px-2">
-                  <div className="bg-brand-green-dark/45 border border-brand-gold/25 rounded-2xl p-6 backdrop-blur-md shadow-heavy max-w-[580px] mx-auto text-left relative overflow-hidden">
-                    <Heading as="h4" size="sm" font="serif" variant="accent" className="mb-4 flex items-center gap-2 tracking-wide">
+                <div key={i} className="animate-msg-fade-in w-full my-6 flex justify-center">
+                  <div className="bg-brand-green-dark/40 border border-brand-gold/30 rounded-3xl p-8 backdrop-blur-md shadow-gold max-w-[500px] w-full text-center relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand-gold to-transparent opacity-50" />
+                    <Heading as="h4" variant="none" className="text-xl font-serif text-brand-gold-light mb-4">
                       ✨ Your Vietnam Journey Blueprint
                     </Heading>
-                    <Text variant="white" size="sm" weight="light" className="leading-relaxed mb-6 text-white/80">
-                      I've gathered your preferences. Your trip will focus on <span className="text-brand-gold-light font-serif italic mx-0.5">{preferences.focus}</span>, balancing <span className="text-brand-gold-light font-serif italic mx-0.5">{preferences.food}</span> and <span className="text-brand-gold-light font-serif italic mx-0.5">{preferences.style}</span>.
+                    <Text variant="none" className="text-sm font-light text-white/80 leading-relaxed mb-8">
+                      Your trip will focus on <span className="text-brand-gold-light font-medium italic">{preferences.focus}</span>, 
+                      balancing <span className="text-brand-gold-light font-medium italic">{preferences.food}</span> and <span className="text-brand-gold-light font-medium italic">{preferences.style}</span>.
                     </Text>
 
                     <div className="flex flex-col gap-3">
-                      <a
-                        href={whatsappIndiaLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 bg-transparent border border-brand-green text-brand-green-light hover:bg-brand-green/10 font-semibold py-3 px-5 rounded-xl transition-all duration-300 text-sm tracking-wide text-center"
-                      >
+                      <a href={whatsappIndiaLink} target="_blank" rel="noopener noreferrer" className="bg-white/5 border border-white/10 hover:bg-white/10 hover:border-brand-gold/50 text-white py-3 px-6 rounded-2xl transition-all duration-300 text-sm tracking-wide flex justify-center items-center gap-2">
                         💬 WhatsApp India
                       </a>
-                      <a
-                        href={whatsappVietnamLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 bg-transparent border border-white/20 text-white/90 hover:border-white/40 hover:bg-white/5 font-semibold py-3 px-5 rounded-xl transition-all duration-300 text-sm tracking-wide text-center"
-                      >
+                      <a href={whatsappVietnamLink} target="_blank" rel="noopener noreferrer" className="bg-white/5 border border-white/10 hover:bg-white/10 hover:border-brand-gold/50 text-white py-3 px-6 rounded-2xl transition-all duration-300 text-sm tracking-wide flex justify-center items-center gap-2">
                         💬 WhatsApp Vietnam
                       </a>
-                      <a
-                        href={emailLink}
-                        className="flex items-center justify-center gap-2 bg-transparent border border-white/20 text-white/90 hover:border-white/40 hover:bg-white/5 font-semibold py-3 px-5 rounded-xl transition-all duration-300 text-sm tracking-wide text-center"
-                      >
+                      <a href={emailLink} className="text-xs tracking-widest uppercase text-white/50 hover:text-white transition-colors mt-2">
                         ✉ support@vietana.com
                       </a>
                     </div>
@@ -100,20 +92,19 @@ const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestinati
             }
 
             return (
-              <div key={i} className={`flex gap-5 items-start animate-msg-fade-in ${msg.type === 'user' ? 'flex-row-reverse' : ''}`}>
+              <div key={i} className={`flex gap-4 items-end animate-msg-fade-in ${msg.type === 'user' ? 'flex-row-reverse' : ''}`}>
                 {msg.type === 'bot' && (
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-gold to-brand-gold-muted flex shrink-0 items-center justify-center relative shadow-strong after:content-[''] after:absolute after:inset-[-3px] after:rounded-full after:border after:border-brand-gold/20 after:animate-ai-pulse">
-                    <span className="text-white text-base relative z-10">🌿</span>
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-gold to-brand-green-dark flex shrink-0 items-center justify-center shadow-strong border border-white/10 mb-2">
+                    <span className="text-white text-xs">🌿</span>
                   </div>
                 )}
-                <div className={`max-w-[85%] ${msg.type === 'user'
-                    ? 'bg-brand-gold/10 border border-brand-gold/20 rounded-2xl rounded-br-sm p-4 backdrop-blur-md text-white shadow-soft ml-auto'
-                    : 'bg-white/[0.03] border border-white/5 rounded-2xl rounded-bl-sm p-4 backdrop-blur-sm shadow-sm text-white/95'
+                <div className={`max-w-[80%] ${msg.type === 'user'
+                    ? 'bg-brand-gold/15 border border-brand-gold/20 rounded-2xl rounded-br-sm p-5 backdrop-blur-md shadow-soft text-right'
+                    : 'bg-white/5 border border-white/10 rounded-2xl rounded-bl-sm p-5 backdrop-blur-md shadow-soft text-left'
                   }`}>
                   <Text
-                    variant="white"
-                    size="md"
-                    className="leading-relaxed [&_strong]:text-brand-gold-light [&_strong]:font-medium"
+                    variant="none"
+                    className={`leading-relaxed text-base md:text-lg ${msg.type === 'user' ? 'text-white' : 'text-white/90'} [&_strong]:text-brand-gold-light [&_strong]:font-medium`}
                     dangerouslySetInnerHTML={{ __html: msg.text }}
                   />
                 </div>
@@ -121,103 +112,103 @@ const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestinati
             );
           })}
           {isTyping && (
-            <div className="flex items-center gap-2 py-4">
-              {[0, 1, 2].map(n => (
-                <span key={n} className="w-1.5 h-1.5 rounded-full bg-brand-gold animate-pulse-dot" style={{ animationDelay: n === 0 ? '-0.32s' : n === 1 ? '-0.16s' : '0s' }} />
-              ))}
-            </div>
+             <div className="flex gap-4 items-end animate-msg-fade-in">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-gold to-brand-green-dark flex shrink-0 items-center justify-center shadow-strong border border-white/10 mb-2">
+                  <span className="text-white text-xs">🌿</span>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-2xl rounded-bl-sm p-5 backdrop-blur-md">
+                   <div className="flex items-center gap-1.5 h-6">
+                    {[0, 1, 2].map(n => (
+                      <span key={n} className="w-1.5 h-1.5 rounded-full bg-brand-gold/60 animate-pulse-dot" style={{ animationDelay: `${n * 0.2}s` }} />
+                    ))}
+                  </div>
+                </div>
+             </div>
           )}
         </div>
 
-        <div className="p-12 pt-6 bg-gradient-to-t from-brand-green-extra-dark via-brand-green-extra-dark/40 to-transparent relative">
+        <div className="p-8 pt-6 relative before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent">
           {options.length > 0 && (
-            <div className="flex flex-wrap gap-3 mb-6 justify-center px-4">
+            <div className="flex flex-wrap gap-3 mb-6 justify-center">
               {options.map((opt, i) => (
-                <div
+                <button
                   key={i}
-                  className="inline-flex items-center gap-2.5 bg-white/5 border border-white/10 text-white/70 px-5 py-2.5 rounded-full text-xs transition-all duration-300 cursor-pointer hover:bg-brand-gold/10 hover:border-brand-gold hover:text-brand-gold-light hover:-translate-y-0.5"
+                  className="bg-white/5 border border-white/10 text-white/80 px-5 py-2.5 rounded-full text-sm transition-all duration-300 hover:bg-brand-gold/20 hover:border-brand-gold/50 hover:text-white shadow-sm hover:shadow-gold hover:-translate-y-0.5"
                   onClick={() => handleSend(opt)}
                 >
                   {opt}
-                </div>
+                </button>
               ))}
             </div>
           )}
 
-          <div className="relative bg-white/5 border border-white/15 rounded-2xl p-2 transition-all duration-300 shadow-deep focus-within:border-brand-gold/40">
+          <div className="relative bg-white/5 border border-white/10 rounded-2xl p-2 transition-all duration-300 shadow-inner focus-within:border-brand-gold/40 focus-within:bg-white/10 backdrop-blur-sm">
             <div className="flex items-center gap-3">
-              <button className="bg-transparent border-none text-white/30 text-xl px-4 cursor-pointer hover:text-brand-gold transition-colors">🎤</button>
+              <span className="text-white/30 pl-4 text-xl">🎤</span>
               <input
                 type="text"
-                className="flex-1 bg-transparent border-none py-4 text-white text-lg font-light outline-none placeholder:text-white/25"
+                className="flex-1 bg-transparent border-none py-3 text-white text-lg font-light outline-none placeholder:text-white/30"
                 placeholder={t.planner.where}
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               />
               <button
-                className="bg-white text-black border-none rounded-full w-11 h-11 flex shrink-0 items-center justify-center transition-all duration-300 ease-smooth mr-1 disabled:opacity-40 disabled:cursor-not-allowed [&:not(:disabled)]:cursor-pointer [&:not(:disabled)]:hover:bg-brand-gold [&:not(:disabled)]:hover:scale-105 [&:not(:disabled)]:hover:-rotate-12"
+                className="bg-brand-gold text-brand-green-extra-dark border-none rounded-xl px-6 py-3 font-semibold transition-all duration-300 mr-1 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-brand-gold-light hover:shadow-gold"
                 onClick={() => handleSend()}
-                disabled={isFinished}
+                disabled={isFinished || (!inputValue.trim() && options.length === 0)}
               >
-                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current stroke-[2.5] stroke-linecap-round stroke-linejoin-round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path></svg>
+                Send
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="hidden md:flex flex-[0.35] flex-col bg-black/25 p-12 relative z-10 backdrop-blur-xl border-l border-white/5">
-        <Card variant="glass" padding="lg" hover={false} className="h-full border-white/5">
-          <Heading as="h4" size="xs" font="sans" className="text-white/30 tracking-[0.2em] uppercase mb-8 flex items-center gap-4 after:content-[''] after:flex-1 after:h-px after:bg-gradient-to-r after:from-brand-gold after:to-transparent">
-            {t.planner.live}
-          </Heading>
+      {/* RIGHT: Live Preferences (Glassmorphic Ticket) */}
+      <div className="hidden md:flex flex-[0.35] flex-col bg-black/20 p-10 relative z-10 border-l border-white/5 backdrop-blur-2xl shadow-inner">
+        <Heading as="h4" variant="none" className="text-white/40 tracking-[0.2em] text-xs uppercase mb-10 flex items-center gap-4 after:content-[''] after:flex-1 after:h-px after:bg-gradient-to-r after:from-brand-gold/50 after:to-transparent">
+          {t.planner.live}
+        </Heading>
 
-          <div className="flex flex-col gap-9 flex-1 mt-4">
-            {[
-              { label: t.planner.labels.vibe, value: preferences.vibe, icon: '✨' },
-              { label: t.planner.labels.style, value: preferences.style, icon: '🏰' },
-              { label: t.planner.labels.food, value: preferences.food, icon: '🍲' },
-              { label: t.planner.labels.group, value: preferences.group, icon: '👥' },
-              { label: t.planner.labels.nightlife, value: preferences.nightlife, icon: '🌙' },
-              { label: t.planner.labels.focus, value: preferences.focus, icon: '🎯' },
-              { label: t.planner.labels.extras, value: preferences.extras, icon: '📍' }
-            ].map((item, i) => {
-              const isSet = !!item.value;
-              return (
-                <div key={i} className="flex flex-col gap-1.5">
-                  <Text size="xs" variant="none" weight="bold" className="text-white/35 uppercase tracking-widest">
-                    {item.icon} {item.label}
-                  </Text>
-                  <Text
-                    variant="none"
-                    weight={isSet ? 'medium' : 'light'}
-                    className={`leading-tight min-h-6 transition-all duration-300 ${isSet ? 'text-brand-gold-light' : 'text-white/20 italic'
-                      }`}
-                  >
-                    {item.value || 'Not set'}
-                  </Text>
-                </div>
-              );
-            })}
-          </div>
+        <div className="flex flex-col gap-8 flex-1 mt-2">
+          {[
+            { label: t.planner.labels.vibe, value: preferences.vibe, icon: '✨' },
+            { label: t.planner.labels.style, value: preferences.style, icon: '🏰' },
+            { label: t.planner.labels.food, value: preferences.food, icon: '🍲' },
+            { label: t.planner.labels.group, value: preferences.group, icon: '👥' },
+            { label: t.planner.labels.nightlife, value: preferences.nightlife, icon: '🌙' },
+            { label: t.planner.labels.focus, value: preferences.focus, icon: '🎯' },
+            { label: t.planner.labels.extras, value: preferences.extras, icon: '📍' }
+          ].map((item, i) => {
+            const isSet = !!item.value;
+            return (
+              <div key={i} className="flex flex-col gap-1.5">
+                <Text variant="none" className="text-xs text-white/40 uppercase tracking-widest font-semibold flex items-center gap-2">
+                  <span className="opacity-70">{item.icon}</span> {item.label}
+                </Text>
+                <Text
+                  variant="none"
+                  className={`text-base leading-tight min-h-6 transition-all duration-500 ${
+                    isSet ? 'text-brand-gold-light font-medium' : 'text-white/20 italic'
+                  }`}
+                >
+                  {item.value || 'Not set'}
+                </Text>
+              </div>
+            );
+          })}
+        </div>
 
-          <div className="mt-12 flex flex-col gap-4">
-            <Button
-              variant="glass"
-              onClick={() => window.open(MessagingService.generateBlueprintWhatsApp(preferences.focus, preferences.vibe, preferences.style, preferences.food, 'INDIA'), '_blank')}
-            >
-              💬 WhatsApp VIETANA™
-            </Button>
-            <Button
-              variant="ghost"
-              className="w-full text-sm text-white/60 hover:text-white"
-              onClick={() => window.open(MessagingService.generateGeneralSupportEmail())}
-            >
-              ✉ Email VIETANA™
-            </Button>
-          </div>
-        </Card>
+        <div className="mt-12 flex flex-col gap-4">
+          <Button
+            variant="glass"
+            className="w-full bg-white/5 border-white/10 hover:bg-brand-gold/20 hover:border-brand-gold/40 text-white"
+            onClick={() => window.open(MessagingService.generateBlueprintWhatsApp(preferences.focus, preferences.vibe, preferences.style, preferences.food, 'INDIA'), '_blank')}
+          >
+            💬 Ask an Expert
+          </Button>
+        </div>
       </div>
     </Modal>
   );

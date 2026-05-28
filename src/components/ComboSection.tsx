@@ -3,10 +3,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslation } from '../contexts/LanguageContext';
 import { MAP_DESTINATIONS } from '../data/destinations';
 import { EXPERIENCES } from '../data/experiences';
-import Button from './ui/Button';
 import Modal from './ui/Modal';
 import { Heading, Text } from './ui/Typography';
-import Card from './ui/Card';
 import Section from './ui/layout/Section';
 
 const LeafletMap = React.lazy(() => import('./map/LeafletMap'));
@@ -17,21 +15,10 @@ interface ComboSectionProps {
 
 const ComboSection: React.FC<ComboSectionProps> = ({ onOpenPlanner }) => {
   const { t } = useTranslation();
-  const [shattered, setShattered] = useState(false);
   const [selectedExp, setSelectedExp] = useState<typeof EXPERIENCES[0] | null>(null);
   
   const [selectedCityIdx, setSelectedCityIdx] = useState<number | null>(null);
   const [mapCenter, setMapCenter] = useState<[number, number]>([16.0, 106.0]);
-
-  const nodes = useMemo(() => {
-    return EXPERIENCES.map((exp) => ({
-      ...exp,
-      top: `${20 + Math.random() * 60}%`,
-      left: `${10 + Math.random() * 80}%`,
-      dur: `${3 + Math.random() * 3}s`,
-      del: `${Math.random() * 2}s`
-    }));
-  }, []);
 
   const handleCityClick = (idx: number) => {
     setSelectedCityIdx(idx);
@@ -39,108 +26,84 @@ const ComboSection: React.FC<ComboSectionProps> = ({ onOpenPlanner }) => {
   };
 
   return (
-    <Section id="combo-section" variant="none" spacing="none" className="flex flex-wrap w-full min-h-[800px] bg-white items-stretch">
+    <Section id="combo-section" variant="none" spacing="none" className="flex flex-col lg:flex-row w-full lg:h-screen lg:max-h-[1080px] min-h-[900px] lg:min-h-0 bg-surface-cream items-stretch overflow-hidden">
       
-      {/* LEFT: EXPERIENCES */}
-      <div id="experiences" className="flex-1 min-w-[320px] relative py-24 px-[2%] flex items-center justify-center overflow-hidden border-r border-black/5 bg-brand-green-extra-dark min-h-[800px]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(13,79,46,0.2)_0%,transparent_70%)] z-0" />
-        <div className="absolute w-[300px] h-[300px] rounded-full blur-[80px] opacity-15 animate-blob-float bg-brand-blue top-[10%] left-[10%]" />
-        <div className="absolute w-[300px] h-[300px] rounded-full blur-[80px] opacity-15 animate-blob-float [animation-delay:-5s] bg-brand-green bottom-[10%] right-[10%]" />
-        
-        {!shattered ? (
-          <div className="relative z-10 cursor-pointer transition-transform duration-600 ease-elastic text-center hover:scale-105" onClick={() => setShattered(true)}>
-            <div className="w-56 h-56 rounded-full orb-style flex flex-col items-center justify-center p-8 shadow-strong">
-              <Heading as="span" size="xs" font="sans" className="text-brand-gold tracking-[0.28em] uppercase mb-2">{t.exp.title}</Heading>
-              <Heading as="h2" size="lg" variant="white" className="mb-2">Unlock<br />15 Hidden Experiences</Heading>
-              <Text variant="white" size="xs" className="opacity-60 font-bold tracking-[0.1em] uppercase">Tap to Explore</Text>
-            </div>
-            <div className="absolute inset-[-20px] rounded-full border border-dashed border-brand-gold/30 animate-spin" style={{ animationDuration: '15s' }} />
-          </div>
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center z-[5]">
-            {nodes.map((node) => (
+      {/* LEFT: EXPERIENCES (Editorial Showcase) */}
+      <div id="experiences" className="flex-1 lg:flex-[0.5] relative py-20 px-12 lg:px-20 border-r editorial-border flex flex-col z-10 bg-surface-cream">
+        <div className="mb-10 reveal">
+          <Text className="text-editorial-meta text-brand-gold mb-4 editorial-line-accent inline-block">
+            {t.exp.title}
+          </Text>
+          <Heading as="h2" className="text-5xl lg:text-6xl font-serif text-brand-green-extra-dark mt-2 tracking-tight leading-none">
+            Hidden<br/>Secrets
+          </Heading>
+        </div>
+
+        <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-brand-gold/30 scrollbar-track-transparent pr-4 pb-24 relative">
+          <div className="flex flex-col gap-10">
+            {EXPERIENCES.map((exp, idx) => (
               <div 
-                key={node.id} 
-                className="absolute cursor-pointer transition-all duration-400 group" 
-                style={{ top: node.top, left: node.left }}
-                onClick={() => setSelectedExp(node)}
+                key={exp.id} 
+                className="group cursor-pointer flex gap-8 items-start reveal"
+                style={{ transitionDelay: `${idx * 100}ms` }}
+                onClick={() => setSelectedExp(exp)}
               >
-                <div 
-                    className="animate-nfloat" 
-                    style={{ '--float-dur': node.dur, '--float-del': node.del } as React.CSSProperties}
-                >
-                  <div className="w-3.5 h-3.5 bg-brand-gold rounded-full shadow-[0_0_15px_var(--color-brand-gold)] relative group-hover:scale-[1.8] group-hover:bg-white group-hover:shadow-[0_0_25px_#fff] transition-all duration-300">
-                    <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">✨</span>
-                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/85 text-white px-4 py-2 rounded-lg text-xxs whitespace-nowrap opacity-0 pointer-events-none transition-all duration-300 border border-white/10 backdrop-blur-md group-hover:opacity-100 group-hover:bottom-8">
-                      {node.t}
-                    </div>
+                <div className="w-12 pt-2">
+                  <Text className="text-editorial-meta text-black/30 group-hover:text-brand-gold transition-colors duration-500">
+                    No. {String(idx + 1).padStart(2, '0')}
+                  </Text>
+                </div>
+                <div className="flex-1">
+                  <Heading as="h3" className="text-2xl font-serif text-brand-green-extra-dark mb-1 group-hover:text-brand-gold-muted transition-colors duration-500">
+                    {exp.t}
+                  </Heading>
+                  <div className="max-h-0 overflow-hidden group-hover:max-h-48 transition-all duration-700 ease-in-out opacity-0 group-hover:opacity-100 group-hover:mt-3">
+                    <Text className="text-sm font-light text-text-muted leading-relaxed max-w-sm mb-4">
+                      {exp.d}
+                    </Text>
+                    <button className="text-editorial-meta border-b border-brand-gold pb-1 text-brand-green-extra-dark hover:text-brand-gold transition-colors duration-300">
+                      Discover
+                    </button>
                   </div>
+                </div>
+                <div className="w-24 h-32 overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out shrink-0">
+                  <img src={exp.img} alt={exp.t} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100" />
                 </div>
               </div>
             ))}
-            <Button 
-              variant="glass" 
-              size="sm" 
-              className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20" 
-              onClick={() => setShattered(false)}
-            >
-              ← Back
-            </Button>
           </div>
-        )}
+        </div>
 
-        <Modal 
-          isOpen={!!selectedExp} 
-          onClose={() => setSelectedExp(null)}
-          maxWidth="max-w-[500px]"
-          className="bg-brand-green-dark border-brand-gold/20 overflow-hidden"
-        >
-          {selectedExp && (
-            <>
-              <img src={selectedExp.img} alt={selectedExp.t} className="w-full h-64 object-cover" />
-              <div className="p-8">
-                <Heading as="h3" size="lg" variant="accent" className="mb-4">
-                  {selectedExp.t}
-                </Heading>
-                <Text variant="white" className="opacity-70 leading-relaxed mb-8">
-                  {selectedExp.d}
-                </Text>
-                <div className="flex gap-4">
-                  <Button 
-                    variant="primary" 
-                    className="flex-1"
-                    onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent(selectedExp.t)}`, '_blank')}
-                  >
-                    📍 View on Map
-                  </Button>
-                  <Button 
-                    variant="glass" 
-                    className="flex-1"
-                    onClick={() => { setSelectedExp(null); onOpenPlanner(selectedExp.t); }}
-                  >
-                    Plan with AI
-                  </Button>
-                </div>
-              </div>
-            </>
-          )}
-        </Modal>
+        {/* Scroll Indicator Fade */}
+        <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-surface-cream via-surface-cream/90 to-transparent pointer-events-none z-20 flex flex-col items-center justify-end pb-10">
+           <motion.div 
+             animate={{ height: ["0px", "40px", "0px"], y: [0, 20, 40], opacity: [0, 1, 0] }}
+             transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+             className="w-[1px] bg-brand-gold mb-2"
+             style={{ transformOrigin: "top" }}
+           />
+           <div className="bg-surface-cream px-6 py-3 rounded-full border editorial-border shadow-soft flex items-center gap-3 animate-pulse">
+             <span className="w-2 h-2 rounded-full bg-brand-gold"></span>
+             <Text className="text-[0.6rem] font-bold tracking-[0.3em] uppercase text-brand-green-extra-dark">
+               Scroll List
+             </Text>
+           </div>
+        </div>
       </div>
 
-      {/* RIGHT: MAP */}
-      <div id="explore-vietnam" className="flex-1 min-w-[320px] relative py-24 px-[2%] bg-surface-cream flex flex-col items-center justify-center min-h-[800px]">
-        <div className="absolute left-[3%] top-1/2 -translate-y-1/2 -rotate-180 vertical-rl text-center font-serif text-[clamp(3.5rem,8vw,7rem)] font-light text-brand-green/5 tracking-[0.1em] whitespace-nowrap pointer-events-none select-none z-0">
-          FEEL VIETNAM YOUR WAY
-        </div>
-        <div className="mb-8 text-center reveal">
-          <Heading as="h2" size="2xl" className="text-text-dark font-normal">
-            Explore Vietnam
-          </Heading>
-        </div>
+      {/* RIGHT: MAP (Clean Integration) */}
+      <div id="explore-vietnam" className="flex-1 lg:flex-[0.5] relative bg-brand-green-extra-dark flex flex-col items-center justify-center p-8 lg:p-0 min-h-[600px] overflow-hidden">
+        {/* Subtle Background Elements */}
+        <div className="absolute inset-0 bg-noise opacity-50 z-0 pointer-events-none" />
         
-        <div className="relative w-full max-w-[600px] flex flex-col lg:flex-row justify-center items-center reveal delay-100">
-          <div className="w-full aspect-square rounded-3xl overflow-hidden border-8 border-white shadow-heavy relative z-[2] h-[500px]">
-            <Suspense fallback={<div className="w-full h-full bg-brand-green-extra-dark/10 animate-pulse flex items-center justify-center">Loading Map...</div>}>
+        <div className="absolute top-12 right-12 z-20 text-right">
+           <Text className="text-editorial-meta text-white/50 mb-2">Cartography</Text>
+           <Heading className="text-surface-cream text-2xl font-serif italic">Vietnam</Heading>
+        </div>
+
+        <div className="relative w-full max-w-[800px] h-[70vh] lg:h-full flex items-center justify-center z-10 px-4 lg:px-12 py-24">
+          <div className="w-full h-full rounded-none overflow-hidden editorial-border-white shadow-2xl relative">
+            <Suspense fallback={<div className="w-full h-full bg-brand-green-dark animate-pulse flex items-center justify-center text-brand-gold font-serif">Charting course...</div>}>
                 <LeafletMap 
                     destinations={MAP_DESTINATIONS}
                     selectedCityIdx={selectedCityIdx}
@@ -153,38 +116,89 @@ const ComboSection: React.FC<ComboSectionProps> = ({ onOpenPlanner }) => {
           <AnimatePresence>
             {selectedCityIdx !== null && (
               <motion.div 
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                className="relative lg:absolute lg:top-1/2 lg:-right-15 lg:-translate-y-1/2 w-full lg:w-[260px] bg-white/98 backdrop-blur-2xl rounded-2xl p-6 shadow-deep z-[100] border border-black/5 mt-8 lg:mt-0"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute bottom-12 lg:bottom-24 left-1/2 -translate-x-1/2 w-[90%] lg:w-[400px] bg-surface-cream p-8 shadow-deep z-[100] editorial-border"
               >
-                <div className="absolute top-4 right-4 cursor-pointer text-2xl text-text-subtle leading-none" onClick={() => setSelectedCityIdx(null)}>×</div>
-                <img src={MAP_DESTINATIONS[selectedCityIdx].img} alt={MAP_DESTINATIONS[selectedCityIdx].name} className="w-full h-32 object-cover rounded-xl mb-4" />
-                <Heading as="h3" size="md" weight="bold" className="text-text-dark mb-1.5">
+                <div className="absolute top-6 right-6 cursor-pointer text-xl text-black/30 hover:text-black transition-colors" onClick={() => setSelectedCityIdx(null)}>×</div>
+                
+                <Text className="text-editorial-meta text-brand-gold mb-4 editorial-line-accent inline-block">
+                  Destination
+                </Text>
+                
+                <Heading as="h3" className="text-3xl font-serif text-brand-green-extra-dark mb-4 mt-2">
                   {MAP_DESTINATIONS[selectedCityIdx].name}
                 </Heading>
-                <Text size="xs" weight="bold" className="text-brand-gold uppercase mb-2.5 tracking-wider">
-                  Best time: {MAP_DESTINATIONS[selectedCityIdx].time}
+                
+                <Text className="text-[0.6rem] tracking-[0.2em] uppercase text-black/50 mb-6">
+                  Optimal Season: <span className="text-brand-green-extra-dark font-bold">{MAP_DESTINATIONS[selectedCityIdx].time}</span>
                 </Text>
-                <Text size="sm" variant="muted" className="leading-relaxed mb-5">
+                
+                <Text className="text-sm font-light text-text-muted leading-relaxed mb-8">
                   {MAP_DESTINATIONS[selectedCityIdx].desc}
                 </Text>
-                <div className="flex flex-col gap-2.5">
-                  <Button variant="primary" size="sm" className="w-full" onClick={() => onOpenPlanner(MAP_DESTINATIONS[selectedCityIdx].name)}>Plan My Trip</Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="w-full"
+                
+                <div className="flex items-center gap-6">
+                  <button 
+                    className="editorial-border px-8 py-3 text-[0.65rem] tracking-[0.2em] uppercase text-brand-green-extra-dark hover:bg-brand-green-extra-dark hover:text-white transition-colors duration-500"
+                    onClick={() => onOpenPlanner(MAP_DESTINATIONS[selectedCityIdx].name)}
+                  >
+                    Plan Visit
+                  </button>
+                  <button 
+                    className="text-[0.65rem] tracking-[0.2em] uppercase text-black/40 hover:text-brand-gold transition-colors duration-300 border-b border-transparent hover:border-brand-gold pb-1"
                     onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent(MAP_DESTINATIONS[selectedCityIdx].name + ' Vietnam')}`, '_blank')}
                   >
-                    View on Map
-                  </Button>
+                    Map
+                  </button>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
       </div>
+
+      <Modal 
+        isOpen={!!selectedExp} 
+        onClose={() => setSelectedExp(null)}
+        maxWidth="max-w-[700px]"
+        className="bg-surface-cream p-0 overflow-hidden editorial-border"
+      >
+        {selectedExp && (
+          <div className="flex flex-col md:flex-row h-full">
+            <div className="w-full md:w-1/2 relative h-64 md:h-auto">
+              <img src={selectedExp.img} alt={selectedExp.t} className="absolute inset-0 w-full h-full object-cover" />
+            </div>
+            <div className="w-full md:w-1/2 p-12 flex flex-col justify-center bg-noise">
+              <Text className="text-editorial-meta text-brand-gold mb-6 editorial-line-accent inline-block">
+                Experience
+              </Text>
+              <Heading as="h3" className="text-4xl font-serif text-brand-green-extra-dark mb-6 leading-tight">
+                {selectedExp.t}
+              </Heading>
+              <Text className="text-sm font-light text-text-muted leading-relaxed mb-12">
+                {selectedExp.d}
+              </Text>
+              <div className="flex flex-col gap-4 mt-auto">
+                <button 
+                  className="editorial-border py-4 text-xs tracking-[0.2em] uppercase text-brand-green-extra-dark hover:bg-brand-green-extra-dark hover:text-white transition-colors duration-500 w-full"
+                  onClick={() => { setSelectedExp(null); onOpenPlanner(selectedExp.t); }}
+                >
+                  Add to Itinerary
+                </button>
+                <button 
+                  className="py-4 text-xs tracking-[0.2em] uppercase text-black/50 hover:text-brand-gold transition-colors duration-300 w-full"
+                  onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent(selectedExp.t)}`, '_blank')}
+                >
+                  Locate on Map
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </Modal>
     </Section>
   );
 };

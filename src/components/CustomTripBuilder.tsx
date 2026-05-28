@@ -6,7 +6,6 @@ import { MessagingService } from '../services/messagingService';
 import Modal from './ui/Modal';
 import Button from './ui/Button';
 import { Heading, Text } from './ui/Typography';
-import Card from './ui/Card';
 
 interface CustomTripBuilderProps {
   isOpen: boolean;
@@ -32,7 +31,6 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose }
     setEstimate(calculateTripEstimate(selectedCities, style, days, pax));
   }, [selectedCities, style, days, pax]);
 
-
   const toggleCity = (city: string) => {
     setSelectedCities(prev => 
       prev.includes(city) ? prev.filter(c => c !== city) : [...prev, city]
@@ -48,126 +46,164 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose }
     <Modal 
       isOpen={isOpen} 
       onClose={onClose}
-      maxWidth="max-w-2xl"
-      className="h-[90vh] max-h-[800px] flex flex-col p-0 border-brand-gold/20 shadow-deep"
+      maxWidth="max-w-5xl"
+      className="h-[90vh] max-h-[850px] flex flex-col p-0 overflow-hidden bg-brand-green-extra-dark/95 border border-white/10 rounded-[32px] shadow-deep backdrop-blur-2xl"
     >
-      <div className="p-8 md:p-12 pb-6 border-b border-white/5 bg-brand-green-extra-dark">
-        <Heading as="h2" size="xl" variant="accent" className="mb-2">Build Your Trip</Heading>
-        <Text variant="white" size="sm" className="opacity-50">Select your destinations and get a real-time estimate.</Text>
+      {/* Lush Background Orbs */}
+      <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-brand-green-light/20 rounded-full blur-[120px] pointer-events-none z-0" />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-brand-gold/15 rounded-full blur-[120px] pointer-events-none z-0" />
+
+      {/* HEADER */}
+      <div className="p-10 pb-8 border-b border-white/5 relative z-10 flex flex-col items-center text-center">
+        <Heading as="h2" variant="white" className="text-4xl font-serif mb-3 tracking-wide">
+           Craft Your <span className="text-brand-gold-light italic">Journey</span>
+        </Heading>
+        <Text variant="none" className="text-white/50 text-sm font-light tracking-widest uppercase">
+          Select destinations & tailor your experience
+        </Text>
       </div>
-      
-      <div className="flex-1 overflow-y-auto p-8 md:p-12 flex flex-col gap-10 bg-brand-green-extra-dark/95 scrollbar-thin scrollbar-thumb-white/10">
-        {/* Destinations Section */}
-        <div>
-          <Heading as="h3" size="xs" font="sans" className="text-white/40 uppercase mb-6 flex items-center gap-3">📍 Select Destinations</Heading>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {TRIP_BUILDER_CITIES.map(city => (
-              <label 
-                key={city} 
-                className={`flex items-center justify-center p-3 rounded-xl border cursor-pointer transition-all duration-300
-                  ${selectedCities.includes(city) ? 'bg-brand-gold/15 border-brand-gold' : 'bg-white/5 border-white/10 hover:border-brand-gold/40 hover:bg-brand-gold/5'}`}
-              >
-                <input 
-                  type="checkbox" 
-                  checked={selectedCities.includes(city)} 
-                  onChange={() => toggleCity(city)}
-                  className="hidden" 
-                />
-                <Text 
-                  size="sm" 
-                  variant="none"
-                  className={selectedCities.includes(city) ? 'text-brand-gold-light' : 'text-white/70'}
+
+      {/* CONTENT SPLIT */}
+      <div className="flex-1 overflow-y-auto flex flex-col md:flex-row relative z-10 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+        
+        {/* LEFT: Destinations */}
+        <div className="flex-1 md:flex-[0.55] p-10 border-r border-white/5 flex flex-col gap-8">
+          <Heading as="h3" variant="none" className="text-brand-gold/70 uppercase tracking-[0.2em] text-xs font-semibold flex items-center gap-3">
+            <span>📍</span> Destinations
+          </Heading>
+          
+          <div className="grid grid-cols-2 gap-4">
+            {TRIP_BUILDER_CITIES.map(city => {
+              const isSelected = selectedCities.includes(city);
+              return (
+                <label 
+                  key={city} 
+                  className={`relative overflow-hidden group flex items-center justify-center p-6 rounded-2xl border cursor-pointer transition-all duration-500
+                    ${isSelected ? 'bg-brand-gold/15 border-brand-gold/50 shadow-gold' : 'bg-white/5 border-white/10 hover:border-brand-gold/30 hover:bg-white/10'}`}
                 >
-                  {city}
-                </Text>
-              </label>
-            ))}
+                  <input 
+                    type="checkbox" 
+                    checked={isSelected} 
+                    onChange={() => toggleCity(city)}
+                    className="hidden" 
+                  />
+                  {isSelected && <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/20 to-transparent pointer-events-none" />}
+                  <Text 
+                    variant="none" 
+                    className={`relative z-10 text-lg tracking-wide transition-colors duration-500 ${isSelected ? 'text-brand-gold-light font-medium' : 'text-white/80 font-light group-hover:text-white'}`}
+                  >
+                    {city}
+                  </Text>
+                </label>
+              );
+            })}
           </div>
         </div>
-        
-        {/* Settings Section */}
-        <Card variant="glass" padding="md" hover={false} className="border-brand-gold/20 bg-white/[0.02]">
-          <Heading as="h3" size="xs" font="sans" className="text-white/40 uppercase mb-8">💰 Trip Settings & Estimate</Heading>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            <div className="flex flex-col">
-               <Text size="xs" variant="none" weight="bold" className="text-white/40 uppercase tracking-widest mb-4">Travel Style</Text>
-               <div className="flex bg-white/5 rounded-xl p-1 gap-1">
-                 {(['budget', 'comfort', 'luxury'] as const).map(s => (
-                   <button 
-                    key={s}
-                    className={`flex-1 py-2 rounded-lg text-xs font-medium transition-all duration-300 cursor-pointer
-                      ${style === s ? 'bg-brand-gold text-brand-green-dark shadow-medium' : 'bg-transparent text-white/50 hover:text-white'}`} 
-                    onClick={() => setStyle(s)}
-                   >
-                     {s.charAt(0).toUpperCase() + s.slice(1)}
-                   </button>
-                 ))}
-               </div>
-            </div>
-            <div className="flex flex-col gap-6">
-               <div className="flex flex-col gap-3">
-                 <Text size="xs" variant="none" weight="bold" className="text-white/40 uppercase tracking-widest flex justify-between">
-                   Duration <span className="text-brand-gold">{days} Days</span>
-                 </Text>
-                 <input type="range" min="3" max="30" value={days} onChange={(e) => setDays(parseInt(e.target.value))} className="w-full h-1 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-brand-gold [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-[3px] [&::-webkit-slider-thumb]:border-brand-green-dark" />
-               </div>
-               
-               <div className="flex flex-col gap-3">
-                 <Text size="xs" variant="none" weight="bold" className="text-white/40 uppercase tracking-widest flex justify-between">
-                   Travelers <span className="text-brand-gold">{pax} {pax === 1 ? 'Person' : 'People'}</span>
-                 </Text>
-                 <input type="range" min="1" max="10" value={pax} onChange={(e) => setPax(parseInt(e.target.value))} className="w-full h-1 bg-white/10 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-brand-gold [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-[3px] [&::-webkit-slider-thumb]:border-brand-green-dark" />
-               </div>
-            </div>
-          </div>
-          
-          <div className="bg-black/40 rounded-lg p-6 flex flex-col gap-3.5">
-             <div className="flex justify-between">
-               <Text size="sm" variant="subtle">✈️ Flights (India ↔ VN)</Text>
-               <Text size="sm" variant="white" weight="semibold">₹{estimate.flight.toLocaleString('en-IN')}</Text>
+
+        {/* RIGHT: Settings & Estimate */}
+        <div className="flex-1 md:flex-[0.45] p-10 bg-black/20 backdrop-blur-xl flex flex-col shadow-inner">
+           <Heading as="h3" variant="none" className="text-white/40 uppercase tracking-[0.2em] text-xs font-semibold mb-8 flex items-center gap-3">
+              <span>⚙️</span> Trip Parameters
+           </Heading>
+
+           {/* Travel Style */}
+           <div className="mb-10">
+              <Text variant="none" className="text-white/50 text-[0.65rem] uppercase tracking-widest mb-4 font-semibold">Travel Style</Text>
+              <div className="flex bg-white/5 border border-white/10 rounded-xl p-1.5 gap-1 relative backdrop-blur-sm">
+                {(['budget', 'comfort', 'luxury'] as const).map(s => (
+                  <button 
+                   key={s}
+                   className={`flex-1 py-3.5 rounded-lg text-xs font-semibold tracking-widest uppercase transition-all duration-500 cursor-pointer
+                     ${style === s ? 'bg-brand-gold text-brand-green-extra-dark shadow-strong scale-[1.02]' : 'bg-transparent text-white/40 hover:text-white/80 hover:bg-white/5'}`} 
+                   onClick={() => setStyle(s)}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+           </div>
+
+           {/* Duration & Pax Sliders */}
+           <div className="flex flex-col gap-8 mb-12">
+              <div className="flex flex-col gap-4">
+                <div className="flex justify-between items-end">
+                  <Text variant="none" className="text-white/50 text-[0.65rem] uppercase tracking-widest font-semibold">Duration</Text>
+                  <Text variant="none" className="text-brand-gold-light text-xl font-serif">{days} Days</Text>
+                </div>
+                <input 
+                  type="range" min="3" max="30" 
+                  value={days} onChange={(e) => setDays(parseInt(e.target.value))} 
+                  className="w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer outline-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:bg-brand-gold [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-[0_0_15px_rgba(201,168,76,0.6)] transition-all" 
+                />
+              </div>
+
+              <div className="flex flex-col gap-4">
+                <div className="flex justify-between items-end">
+                  <Text variant="none" className="text-white/50 text-[0.65rem] uppercase tracking-widest font-semibold">Travelers</Text>
+                  <Text variant="none" className="text-brand-gold-light text-xl font-serif">{pax} {pax === 1 ? 'Person' : 'People'}</Text>
+                </div>
+                <input 
+                  type="range" min="1" max="10" 
+                  value={pax} onChange={(e) => setPax(parseInt(e.target.value))} 
+                  className="w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer outline-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:bg-brand-gold [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-[0_0_15px_rgba(201,168,76,0.6)] transition-all" 
+                />
+              </div>
+           </div>
+
+           {/* Receipt */}
+           <div className="mt-auto bg-white/5 border border-white/10 rounded-2xl p-8 relative overflow-hidden backdrop-blur-md shadow-inner before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-1 before:bg-gradient-to-r before:from-transparent before:via-brand-gold/50 before:to-transparent">
+             <Heading as="h4" variant="none" className="text-brand-gold/80 uppercase tracking-widest text-[0.65rem] font-semibold mb-6 flex items-center gap-2">
+               Real-time Estimate
+             </Heading>
+             
+             <div className="flex flex-col gap-4">
+                <div className="flex justify-between items-center">
+                  <Text variant="none" className="text-white/60 text-sm font-light tracking-wide">✈️ Flights (IN ↔ VN)</Text>
+                  <Text variant="none" className="text-white/90 text-sm font-mono tracking-wider">₹{estimate.flight.toLocaleString('en-IN')}</Text>
+                </div>
+                <div className="flex justify-between items-center">
+                  <Text variant="none" className="text-white/60 text-sm font-light tracking-wide">🛂 E-Visa</Text>
+                  <Text variant="none" className="text-white/90 text-sm font-mono tracking-wider">₹{estimate.visa.toLocaleString('en-IN')}</Text>
+                </div>
+                <div className="flex justify-between items-center">
+                  <Text variant="none" className="text-white/60 text-sm font-light tracking-wide flex items-center gap-2">
+                    🚄 Transit <span className="text-brand-gold/40 text-[0.55rem] uppercase tracking-widest">₹3k/hop</span>
+                  </Text>
+                  <Text variant="none" className="text-white/90 text-sm font-mono tracking-wider">₹{estimate.transit.toLocaleString('en-IN')}</Text>
+                </div>
+                <div className="flex justify-between items-center">
+                  <Text variant="none" className="text-white/60 text-sm font-light tracking-wide">🏨 Daily Expenses</Text>
+                  <Text variant="none" className="text-white/90 text-sm font-mono tracking-wider">₹{estimate.daily.toLocaleString('en-IN')}</Text>
+                </div>
+                
+                <div className="mt-4 pt-6 border-t border-dashed border-white/20 flex justify-between items-end">
+                  <Text variant="none" className="text-brand-gold uppercase tracking-[0.2em] text-xs font-semibold mb-1">Total</Text>
+                  <Heading variant="none" as="div" className="text-3xl font-serif text-brand-gold-light">
+                    ₹{estimate.total.toLocaleString('en-IN')}
+                  </Heading>
+                </div>
              </div>
-             <div className="flex justify-between">
-               <Text size="sm" variant="subtle">🛂 E-Visa</Text>
-               <Text size="sm" variant="white" weight="semibold">₹{estimate.visa.toLocaleString('en-IN')}</Text>
-             </div>
-             <div className="flex justify-between">
-               <Text size="sm" variant="subtle" className="flex items-center gap-1.5">
-                 🚄 Inter-city Transit 
-                 <Text size="xs" variant="none" className="text-brand-gold opacity-70 inline">(₹3k/hop)</Text>
-               </Text>
-               <Text size="sm" variant="white" weight="semibold">₹{estimate.transit.toLocaleString('en-IN')}</Text>
-             </div>
-             <div className="flex justify-between">
-               <Text size="sm" variant="subtle">🏨 Daily Expenses</Text>
-               <Text size="sm" variant="white" weight="semibold">₹{estimate.daily.toLocaleString('en-IN')}</Text>
-             </div>
-             <div className="mt-2.5 pt-5 border-t border-white/10 flex justify-between items-center">
-               <Text variant="none" weight="medium" className="text-brand-gold">Total Estimate</Text>
-               <Heading size="xl" font="serif" variant="accent" weight="bold">₹{estimate.total.toLocaleString('en-IN')}</Heading>
-             </div>
-          </div>
-        </Card>
-        
-        {/* Notes Section */}
-        <div>
-          <Heading as="h3" size="xs" font="sans" className="text-white/40 uppercase mb-5">📝 Additional Notes</Heading>
-          <textarea 
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder="Tell us about special requests, dietary restrictions, preferred flight cities, etc..." 
-              className="w-full h-24 bg-white/5 border border-white/10 rounded-lg p-4 text-white text-sm font-light resize-none focus:border-brand-gold focus:outline-none transition-colors"
-          />
+           </div>
         </div>
       </div>
-      
-      <div className="p-8 md:p-10 bg-brand-green-extra-dark border-t border-white/5">
+
+      {/* FOOTER */}
+      <div className="p-8 border-t border-white/5 relative z-10 bg-black/30 backdrop-blur-3xl flex flex-col md:flex-row gap-6 items-center">
+        <div className="flex-1 w-full relative group">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 transition-colors group-focus-within:text-brand-gold">📝</span>
+            <input 
+               type="text"
+               value={notes}
+               onChange={(e) => setNotes(e.target.value)}
+               placeholder="Special requests? (e.g., Honeymoon, Halal food)"
+               className="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-12 pr-6 text-white text-sm outline-none focus:border-brand-gold/40 focus:bg-white/10 transition-all placeholder:text-white/30"
+            />
+        </div>
         <Button 
-          className="w-full py-4 font-bold" 
-          onClick={sendToWhatsApp}
-          icon={<svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.489-1.761-1.662-2.06-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.052 0C5.495 0 .16 5.333.158 11.893c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.332 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg>}
+           className="w-full md:w-auto px-8 py-4 bg-brand-gold hover:bg-brand-gold-light text-brand-green-extra-dark font-bold tracking-widest uppercase text-xs rounded-xl shadow-gold transition-all duration-300 flex items-center justify-center gap-3 whitespace-nowrap"
+           onClick={sendToWhatsApp}
         >
-          Send Custom Trip to WhatsApp
+          💬 Send to WhatsApp
         </Button>
       </div>
     </Modal>
