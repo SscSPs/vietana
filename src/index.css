@@ -250,6 +250,11 @@ html {
   will-change: opacity, transform;
 }
 
+.animate-blob-float {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
 .reveal.is-visible {
   opacity: 1;
   transform: none;

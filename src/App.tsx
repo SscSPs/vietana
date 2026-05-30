@@ -41,6 +41,7 @@ export default function App() {
 
   const [isPlannerOpen, setIsPlannerOpen] = useState(false);
   const [isBuilderOpen, setIsBuilderOpen] = useState(false);
+  const [builderDestinations, setBuilderDestinations] = useState<string[]>([]);
   const [initialDestination, setInitialDestination] = useState<string | undefined>(undefined);
   const [isMagicModeOpen, setIsMagicModeOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -71,7 +72,7 @@ export default function App() {
         <Suspense fallback={<SectionPlaceholder />}>
           <Services onOpenPlanner={(dest) => openPlanner(dest)} />
           <Separator variant="green" />
-          <Packages onOpenBuilder={() => setIsBuilderOpen(true)} />
+          <Packages onOpenBuilder={(dest) => { setBuilderDestinations(dest || []); setIsBuilderOpen(true); }} />
           <Separator variant="gold" />
           <Food />
           <ComboSection onOpenPlanner={(dest) => openPlanner(dest)} />
@@ -109,6 +110,7 @@ export default function App() {
         <CustomTripBuilder 
           isOpen={isBuilderOpen} 
           onClose={() => setIsBuilderOpen(false)} 
+          initialDestinations={builderDestinations}
         />
       </Suspense>
 

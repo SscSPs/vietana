@@ -21,7 +21,7 @@ export const en: TranslationSchema = {
   },
   services: {
     title: 'Our Services',
-    subtitle: 'From Visa to Your Last Dinner',
+    subtitle: 'FROM VISA TO YOUR LAST DINNER',
     ghost: 'WE HANDLE IT',
     visa: { t: 'Visa Assistance', d: 'Fast Vietnam e-visa processing. Step-by-step guidance — zero confusion, zero stress.' },
     planning: { t: 'Custom Planning', d: 'Your itinerary, your pace. Fully personalized around your interests, style and budget.' },
@@ -34,7 +34,7 @@ export const en: TranslationSchema = {
     support: { t: 'Local Support', d: 'Hindi & English support available anytime. Real people on the ground in India & Vietnam.' }
   },
   food: {
-    title: 'Gastronomy',
+    title: 'FOOD ( INDIAN & VIETNAMESE )',
     heading: 'Indian & Vietnamese Dining Explorer',
     sub: 'From authentic Indian curry to local Vietnamese street food, we ensure your plate is always full of what you love.',
     filters: { all: 'All', veg: 'Veg', nonVeg: 'Non-Veg' }

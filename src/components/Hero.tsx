@@ -16,7 +16,9 @@ interface HeroProps {
 const LOCATIONS = [
   "Ho Chi Minh City at Night",
   "Golden Hour at Ha Long Bay",
-  "Northern Mountain Terraces"
+  "Northern Mountain Terraces",
+  "Mui Ne Sand Dunes",
+  "Coffee Culture in Da Lat"
 ];
 
 const Hero: React.FC<HeroProps> = ({ onOpenMagic }) => {
@@ -77,8 +79,8 @@ const Hero: React.FC<HeroProps> = ({ onOpenMagic }) => {
         {HERO_SLIDES.map((url, idx) => (
           <div 
             key={idx} 
-            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[1.8s] ease-in-out ${currentSlide === idx ? 'opacity-100 animate-ken-burns' : 'opacity-0'}`} 
-            style={{ backgroundImage: `url('${url}')` }}
+            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-[1.8s] ease-in-out will-change-transform will-change-opacity ${currentSlide === idx ? 'opacity-100 animate-ken-burns' : 'opacity-0'}`} 
+            style={{ backgroundImage: `url('${url}')`, transform: 'translateZ(0)' }}
           />
         ))}
       </div>
@@ -120,10 +122,10 @@ const Hero: React.FC<HeroProps> = ({ onOpenMagic }) => {
             as="h1" 
             size="3xl"
             variant="none" 
-            className="!text-white mb-2 animate-reveal-up [animation-duration:1.1s] [animation-delay:0.58s] drop-shadow-[0_8px_60px_rgba(0,0,0,0.8)] tracking-tight leading-none"
+            className="!text-brand-blue mb-2 animate-reveal-up [animation-duration:1.1s] [animation-delay:0.58s] drop-shadow-[0_8px_60px_rgba(0,0,0,0.8)] tracking-tight leading-none"
           >
-            Feel <em className="text-brand-blue not-italic pr-2">Vietnam</em>,
-            <span className="block mt-1 text-white">Your Way 🇻🇳</span>
+            Feel <em className="not-italic pr-2">Vietnam</em>,
+            <span className="block mt-1 text-brand-blue">Your Way 🇻🇳</span>
           </Heading>
           
           <Text 

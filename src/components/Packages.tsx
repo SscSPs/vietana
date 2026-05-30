@@ -17,7 +17,7 @@ interface PackageItem {
   d: string;
 }
 
-const PackageCard: React.FC<{ p: PackageItem, onClick: () => void }> = ({ p, onClick }) => {
+const PackageCard: React.FC<{ p: PackageItem, onClick: (dest?: string[]) => void }> = ({ p, onClick }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -53,7 +53,7 @@ const PackageCard: React.FC<{ p: PackageItem, onClick: () => void }> = ({ p, onC
       }}
       onMouseMove={handleMouseMove} 
       onMouseLeave={handleMouseLeave}
-      onClick={onClick}
+      onClick={() => onClick(p.destinations)}
       whileHover={{ y: -10 }}
       className="group relative h-[500px] rounded-xl overflow-hidden cursor-pointer border border-white/10 shadow-medium hover:shadow-strong transition-shadow duration-500 reveal" 
     >
@@ -96,7 +96,7 @@ const PackageCard: React.FC<{ p: PackageItem, onClick: () => void }> = ({ p, onC
 };
 
 interface PackagesProps {
-    onOpenBuilder: () => void;
+    onOpenBuilder: (dest?: string[]) => void;
 }
 
 const Packages: React.FC<PackagesProps> = ({ onOpenBuilder }) => {
@@ -123,7 +123,7 @@ const Packages: React.FC<PackagesProps> = ({ onOpenBuilder }) => {
             hover={false}
             className="col-span-full flex flex-col md:flex-row items-center gap-8 p-12 md:p-16 border-white/10 bg-cover bg-center relative overflow-hidden group reveal shadow-medium" 
             style={{ backgroundImage: `linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9)), url("https://images.unsplash.com/photo-1528127269322-539801943592?w=1600&q=80")` }}
-            onClick={onOpenBuilder}
+            onClick={() => onOpenBuilder([])}
           >
             <div className="flex-1 text-center md:text-left relative z-10">
               <Badge variant="gold-filled" className="mb-4">

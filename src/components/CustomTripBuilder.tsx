@@ -10,10 +10,11 @@ import { Heading, Text } from './ui/Typography';
 interface CustomTripBuilderProps {
   isOpen: boolean;
   onClose: () => void;
+  initialDestinations?: string[];
 }
 
-const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose }) => {
-  const [selectedCities, setSelectedCities] = useState<string[]>([]);
+const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose, initialDestinations = [] }) => {
+  const [selectedCities, setSelectedCities] = useState<string[]>(initialDestinations);
   const [style, setStyle] = useState<'budget' | 'comfort' | 'luxury'>('budget');
   const [days, setDays] = useState(7);
   const [pax, setPax] = useState(2);
@@ -30,6 +31,12 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose }
   useEffect(() => {
     setEstimate(calculateTripEstimate(selectedCities, style, days, pax));
   }, [selectedCities, style, days, pax]);
+
+  useEffect(() => {
+    if (isOpen) {
+      setSelectedCities(initialDestinations);
+    }
+  }, [isOpen, initialDestinations]);
 
   const toggleCity = (city: string) => {
     setSelectedCities(prev => 

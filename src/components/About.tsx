@@ -40,21 +40,31 @@ const About: React.FC = () => {
       </div>
 
       <Container>
-        <Grid cols={2} gap={16} className="reveal">
-          <div>
-            <Heading as="h3" size="md" className="mb-4">Our Mission</Heading>
-            <Text variant="subtle" weight="light">
-              To make Vietnam the most accessible and loved destination for Indian travelers, bridge cultures, and create lifelong memories.
-            </Text>
+        <div className="reveal max-w-4xl mx-auto text-left bg-white/5 p-8 md:p-12 rounded-3xl border border-brand-gold/20 shadow-xl backdrop-blur-sm">
+          <Heading as="h3" size="xl" className="mb-8 text-brand-gold text-center font-serif">Our Story: Bridging Two Worlds</Heading>
+          
+          <Text variant="subtle" weight="light" className="mb-6 text-lg leading-relaxed">
+            VIETANA wasn't just born out of a business idea; it was born out of a genuine love for two incredible cultures. When our founder first arrived in Vietnam, it was love at first sight with the breathtaking landscapes, the warmth of the people, and the vibrant energy of the streets. However, navigating the local nuances as an Indian traveler came with its own set of unique challenges—from finding the right familiar flavors to understanding the local language.
+          </Text>
+          
+          <Text variant="subtle" weight="light" className="mb-6 text-lg leading-relaxed">
+            We realized that Indian travelers needed a bridge. Someone who deeply understands the craving for a warm cup of masala chai or a comforting dal after days of exploring, but also someone deeply rooted in Vietnam to unlock its absolute best-kept secrets. That's exactly how VIETANA was created: to be that trusted local friend waiting for you in Vietnam.
+          </Text>
+          
+          <Text variant="subtle" weight="light" className="text-lg leading-relaxed italic border-l-4 border-brand-gold pl-6 py-2">
+            "When you travel with us, you aren't just a tourist or a booking number. You become part of our extended family. From the moment you land to your very last dinner, we handle everything so you can focus on making lifelong memories."
+          </Text>
+          
+          <div className="mt-12 flex items-center gap-6 border-t border-white/10 pt-8">
+            <div className="w-16 h-16 rounded-full bg-brand-gold/20 flex items-center justify-center text-brand-gold font-bold text-xl border border-brand-gold/50">
+              V
+            </div>
+            <div>
+              <Text variant="white" weight="bold" size="lg">The VIETANA Team</Text>
+              <Text variant="subtle" size="sm">Your Family in Vietnam</Text>
+            </div>
           </div>
-          <div>
-            <Heading as="h3" size="md" className="mb-4">Local Expertise</Heading>
-            <Text variant="subtle" weight="light">
-              Based in Ho Chi Minh City, our team understands both Indian preferences and Vietnamese culture perfectly.
-            </Text>
-          </div>
-        </Grid>
-
+        </div>
       </Container>
     </Section>
   );

@@ -45,20 +45,48 @@ const Food: React.FC = () => {
       
       <Container className="relative z-10">
         <div className="flex flex-col lg:flex-row gap-20 items-start">
-          {/* LEFT SIDE: Food Lists */}
-          <div className="flex-[1.2] min-w-[320px] w-full reveal">
+        <div className="flex flex-col lg:flex-row gap-20 items-start">
+          
+          {/* LEFT SIDE: Brands */}
+          <div className="flex-[0.8] min-w-[320px] w-full reveal">
             <SectionHeader 
               label={t.food.title}
               title={t.food.heading}
               centered={false}
               className="mb-14"
             />
+            <Card variant="white" padding="lg" className="flex flex-col items-center justify-center gap-16 shadow-medium mt-8">
+              <div className="flex flex-col items-center text-center w-full">
+                <img src="/spicy_spoon_new.png" alt="The Spicy Spoon" width="220" height="220" className="max-w-[220px] h-auto mb-6 mix-blend-multiply" />
+                <Text size="md" variant="subtle" weight="semibold" className="uppercase tracking-widest text-brand-gold-muted mb-4">
+                  BY INDIANS &lt; FOR THE INDIANS
+                </Text>
+                <Badge variant="gold-filled">
+                  Coming Soon
+                </Badge>
+              </div>
+              <div className="flex flex-col items-center text-center w-full pt-8 border-t border-black/5">
+                <a href="https://www.google.com/maps/search/Mì+Quảng+Cô+Viên" target="_blank" rel="noreferrer" className="group no-underline flex flex-col items-center">
+                  <img src="/mi_quang_new.png" alt="Mì Quảng Cô Viên" width="220" height="220" className="max-w-[220px] h-auto mb-6 mix-blend-multiply" />
+                  <Text size="sm" variant="subtle" weight="medium" className="text-black/60 italic mb-6 max-w-xs">
+                    "we own, VIETNAMESE central food, currently 4 restaurents."
+                  </Text>
+                  <Button variant="outline" size="sm" className="w-[160px] tracking-[0.1em]">
+                    View on Map 📍
+                  </Button>
+                </a>
+              </div>
+            </Card>
+          </div>
+
+          {/* RIGHT SIDE: Food Lists */}
+          <div className="flex-[1.2] min-w-[320px] w-full reveal delay-200">
             
             <div className="mb-14">
               <Heading as="h3" size="lg" variant="accent" className="mb-5 border-b border-brand-gold/20 pb-2.5">
-                Vegetarian (Vietnamese & Indian)
+                Indian Vegan Dishes
               </Heading>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none h-[400px] overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-brand-gold/30">
                 {VEG_ITEMS.map((item, i) => (
                   <li key={i} className="flex">
                     <Text 
@@ -78,9 +106,9 @@ const Food: React.FC = () => {
             
             <div className="mb-14">
               <Heading as="h3" size="lg" variant="accent" className="mb-5 border-b border-brand-gold/20 pb-2.5">
-                Non-Vegetarian Favorites
+                Indian Non-Vegan Dishes
               </Heading>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none h-[400px] overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-brand-gold/30">
                 {NON_VEG_ITEMS.map((item, i) => (
                   <li key={i} className="flex">
                     <Text 
@@ -112,26 +140,6 @@ const Food: React.FC = () => {
                 ))}
               </div>
             </div>
-          </div>
-
-          {/* RIGHT SIDE: Brands */}
-          <div className="flex-[0.8] min-w-[320px] w-full reveal delay-200">
-            <Card variant="white" padding="lg" className="flex flex-col items-center justify-center gap-16 shadow-medium">
-              <div className="flex flex-col items-center text-center w-full">
-                <img src="/spicy_spoon_new.png" alt="The Spicy Spoon" width="220" height="220" className="max-w-[220px] h-auto mb-6 mix-blend-multiply" />
-                <Badge variant="gold-filled">
-                  Coming Soon
-                </Badge>
-              </div>
-              <div className="flex flex-col items-center text-center w-full">
-                <a href="https://www.google.com/maps/search/Mì+Quảng+Cô+Viên" target="_blank" rel="noreferrer" className="group no-underline flex flex-col items-center">
-                  <img src="/mi_quang_new.png" alt="Mì Quảng Cô Viên" width="220" height="220" className="max-w-[220px] h-auto mb-6 mix-blend-multiply" />
-                  <Button variant="outline" size="sm" className="w-[160px] tracking-[0.1em]">
-                    View on Map 📍
-                  </Button>
-                </a>
-              </div>
-            </Card>
           </div>
         </div>
 

@@ -111,10 +111,16 @@ const Services: React.FC<ServicesProps> = ({ onOpenPlanner }) => {
       <div className="absolute bottom-[10%] left-[5%] w-[30vw] h-[30vw] max-w-[350px] max-h-[350px] bg-brand-green/5 rounded-full blur-[60px] animate-blob-float pointer-events-none z-0 mix-blend-multiply opacity-60" style={{ animationDelay: '2s' }} />
       
       <Container className="relative z-10">
-        <SectionHeader 
-          label={t.services.title}
-          title={t.services.subtitle}
-        />
+        <div className="mb-20 reveal text-center">
+          <Heading as="div" size="xs" font="sans" className="inline-block mb-5 tracking-[0.28em] uppercase text-brand-gold font-bold text-lg">
+            {t.services.title}
+          </Heading>
+          <Heading as="h2" size="2xl" className="mb-4 text-text-dark">
+            <span className="bg-brand-gold/20 text-brand-green-extra-dark px-4 py-2 rounded-xl italic border border-brand-gold/30">
+              {t.services.subtitle}
+            </span>
+          </Heading>
+        </div>
 
         <Grid cols={3} gap={6} className="max-w-6xl mx-auto">
           {SERVICES.map((s, i) => {

@@ -65,7 +65,7 @@ const Modal: React.FC<ModalProps> = ({
           >
             <button
               onClick={onClose}
-              className={`absolute top-5 right-5 w-9 h-9 flex items-center justify-center rounded-full transition-all duration-300 z-10 text-2xl cursor-pointer ${closeBtns[variant]}`}
+              className={`absolute top-5 right-5 w-9 h-9 flex items-center justify-center rounded-full transition-all duration-300 z-[100] text-2xl cursor-pointer ${closeBtns[variant]}`}
               aria-label="Close modal"
             >
               ×

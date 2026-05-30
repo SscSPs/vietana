@@ -1,149 +1,39 @@
 import { FoodItem } from '../types';
 
 export const VEG_ITEMS: FoodItem[] = [
-  { 
-    id: 'pho-chay',
-    name: 'Phở Chay (Veg Pho)', 
-    desc: 'A soul-warming, aromatic vegetarian version of Vietnam\'s national dish, featuring a rich, spiced broth and delicate rice noodles.',
-    tags: ['Must Try', 'Light'],
-    img: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=800&q=80'
-  },
-  { 
-    id: 'banh-mi-chay',
-    name: 'Bánh Mì Chay', 
-    desc: 'The legendary Vietnamese baguette, but made entirely vegetarian. Crispy on the outside, soft inside, filled with tofu and fresh herbs.',
-    tags: ['Street Food', 'Crunchy'],
-    img: 'https://images.unsplash.com/photo-1600454021970-351feb4a506e?w=800&q=80'
-  },
-  { 
-    id: 'goi-cuon-chay',
-    name: 'Gỏi Cuốn Chay', 
-    desc: 'Fresh spring rolls packed with crisp vegetables, herbs, and tofu. Served with a savory dipping sauce.',
-    tags: ['Healthy', 'Fresh'],
-    img: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=800&q=80'
-  },
-  { 
-    id: 'com-tam-chay',
-    name: 'Cơm Tấm Chay', 
-    desc: 'Broken rice served with a variety of vegetarian toppings like shredded "skin", steamed "egg" meatloaf, and grilled tofu.',
-    tags: ['Filling', 'Southern Style'],
-    img: 'https://images.unsplash.com/photo-1617093727343-374698b1b08d?w=800&q=80'
-  },
-  { 
-    id: 'bun-chay',
-    name: 'Bún Chay', 
-    desc: 'A vibrant noodle bowl with rice vermicelli, fresh greens, and crispy tofu, topped with crushed peanuts and a tangy dressing.',
-    tags: ['Refreshing', 'Classic'],
-    img: 'https://images.unsplash.com/photo-1563812836267-33109a902787?w=800&q=80'
-  },
-  { 
-    id: 'dau-hu-ca-chua',
-    name: 'Đậu Hũ Sốt Cà Chua', 
-    desc: 'Golden fried tofu cubes simmered in a rich, tangy tomato sauce. A comforting staple of Vietnamese home cooking.',
-    tags: ['Comfort Food', 'Savory'],
-    img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80'
-  },
-  { 
-    id: 'nom-hoa-chuoi',
-    name: 'Nộm Hoa Chuối', 
-    desc: 'A crunchy, refreshing salad made from banana blossoms, herbs, and peanuts, tossed in a balanced sweet and sour dressing.',
-    tags: ['Salad', 'Unique'],
-    img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80'
-  },
-  { 
-    id: 'che-xoi',
-    name: 'Chè & Xôi (Desserts)', 
-    desc: 'A delightful selection of traditional Vietnamese sweet soups and sticky rice, perfect for satisfying your sweet tooth.',
-    tags: ['Sweet', 'Traditional'],
-    img: 'https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=800&q=80'
-  },
-  { 
-    id: 'rau-muong-xao-toi',
-    name: 'Rau Muống Xào Tỏi', 
-    desc: 'Water spinach stir-fried with fragrant garlic. A simple yet incredibly flavorful side dish loved across Vietnam.',
-    tags: ['Popular', 'Garlic'],
-    img: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=800&q=80'
-  },
-  { 
-    id: 'indian-veg',
-    name: 'North & South Indian Veg', 
-    desc: 'Authentic Indian vegetarian favorites like Paneer Butter Masala, Dal Makhani, and crispy Dosas, found in major cities.',
-    tags: ['Comfort', 'Indian'],
-    img: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800&q=80'
-  }
+  { id: 'dal-makhani', name: 'Dal Makhani', desc: 'Slow-cooked black lentils with butter and cream. A North Indian classic.', tags: ['North Indian', 'Rich'], img: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800&q=80' },
+  { id: 'paneer-butter-masala', name: 'Paneer Butter Masala', desc: 'Cottage cheese cubes in a creamy tomato gravy.', tags: ['Popular', 'Vegetarian'], img: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc0?w=800&q=80' },
+  { id: 'chole-bhature', name: 'Chole Bhature', desc: 'Spicy chickpea curry served with fried bread.', tags: ['Punjabi', 'Comfort'], img: 'https://images.unsplash.com/photo-1626082895617-2c6ad3ed3298?w=800&q=80' },
+  { id: 'masala-dosa', name: 'Masala Dosa', desc: 'Crispy rice crepe filled with spiced potato mash. Served with sambar and chutney.', tags: ['South Indian', 'Breakfast'], img: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=800&q=80' },
+  { id: 'palak-paneer', name: 'Palak Paneer', desc: 'Paneer in a thick paste made from puréed spinach and seasoned with garlic, garam masala, and other spices.', tags: ['Healthy', 'North Indian'], img: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&q=80' },
+  { id: 'veg-biryani', name: 'Vegetable Biryani', desc: 'Aromatic basmati rice cooked with mixed vegetables and traditional spices.', tags: ['Rice', 'Spicy'], img: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&q=80' },
+  { id: 'malai-kofta', name: 'Malai Kofta', desc: 'Deep-fried potato and paneer balls in a creamy, rich, mild and sweet onion tomato gravy.', tags: ['Rich', 'Mughlai'], img: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800&q=80' },
+  { id: 'aloo-gobi', name: 'Aloo Gobi', desc: 'Potatoes and cauliflower cooked with onions, tomatoes and spices.', tags: ['Dry', 'Homestyle'], img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80' },
+  { id: 'baingan-bharta', name: 'Baingan Bharta', desc: 'Fire-roasted eggplant mashed and cooked with onions, tomatoes, and spices.', tags: ['Smoky', 'Punjabi'], img: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&q=80' },
+  { id: 'kadai-paneer', name: 'Kadai Paneer', desc: 'Paneer and bell peppers cooked in a spicy tomato gravy with freshly ground kadai masala.', tags: ['Spicy', 'Popular'], img: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc0?w=800&q=80' },
+  { id: 'sambar-vada', name: 'Sambar Vada', desc: 'Deep-fried lentil donuts served immersed in hot, spicy lentil soup.', tags: ['South Indian', 'Snack'], img: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=800&q=80' },
+  { id: 'uttapam', name: 'Uttapam', desc: 'Thick pancake made from rice and lentil batter, topped with tomatoes, onions, and chilies.', tags: ['South Indian', 'Healthy'], img: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=800&q=80' },
+  { id: 'rajma-chawal', name: 'Rajma Chawal', desc: 'Red kidney bean curry served with steamed basmati rice.', tags: ['Comfort', 'North Indian'], img: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&q=80' },
+  { id: 'bhindi-masala', name: 'Bhindi Masala', desc: 'Stir-fried okra cooked with onions, tomatoes, and Indian spices.', tags: ['Dry', 'Homestyle'], img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80' },
+  { id: 'pavos-bhaji', name: 'Pav Bhaji', desc: 'A spicy mash of vegetables served with hot, buttered bread rolls.', tags: ['Street Food', 'Mumbai'], img: 'https://images.unsplash.com/photo-1626082895617-2c6ad3ed3298?w=800&q=80' }
 ];
 
 export const NON_VEG_ITEMS: FoodItem[] = [
-  { 
-    id: 'pho-ga',
-    name: 'Phở Gà (Chicken Pho)', 
-    desc: 'A delicate and clear chicken noodle soup. The broth is simmered for hours with ginger and star anise for deep flavor.',
-    tags: ['Must Try', 'Healthy'],
-    img: 'https://images.unsplash.com/photo-1555126634-323283e090fa?w=800&q=80'
-  },
-  { 
-    id: 'bun-cha',
-    name: 'Bún Chả (Grilled Pork)', 
-    desc: 'The iconic Hanoi dish of grilled pork patties and slices served in a warm dipping sauce with vermicelli and herbs.',
-    tags: ['Iconic', 'Hanoi'],
-    img: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=800&q=80'
-  },
-  { 
-    id: 'banh-xeo',
-    name: 'Bánh Xèo (Crispy Pancake)', 
-    desc: 'Sizzling savory crepes filled with shrimp, pork, and bean sprouts. Wrap them in lettuce leaves for the ultimate bite.',
-    tags: ['Crispy', 'Hands-on'],
-    img: 'https://images.unsplash.com/photo-1623341214825-9f4f963727da?w=800&q=80'
-  },
-  { 
-    id: 'cao-lau',
-    name: 'Cao Lầu (Hoi An Noodles)', 
-    desc: 'A legendary noodle dish found only in Hoi An, featuring thick noodles, succulent pork, and crunchy rice crackers.',
-    tags: ['Regional', 'Ancient Town'],
-    img: 'https://images.unsplash.com/photo-1617093727343-374698b1b08d?w=800&q=80'
-  },
-  { 
-    id: 'bun-ga',
-    name: 'Bún Gà (Chicken Noodle Soup)', 
-    desc: 'Flavorful rice vermicelli soup with tender chicken pieces, often seasoned with lemongrass and chili for a little kick.',
-    tags: ['Comforting', 'Spicy Hint'],
-    img: 'https://images.unsplash.com/photo-1582450871972-ab5ca641643d?w=800&q=80'
-  },
-  { 
-    id: 'com-tam-suon',
-    name: 'Cơm Tấm Sườn Nướng', 
-    desc: 'The definitive Saigon breakfast: broken rice topped with a perfectly grilled, marinated pork chop and a fried egg.',
-    tags: ['Saigon Classic', 'Hearty'],
-    img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80'
-  },
-  { 
-    id: 'banh-mi-thit',
-    name: 'Bánh Mì Thịt Nướng', 
-    desc: 'Vietnamese baguette filled with smoky grilled pork, pâté, pickled vegetables, and fresh cilantro.',
-    tags: ['Street Food', 'Favorite'],
-    img: 'https://images.unsplash.com/photo-1600454021970-351feb4a506e?w=800&q=80'
-  },
-  { 
-    id: 'nem-ran',
-    name: 'Nem Rán (Spring Rolls)', 
-    desc: 'Crispy, golden-fried spring rolls filled with minced pork, wood-ear mushrooms, and vermicelli. A celebration staple.',
-    tags: ['Crunchy', 'Appetizer'],
-    img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80'
-  },
-  { 
-    id: 'cha-ca-la-vong',
-    name: 'Chả Cá Lã Vọng', 
-    desc: 'Turmeric-marinated fish grilled with a mountain of fresh dill and spring onions. A true Hanoi specialty.',
-    tags: ['Specialty', 'Flavorful'],
-    img: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=800&q=80'
-  },
-  { 
-    id: 'ga-nuong-mat-ong',
-    name: 'Gà Nướng Mật Ong', 
-    desc: 'Succulent chicken marinated in local honey and spices, then flame-grilled to perfection with a sticky, sweet glaze.',
-    tags: ['Grilled', 'Sweet & Savory'],
-    img: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=800&q=80'
-  }
+  { id: 'butter-chicken', name: 'Butter Chicken', desc: 'Tender chicken pieces cooked in a smooth, buttery and creamy tomato-based gravy.', tags: ['North Indian', 'Popular'], img: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=800&q=80' },
+  { id: 'chicken-tikka-masala', name: 'Chicken Tikka Masala', desc: 'Roasted marinated chicken chunks (tikka) in a spiced curry sauce.', tags: ['Classic', 'Rich'], img: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=800&q=80' },
+  { id: 'mutton-rogan-josh', name: 'Mutton Rogan Josh', desc: 'Aromatic lamb dish of Persian origin, which is one of the signature recipes of Kashmiri cuisine.', tags: ['Kashmiri', 'Spicy'], img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80' },
+  { id: 'chicken-biryani', name: 'Chicken Biryani', desc: 'A world-renowned Indian dish, long-grained rice flavored with fragrant spices and layered with chicken.', tags: ['Mughlai', 'Rice'], img: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&q=80' },
+  { id: 'tandoori-chicken', name: 'Tandoori Chicken', desc: 'Chicken marinated in yogurt and spices and roasted in a tandoor, a cylindrical clay oven.', tags: ['Starter', 'Smoky'], img: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=800&q=80' },
+  { id: 'fish-curry', name: 'Goan Fish Curry', desc: 'Spicy and tangy fish curry made with coconut, tamarind, and Goan spices.', tags: ['Seafood', 'Coastal'], img: 'https://images.unsplash.com/photo-1626804475297-41609ea265eb?w=800&q=80' },
+  { id: 'mutton-biryani', name: 'Hyderabadi Mutton Biryani', desc: 'A classic Indian dish made with goat meat, basmati rice, and a blend of aromatic spices.', tags: ['Hyderabadi', 'Iconic'], img: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&q=80' },
+  { id: 'keema-matar', name: 'Keema Matar', desc: 'Minced meat cooked with green peas, onions, tomatoes, and spices.', tags: ['Minced', 'Comfort'], img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80' },
+  { id: 'chicken-korma', name: 'Chicken Korma', desc: 'Chicken cooked in a mild, creamy sauce made with yogurt, cream, nut pastes, and seed pastes.', tags: ['Mughlai', 'Mild'], img: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=800&q=80' },
+  { id: 'prawn-masala', name: 'Prawn Masala', desc: 'Juicy prawns cooked in a spicy, flavorful tomato-onion gravy.', tags: ['Seafood', 'Spicy'], img: 'https://images.unsplash.com/photo-1626804475297-41609ea265eb?w=800&q=80' },
+  { id: 'chicken-chettinad', name: 'Chicken Chettinad', desc: 'A classic South Indian recipe from Tamil Nadu, known for its spicy and aromatic flavor profile.', tags: ['South Indian', 'Very Spicy'], img: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=800&q=80' },
+  { id: 'mutton-korma', name: 'Mutton Korma', desc: 'Tender goat meat slow-cooked in a rich, aromatic yogurt and spice gravy.', tags: ['Awadhi', 'Rich'], img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80' },
+  { id: 'chicken-65', name: 'Chicken 65', desc: 'Spicy, deep-fried chicken dish originating from Chennai, as an entrée, or quick snack.', tags: ['Starter', 'Spicy'], img: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=800&q=80' },
+  { id: 'fish-fry', name: 'Amritsari Fish Fry', desc: 'Crispy batter-fried fish, a popular street food from the city of Amritsar.', tags: ['Starter', 'Punjabi'], img: 'https://images.unsplash.com/photo-1626804475297-41609ea265eb?w=800&q=80' },
+  { id: 'bhuna-gosht', name: 'Bhuna Gosht', desc: 'Mutton pieces pan-fried with spicy onions and tomatoes.', tags: ['Dry', 'Intense'], img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80' }
 ];
 
 export const CAFES = [
