@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import os
+
+content = """import React, { useState } from 'react';
 import SectionHeader from './ui/SectionHeader';
 import Section from './ui/layout/Section';
 import Container from './ui/layout/Container';
@@ -62,9 +64,7 @@ const FAQ: React.FC<FAQProps> = ({ onOpenPlanner }) => {
   };
 
   const handleWhatsApp = () => {
-    const text = `Hello VIETANA,
-I have a question:
-${customQuestion || 'I want to know more about travel in Vietnam.'}`;
+    const text = `Hello VIETANA,\nI have a question:\n${customQuestion || 'I want to know more about travel in Vietnam.'}`;
     window.open(`https://wa.me/919953294543?text=${encodeURIComponent(text)}`, '_blank');
   };
 
@@ -162,3 +162,7 @@ ${customQuestion || 'I want to know more about travel in Vietnam.'}`;
 };
 
 export default FAQ;
+"""
+
+with open('src/components/FAQ.tsx', 'w') as f:
+    f.write(content)

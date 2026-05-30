@@ -42,3 +42,16 @@ export const HERO_SLIDES = [
   'https://images.unsplash.com/photo-1581026046187-5775cb56b3e7?auto=format&fit=crop&w=1920&q=80', // Ninh Binh landscape
   'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?auto=format&fit=crop&w=1920&q=80' // Mountain terraces
 ];
+
+export const VIETNAM_TOP_10 = [
+  'https://images.unsplash.com/photo-1531737212413-667205e1cda7?auto=format&fit=crop&w=1920&q=80',
+  'https://images.unsplash.com/photo-1555921015-5532091f6026?auto=format&fit=crop&w=1920&q=80',
+  'https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=1920&q=80',
+  'https://images.unsplash.com/photo-1581026046187-5775cb56b3e7?auto=format&fit=crop&w=1920&q=80',
+  'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?auto=format&fit=crop&w=1920&q=80',
+  'https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&w=1920&q=80',
+  'https://images.unsplash.com/photo-1599709292534-110052a26cbf?auto=format&fit=crop&w=1920&q=80',
+  'https://images.unsplash.com/photo-1579624956553-9111c6d32f52?auto=format&fit=crop&w=1920&q=80',
+  'https://images.unsplash.com/photo-1557053910-d7d8e6eb8b1e?auto=format&fit=crop&w=1920&q=80',
+  'https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?auto=format&fit=crop&w=1920&q=80'
+];

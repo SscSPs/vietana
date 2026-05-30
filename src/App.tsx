@@ -80,7 +80,7 @@ export default function App() {
           <Separator variant="gold" />
           <Food />
           <ComboSection onOpenPlanner={(dest) => openPlanner(dest)} />
-          <FAQ />
+          <FAQ onOpenPlanner={(dest, prompt) => openPlanner(dest, prompt)} />
           <About />
         </Suspense>
       </main>

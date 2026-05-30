@@ -3,6 +3,7 @@ import { TRIP_BUILDER_CITIES } from '../data/tripBuilder';
 import { calculateTripEstimate, TravelStyle, FlightType, VisaType } from '../services/pricingService';
 import { MessagingService } from '../services/messagingService';
 import { TripEstimate } from '../types';
+import { VIETNAM_TOP_10 } from '../data/siteContent';
 import Modal from './ui/Modal';
 import Button from './ui/Button';
 import { Heading, Text } from './ui/Typography';
@@ -23,6 +24,7 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose, 
   const [days, setDays] = useState(5);
   const [pax, setPax] = useState(2);
   const [notes, setNotes] = useState('');
+  const [currentBg, setCurrentBg] = useState(0);
 
   const [estimate, setEstimate] = useState<TripEstimate>({
     flight: 0,
@@ -35,6 +37,16 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose, 
     dailyTotal: 0,
     total: 0
   });
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isOpen) {
+      interval = setInterval(() => {
+        setCurrentBg((prev) => (prev + 1) % VIETNAM_TOP_10.length);
+      }, 3000);
+    }
+    return () => clearInterval(interval);
+  }, [isOpen]);
 
   useEffect(() => {
     setEstimate(calculateTripEstimate(selectedCities, style, days, pax, flightType, visaType));
@@ -68,10 +80,19 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose, 
       isOpen={isOpen} 
       onClose={onClose}
       maxWidth="max-w-6xl"
-      className="h-[95vh] max-h-[900px] flex flex-col p-0 overflow-hidden glass-dark rounded-[32px] shadow-heavy"
+      className="h-[95vh] max-h-[900px] flex flex-col p-0 overflow-hidden glass-dark rounded-[32px] shadow-heavy relative"
     >
-      <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-brand-gold/5 rounded-full blur-[120px] pointer-events-none z-0 animate-blob-float" />
-      <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-white/5 rounded-full blur-[120px] pointer-events-none z-0 animate-blob-float" style={{ animationDelay: '2s' }} />
+      {VIETNAM_TOP_10.map((img, i) => (
+        <div
+          key={img}
+          className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ${
+            i === currentBg ? 'opacity-30' : 'opacity-0'
+          }`}
+          style={{ backgroundImage: `url(${img})` }}
+        />
+      ))}
+      <div className="absolute inset-0 bg-black/60 z-0 pointer-events-none" />
+
 
       {/* HEADER */}
       <div className="p-10 pb-8 border-b border-white/5 relative z-10 flex flex-col items-center text-center">
