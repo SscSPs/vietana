@@ -28,7 +28,6 @@ import {
   Ticket,
   Globe,
   Settings,
-  Passport,
   Train,
   Edit3,
   Castle,
@@ -38,7 +37,11 @@ import {
   Mic,
   Ban,
   Fish,
-  Drumstick
+  Drumstick,
+  LeafyGreen,
+  UtensilsCrossed,
+  MessageSquare,
+  ArrowRight
 } from 'lucide-react';
 
 export type IconName = 
@@ -47,18 +50,19 @@ export type IconName =
   | 'Car' | 'Building' | 'Palmtree' | 'Mountain' 
   | 'Sailboat' | 'Map' | 'Camera' | 'Flame'
   | 'Check' | 'Clock' | 'Menu' | 'X' | 'ChevronRight' | 'ChevronDown'
-  | 'ClipboardList' | 'Wifi' | 'Ticket' | 'ShieldCheck' | 'Globe'
-  | 'Settings' | 'Passport' | 'Train' | 'Edit3'
+  | 'ClipboardList' | 'Wifi' | 'Ticket' | 'Globe'
+  | 'Settings' | 'Train' | 'Edit3'
   | 'Castle' | 'Users' | 'Moon' | 'Target' | 'Mic'
-  | 'Ban' | 'Fish' | 'Drumstick';
+  | 'Ban' | 'Fish' | 'Drumstick' | 'LeafyGreen' | 'UtensilsCrossed'
+  | 'MessageSquare' | 'ArrowRight';
 
 const iconMap: Record<IconName, React.ElementType> = {
   Leaf, Plane, Soup, Sparkles, Star, MapPin, Phone, MessageCircle, Mail,
   Car, Building, Palmtree, Mountain, Sailboat, Map, Camera, Flame,
   Check, Clock, Menu, X, ChevronRight, ChevronDown,
-  ClipboardList, Wifi, Ticket, ShieldCheck, Globe,
-  Settings, Passport, Train, Edit3, Castle, Users, Moon, Target, Mic,
-  Ban, Fish, Drumstick
+  ClipboardList, Wifi, Ticket, Globe,
+  Settings, Train, Edit3, Castle, Users, Moon, Target, Mic,
+  Ban, Fish, Drumstick, LeafyGreen, UtensilsCrossed, MessageSquare, ArrowRight
 };
 
 interface IconProps extends React.SVGProps<SVGSVGElement> {

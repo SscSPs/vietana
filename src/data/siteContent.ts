@@ -23,10 +23,10 @@ export const SERVICES: ServiceItem[] = [
   { ico: 'Ticket', key: 'tickets' },
   { ico: 'Soup', key: 'food' },
   { ico: 'Sparkles', key: 'tailored' },
-  { ico: 'ShieldCheck', key: 'support' }
+  { ico: 'MessageCircle', key: 'support' }
 ];
 
-export const PACKAGES: Package[] = [
+export const PACKAGES: PackageData[] = [
   { t: 'Best Heritage Sites', img: 'https://image.vietnam.travel/sites/default/files/styles/large/public/2021-04/World%20heritage%20sites%20Vietnam%20travel_0.jpg', b: 'Culture & History', d: 'Explore UNESCO attractions.', destinations: ['Hanoi', 'Halong Bay', 'Hue', 'Hoi An'] },
   { t: 'Adventure Trails', img: 'https://image.vietnam.travel/sites/default/files/styles/large/public/2021-04/Adventure%20itinerary%20Vietnam.jpg', b: 'Thrills', d: 'Exciting outdoor experiences.', destinations: ['Sapa', 'Da Nang', 'Da Lat', 'Ninh Binh'] },
   { t: 'Couples’ Retreat', img: 'https://image.vietnam.travel/sites/default/files/styles/large/public/2021-04/Romantic%20getaway%20Vietnam.jpg', b: 'Romantic', d: 'Timeless romantic getaways.', destinations: ['Phu Quoc', 'Da Lat', 'Hoi An'] },

@@ -88,7 +88,7 @@ const SERVICE_MODAL_DATA: ServiceModalItem[] = [
   },
   {
     key: 'support',
-    iconName: 'ShieldCheck',
+    iconName: 'MessageCircle',
     title: "Local Support — VIETANA™",
     content: "<strong>Always available</strong><br>✓ Hindi & English<br>✓ India + Vietnam support<br>✓ Local guidance<br><br>📍 Real people on the ground",
     cta: "Talk with VIETANA™",

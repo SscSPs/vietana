@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from '../../contexts/LanguageContext';
 import { Text } from '../ui/Typography';
+import Icon from '../ui/Icon';
 
 interface FloatingOrbProps {
   onClick: () => void;
