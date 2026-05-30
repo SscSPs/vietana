@@ -1,98 +1,170 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from '../contexts/LanguageContext';
 import Button from './ui/Button';
 import Modal from './ui/Modal';
 import { Heading, Text } from './ui/Typography';
 import Icon from './ui/Icon';
 import BrandName from './ui/BrandName';
+import { MapContainer, TileLayer, Marker, useMap, Tooltip } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// Fix for Leaflet markers
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+
+let DefaultIcon = L.icon({ 
+  iconUrl: icon, 
+  shadowUrl: iconShadow, 
+  iconSize: [25, 41], 
+  iconAnchor: [12, 41] 
+});
+L.Marker.prototype.options.icon = DefaultIcon;
 
 interface ContactModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+const CONTACT_LOCATIONS = [
+  {
+    id: 'india',
+    name: 'New Delhi, India',
+    coords: [28.6219, 77.0661] as [number, number],
+    title: '🇮🇳 INDIA — NEW DELHI',
+    person: 'Vikram Sonker',
+    phone: '+91 9953294543',
+    waUrl: 'https://wa.me/919953294543',
+    email: 'vikram@vietana.com',
+    address: 'RZ 35/36, Indra Park Ext.\nUttam Nagar, East Delhi',
+    mapUrl: 'https://maps.google.com/?q=RZ+35/36,+Indra+Park+Extension+Uttam+Nagar,+East+Delhi+110059',
+    bgColor: 'bg-brand-gold/10',
+    borderColor: 'border-brand-gold/30',
+    themeColorClass: 'text-brand-gold',
+    hoverBgClass: 'hover:bg-brand-gold',
+    hoverBorderClass: 'hover:border-brand-gold'
+  },
+  {
+    id: 'vietnam',
+    name: 'Ho Chi Minh City, Vietnam',
+    coords: [10.8033, 106.7445] as [number, number],
+    title: '🇻🇳 VIETNAM — HCM CITY',
+    person: 'Chayan Soni',
+    phone: '+84 902434006',
+    waUrl: 'https://wa.me/84902434006',
+    email: 'chayan@vietana.com',
+    address: '45 Nguyễn Quý Đức\nAn Phú, Ho Chi Minh City',
+    mapUrl: 'https://maps.google.com/?q=45+Nguyễn+Quý+Đức+An+Phú+Ho+Chi+Minh+City+Vietnam',
+    bgColor: 'bg-brand-blue/10',
+    borderColor: 'border-brand-blue/30',
+    themeColorClass: 'text-brand-blue',
+    hoverBgClass: 'hover:bg-brand-blue',
+    hoverBorderClass: 'hover:border-brand-blue'
+  }
+];
+
+const MapController = ({ center }: { center: [number, number] }) => {
+    const map = useMap();
+    React.useEffect(() => {
+        map.flyTo(center, 5, { animate: true, duration: 1.5 });
+    }, [center, map]);
+    return null;
+};
+
 const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
+  const [activeLoc, setActiveLoc] = useState(0);
+  const activeData = CONTACT_LOCATIONS[activeLoc];
+
   return (
     <Modal 
       isOpen={isOpen} 
       onClose={onClose} 
-      maxWidth="max-w-3xl" 
+      maxWidth="max-w-6xl" 
       variant="light"
-      className="overflow-hidden !bg-white/90 backdrop-blur-[20px] !rounded-[24px] shadow-2xl border border-white/40"
+      className="overflow-hidden !bg-white/95 backdrop-blur-[20px] !rounded-[24px] shadow-2xl border border-white/60 p-0"
     >
-      <div className="p-6 md:p-8 text-left max-h-[85vh] overflow-y-auto scrollbar-thin scrollbar-thumb-brand-blue/30">
-        <div className="mb-6 text-center animate-fade-in scale-100 bg-brand-blue/5 py-6 px-4 rounded-2xl border border-brand-blue/10">
-          <span className="text-white bg-brand-blue px-4 py-1.5 rounded-full text-[10px] tracking-widest uppercase font-bold mb-4 inline-flex items-center gap-2 shadow-sm">
-            <Icon name="Leaf" size={14} className="text-brand-gold-light" /> Talk to Us
-          </span>
-          <Heading as="h2" size="xl" variant="dark" className="mb-3 text-brand-blue-dark">Talk to Someone Who Understands Your Travel Style</Heading>
-          <Text variant="dark" size="sm" className="opacity-80 max-w-xl mx-auto leading-relaxed">
-            No confusion. No stress. Just local support from people who understand both India and Vietnam. Message us on WhatsApp — we reply quickly in Hindi & English.
-          </Text>
+      <div className="flex flex-col md:flex-row min-h-[600px] max-h-[85vh]">
+        
+        {/* LEFT MAP PANEL */}
+        <div className="w-full md:w-1/2 h-[300px] md:h-auto relative bg-surface-dark border-r border-black/10">
+          <div className="absolute top-4 left-4 z-[500] bg-white/90 backdrop-blur px-4 py-2 rounded-xl shadow-md pointer-events-none">
+            <Text size="xs" weight="bold" className="tracking-widest uppercase text-brand-green-dark">Our Offices</Text>
+          </div>
+          
+          <MapContainer 
+            center={activeData.coords} 
+            zoom={5} 
+            zoomControl={false}
+            attributionControl={false}
+            style={{ height: '100%', width: '100%' }}
+            className="z-10"
+          >
+            {/* Minimal dark map tiles for premium look */}
+            <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
+            
+            {CONTACT_LOCATIONS.map((loc, idx) => (
+              <Marker 
+                key={loc.id} 
+                position={loc.coords}
+                eventHandlers={{ click: () => setActiveLoc(idx) }}
+                icon={L.divIcon({
+                  className: 'bg-transparent',
+                  html: `
+                    <div class="w-5 h-5 rounded-full ${idx === activeLoc ? 'bg-brand-green-dark border-2 border-white scale-125 shadow-lg' : 'bg-brand-gold border-2 border-white opacity-60'} transition-all duration-300"></div>
+                  `,
+                  iconSize: [20, 20],
+                  iconAnchor: [10, 10]
+                })}
+              >
+                <Tooltip direction="top" offset={[0, -10]} opacity={1} permanent={idx === activeLoc}>
+                  {loc.name}
+                </Tooltip>
+              </Marker>
+            ))}
+            <MapController center={activeData.coords} />
+          </MapContainer>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          {/* INDIA */}
-          <div className="space-y-4 bg-brand-gold/10 p-5 rounded-2xl border border-brand-gold/20 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-brand-gold/20 blur-2xl rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none transition-transform group-hover:scale-150" />
-            <Text size="xs" variant="accent" weight="bold" className="tracking-widest border-b border-brand-gold/30 pb-2 inline-block text-brand-gold-muted relative z-10">🇮🇳 INDIA — NEW DELHI</Text>
-            <Heading as="h3" size="md" variant="dark" className="text-brand-green-dark relative z-10">Vikram Sonker</Heading>
-            <div className="space-y-3 text-text-dark font-medium text-sm relative z-10">
-              <p className="flex items-center gap-3"><Icon name="Phone" size={16} className="text-brand-gold" /> <a href="https://wa.me/919953294543" target="_blank" rel="noreferrer" className="hover:text-brand-gold hover:underline">+91 9953294543</a></p>
-              <p className="flex items-center gap-3"><Icon name="Mail" size={16} className="text-brand-gold" /> <a href="mailto:vikram@vietana.com" className="hover:text-brand-gold hover:underline">vikram@vietana.com</a></p>
-              <p className="flex items-start gap-3"><Icon name="MapPin" size={16} className="text-brand-gold mt-0.5 shrink-0" /> <span>RZ 35/36, Indra Park Ext.<br/>Uttam Nagar, East Delhi</span></p>
+        {/* RIGHT INFO PANEL */}
+        <div className="w-full md:w-1/2 p-8 md:p-12 overflow-y-auto scrollbar-thin scrollbar-thumb-brand-blue/30 bg-white">
+          <div className="mb-8">
+            <Heading as="h2" size="2xl" font="serif" variant="dark" className="mb-2 text-brand-green-dark">Talk to Us</Heading>
+            <Text variant="muted" size="sm" className="leading-relaxed">
+              Click the pins on the map to view our local offices. We reply quickly in Hindi & English to help craft your perfect journey.
+            </Text>
+          </div>
+
+          {/* DYNAMIC CONTACT CARD */}
+          <div className={`space-y-5 p-6 rounded-2xl border transition-colors duration-500 ${activeData.bgColor} ${activeData.borderColor}`}>
+            <Text size="xs" variant="accent" weight="bold" className="tracking-widest border-b border-black/10 pb-2 inline-block text-brand-green-dark">{activeData.title}</Text>
+            <Heading as="h3" size="lg" variant="dark" className="text-brand-green-dark">{activeData.person}</Heading>
+            
+            <div className="space-y-4 text-text-dark font-medium text-sm pt-2">
+              <p className="flex items-center gap-3"><Icon name="Phone" size={18} className={activeData.themeColorClass} /> <a href={activeData.waUrl} target="_blank" rel="noreferrer" className={`hover:${activeData.themeColorClass} hover:underline`}>{activeData.phone}</a></p>
+              <p className="flex items-center gap-3"><Icon name="Mail" size={18} className={activeData.themeColorClass} /> <a href={`mailto:${activeData.email}`} className={`hover:${activeData.themeColorClass} hover:underline`}>{activeData.email}</a></p>
+              <p className="flex items-start gap-3"><Icon name="MapPin" size={18} className={`${activeData.themeColorClass} mt-0.5 shrink-0`} /> <span className="whitespace-pre-line">{activeData.address}</span></p>
             </div>
-            <Button variant="outline" className="w-full mt-4 bg-white/50 text-brand-green-dark border-brand-gold/30 hover:bg-brand-gold hover:border-brand-gold hover:text-white flex items-center justify-center gap-2 text-xs py-2 relative z-10" onClick={() => window.open('https://maps.google.com/?q=RZ+35/36,+Indra+Park+Extension+Uttam+Nagar,+East+Delhi+110059', '_blank')}>
-              <Icon name="MapPin" size={14} /> View on Maps
+            
+            <Button variant="outline" className={`w-full mt-4 bg-white text-brand-green-dark ${activeData.borderColor} ${activeData.hoverBgClass} hover:text-white flex items-center justify-center gap-2 text-xs py-2`} onClick={() => window.open(activeData.mapUrl, '_blank')}>
+              <Icon name="MapPin" size={14} /> Get Directions
             </Button>
           </div>
 
-          {/* VIETNAM */}
-          <div className="space-y-4 bg-brand-blue/10 p-5 rounded-2xl border border-brand-blue/20 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-brand-blue/20 blur-2xl rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none transition-transform group-hover:scale-150" />
-            <Text size="xs" variant="accent" weight="bold" className="tracking-widest border-b border-brand-blue/30 pb-2 inline-block text-brand-blue-dark relative z-10">🇻🇳 VIETNAM — HCM CITY</Text>
-            <Heading as="h3" size="md" variant="dark" className="text-brand-blue-dark relative z-10">Chayan Soni</Heading>
-            <div className="space-y-3 text-text-dark font-medium text-sm relative z-10">
-              <p className="flex items-center gap-3"><Icon name="Phone" size={16} className="text-brand-blue" /> <a href="https://wa.me/84902434006" target="_blank" rel="noreferrer" className="hover:text-brand-blue hover:underline">+84 902434006</a></p>
-              <p className="flex items-center gap-3"><Icon name="Mail" size={16} className="text-brand-blue" /> <a href="mailto:chayan@vietana.com" className="hover:text-brand-blue hover:underline">chayan@vietana.com</a></p>
-              <p className="flex items-start gap-3"><Icon name="MapPin" size={16} className="text-brand-blue mt-0.5 shrink-0" /> <span>45 Nguyễn Quý Đức<br/>An Phú, Ho Chi Minh City</span></p>
+          {/* ONLINE SUPPORT (STATIC) */}
+          <div className="mt-8 bg-surface-warm p-6 rounded-2xl border border-black/5">
+            <Text size="xs" variant="accent" weight="bold" className="tracking-widest mb-4 text-brand-green-dark border-b border-black/10 pb-2 flex items-center gap-2"><Icon name="Globe" size={14} /> ONLINE SUPPORT</Text>
+            <div className="space-y-3 text-text-dark font-medium text-sm">
+              <p className="flex items-center gap-3"><Icon name="Leaf" size={16} className="text-brand-green" /> <a href="https://www.vietana.com" className="hover:underline hover:text-brand-green">www.vietana.com</a></p>
+              <p className="flex items-center gap-3"><Icon name="Mail" size={16} className="text-brand-blue" /> <a href="mailto:info@vietana.com" className="hover:underline hover:text-brand-blue">info@vietana.com</a></p>
+              <p className="flex items-center gap-3"><Icon name="Check" size={16} className="text-[#25D366]" /> Fast Response • Hindi & English</p>
             </div>
-            <Button variant="outline" className="w-full mt-4 bg-white/50 text-brand-blue-dark border-brand-blue/30 hover:bg-brand-blue hover:border-brand-blue hover:text-white flex items-center justify-center gap-2 text-xs py-2 relative z-10" onClick={() => window.open('https://maps.google.com/?q=45+Nguyễn+Quý+Đức+An+Phú+Ho+Chi+Minh+City+Vietnam', '_blank')}>
-              <Icon name="MapPin" size={14} /> View on Maps
-            </Button>
+          </div>
+          
+          <div className="text-center pt-8">
+            <Text variant="accent" size="xs" className="italic font-bold text-brand-gold-muted">Travel Gets Better with <BrandName /></Text>
           </div>
         </div>
 
-        {/* ONLINE */}
-        <div className="mb-6 bg-surface-warm p-5 rounded-2xl border border-black/5">
-          <Text size="xs" variant="accent" weight="bold" className="tracking-widest mb-4 text-center border-b border-black/10 pb-2 inline-flex items-center justify-center gap-2 w-full text-brand-green-dark"><Icon name="Globe" size={14} /> ONLINE SUPPORT</Text>
-          <div className="flex flex-col md:flex-row justify-center items-center gap-6 text-text-dark font-medium text-sm">
-            <div className="text-center md:text-left space-y-2">
-              <p className="flex items-center justify-center md:justify-start gap-2"><Icon name="Leaf" size={14} className="text-brand-green" /> <a href="https://www.vietana.com" className="hover:underline hover:text-brand-green">www.vietana.com</a></p>
-              <p className="flex items-center justify-center md:justify-start gap-2"><Icon name="Mail" size={14} className="text-brand-blue" /> <a href="mailto:info@vietana.com" className="hover:underline hover:text-brand-blue">info@vietana.com</a></p>
-            </div>
-            <div className="h-10 w-px bg-black/10 hidden md:block"></div>
-            <div className="space-y-1.5 text-center md:text-left text-xs">
-              <p className="flex items-center justify-center md:justify-start gap-1.5"><Icon name="Check" size={14} className="text-[#25D366]" /> Fast Response</p>
-              <p className="flex items-center justify-center md:justify-start gap-1.5"><Icon name="Check" size={14} className="text-[#25D366]" /> Hindi & English</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="text-center pt-2">
-          <Text variant="accent" size="xs" className="italic mb-4 font-bold text-brand-gold-muted">Travel Gets Better with <BrandName /></Text>
-          <div className="flex flex-col md:flex-row justify-center gap-3">
-            <a href="mailto:info@vietana.com" className="flex-1 bg-brand-blue/10 border border-brand-blue/30 text-brand-blue-dark py-3 px-3 rounded-xl font-bold tracking-widest hover:bg-brand-blue hover:text-white transition-all flex items-center justify-center gap-2 text-[10px]">
-              <Icon name="Mail" size={14} /> Email Us
-            </a>
-            <a href="https://wa.me/919953294543" target="_blank" rel="noreferrer" className="flex-1 bg-[#25D366]/15 border border-[#25D366]/50 text-[#1EAA52] py-3 px-3 rounded-xl font-bold tracking-widest hover:bg-[#25D366] hover:text-white transition-all flex items-center justify-center gap-2 text-[10px]">
-              <Icon name="MessageCircle" size={14} /> WhatsApp India
-            </a>
-            <a href="https://wa.me/84902434006" target="_blank" rel="noreferrer" className="flex-1 bg-[#25D366]/15 border border-[#25D366]/50 text-[#1EAA52] py-3 px-3 rounded-xl font-bold tracking-widest hover:bg-[#25D366] hover:text-white transition-all flex items-center justify-center gap-2 text-[10px]">
-              <Icon name="MessageCircle" size={14} /> WhatsApp Vietnam
-            </a>
-          </div>
-        </div>
       </div>
     </Modal>
   );
