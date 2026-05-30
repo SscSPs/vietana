@@ -35,7 +35,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
             <Text size="sm" variant="accent" weight="bold" className="tracking-widest border-b border-brand-green/20 pb-2 inline-block">🇮🇳 INDIA — NEW DELHI</Text>
             <Heading as="h3" size="lg" variant="dark" className="text-brand-green-dark">Vikram Sonker</Heading>
             <div className="space-y-4 text-text-dark font-medium">
-              <p className="flex items-center gap-3"><span className="text-xl">📞</span> +91 9953294543</p>
+              <p className="flex items-center gap-3"><span className="text-xl">📞</span> <a href="https://wa.me/919953294543" target="_blank" rel="noreferrer" className="hover:text-brand-gold hover:underline">+91 9953294543</a></p>
               <p className="flex items-center gap-3"><span className="text-xl">✉️</span> <a href="mailto:vikram@vietana.com" className="hover:text-brand-gold hover:underline">vikram@vietana.com</a></p>
               <p className="flex items-start gap-3"><span className="text-xl">📍</span> <span>RZ 35/36, Indra Park Ext.<br/>Hanuman Mandir<br/>Uttam Nagar<br/>East Delhi – 110059</span></p>
             </div>
@@ -49,7 +49,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
             <Text size="sm" variant="accent" weight="bold" className="tracking-widest border-b border-brand-green/20 pb-2 inline-block">🇻🇳 VIETNAM — HO CHI MINH CITY</Text>
             <Heading as="h3" size="lg" variant="dark" className="text-brand-green-dark">Chayan Soni</Heading>
             <div className="space-y-4 text-text-dark font-medium">
-              <p className="flex items-center gap-3"><span className="text-xl">📞</span> +84 902434006</p>
+              <p className="flex items-center gap-3"><span className="text-xl">📞</span> <a href="https://wa.me/84902434006" target="_blank" rel="noreferrer" className="hover:text-brand-gold hover:underline">+84 902434006</a></p>
               <p className="flex items-center gap-3"><span className="text-xl">✉️</span> <a href="mailto:chayan@vietana.com" className="hover:text-brand-gold hover:underline">chayan@vietana.com</a></p>
               <p className="flex items-start gap-3"><span className="text-xl">📍</span> <span>45 Nguyễn Quý Đức<br/>An Phú<br/>Ho Chi Minh City</span></p>
             </div>
