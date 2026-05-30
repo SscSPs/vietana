@@ -44,7 +44,11 @@ export interface ServiceItem {
 export interface TripEstimate {
   flight: number;
   visa: number;
-  transit: number;
-  daily: number;
+  transfers: number;
+  hotels: number;
+  food: number;
+  transport: number;
+  experiences: number;
+  dailyTotal: number;
   total: number;
 }

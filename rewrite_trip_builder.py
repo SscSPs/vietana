@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import os
+
+content = """import React, { useState, useEffect, useMemo } from 'react';
 import { TRIP_BUILDER_CITIES } from '../data/tripBuilder';
 import { calculateTripEstimate, TravelStyle, FlightType, VisaType } from '../services/pricingService';
 import { MessagingService } from '../services/messagingService';
@@ -248,7 +250,7 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose, 
                 </div>
                 <div className="flex justify-between items-center group mb-4">
                   <Text variant="none" className="text-white/60 text-sm font-light tracking-wide flex items-center gap-2">
-                    <Icon name="Truck" size={14} className="text-brand-gold/60"/> 🚘 Transfers <span className="text-white/30 text-[0.55rem]">(T&C Apply)</span>
+                    <Icon name="Truck" size={14} className="text-brand-gold/60"/> 🚘 Transfers
                   </Text>
                   <Text variant="none" className="text-white/90 text-sm font-mono tracking-wider group-hover:text-brand-gold transition-colors">₹{estimate.transfers.toLocaleString('en-IN')}</Text>
                 </div>
@@ -310,14 +312,7 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose, 
                className="flex-1 md:flex-none px-6 py-4 bg-white/5 hover:bg-white/10 border border-white/20 text-white font-bold tracking-widest uppercase text-xs rounded-xl transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap"
                onClick={() => {
                  onClose();
-                 const details = `I'd like to plan a trip with the following parameters:
-- Destinations: ${selectedCities.length > 0 ? selectedCities.join(', ') : 'Not sure yet'}
-- Style: ${style}
-- Flight: ${flightType === 'round' ? 'Round Trip' : 'One Way'}
-- Visa: ${visaType} entry
-- Duration: ${days} Days
-- Travelers: ${pax} People
-- Special Notes: ${notes || 'None'}`;
+                 const details = `I'd like to plan a trip with the following parameters:\n- Destinations: ${selectedCities.length > 0 ? selectedCities.join(', ') : 'Not sure yet'}\n- Style: ${style}\n- Flight: ${flightType === 'round' ? 'Round Trip' : 'One Way'}\n- Visa: ${visaType} entry\n- Duration: ${days} Days\n- Travelers: ${pax} People\n- Special Notes: ${notes || 'None'}`;
                  onOpenAIPlanner(details);
                }}
             >
@@ -338,3 +333,7 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose, 
 };
 
 export default CustomTripBuilder;
+"""
+
+with open('src/components/CustomTripBuilder.tsx', 'w') as f:
+    f.write(content)
