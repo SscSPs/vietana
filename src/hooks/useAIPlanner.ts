@@ -7,7 +7,7 @@ export interface Message {
   type: 'bot' | 'user' | 'blueprint';
 }
 
-export const useAIPlanner = (initialDestination?: string) => {
+export const useAIPlanner = (initialDestination?: string, initialPrompt?: string) => {
   const { t } = useTranslation();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
@@ -40,6 +40,25 @@ export const useAIPlanner = (initialDestination?: string) => {
     });
   };
 
+  // We actually need a robust way to handle state if we are simulating an initial prompt.
+  // It's easier to just use the handleSend function after initialization.
+  const handleSendRef = useRef<((text?: string, cp?: Preferences, cm?: PlannerMode, cqi?: number) => Promise<void>) | null>(null);
+  handleSendRef.current = async (text: string = inputValue, currentPrefs = preferences, currentMode = plannerMode, currentQIdx = questionIndex) => {
+    if (!text.trim() || currentMode === 'FINISHED') return;
+    
+    setMessages(prev => [...prev, { text, type: 'user' }]);
+    setInputValue('');
+    setOptions([]);
+
+    const result = PlannerStateMachine.processInput(currentPrefs, currentMode, currentQIdx, text);
+    
+    setPreferences(result.updatedPreferences);
+    setPlannerMode(result.mode);
+    setQuestionIndex(result.questionIndex);
+    
+    enqueueBotMessages(result.nextBotMessages);
+  };
+
   const initialized = useRef(false);
 
   useEffect(() => {
@@ -52,23 +71,15 @@ export const useAIPlanner = (initialDestination?: string) => {
     setPlannerMode(initialState.mode);
     setQuestionIndex(initialState.questionIndex);
     enqueueBotMessages(initialState.nextBotMessages);
-  }, [initialDestination]);
 
-  const handleSend = async (text: string = inputValue) => {
-    if (!text.trim() || plannerMode === 'FINISHED') return;
-    
-    setMessages(prev => [...prev, { text, type: 'user' }]);
-    setInputValue('');
-    setOptions([]);
+    if (initialPrompt) {
+      setTimeout(() => {
+        handleSendRef.current(initialPrompt, initialState.updatedPreferences, initialState.mode, initialState.questionIndex);
+      }, 1500); // Send the prompt automatically after the bot's greeting
+    }
+  }, [initialDestination, initialPrompt, t.planner.greeting]);
 
-    const result = PlannerStateMachine.processInput(preferences, plannerMode, questionIndex, text);
-    
-    setPreferences(result.updatedPreferences);
-    setPlannerMode(result.mode);
-    setQuestionIndex(result.questionIndex);
-    
-    enqueueBotMessages(result.nextBotMessages);
-  };
+  const stableHandleSend = (text?: string) => handleSendRef.current?.(text);
 
   return {
     messages,
@@ -78,6 +89,6 @@ export const useAIPlanner = (initialDestination?: string) => {
     options,
     isFinished: plannerMode === 'FINISHED',
     preferences,
-    handleSend
+    handleSend: stableHandleSend
   };
 };

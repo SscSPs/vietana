@@ -112,11 +112,17 @@ const Packages: React.FC<PackagesProps> = ({ onOpenBuilder }) => {
         </div>
       </div>
       <Container className="relative z-10">
-        <SectionHeader 
-          label="Our Packages"
-          title="Inspiration, Not Fixed Products"
-          description="Every package is a starting point. We customize everything around your travel style."
-        />
+        <div className="mb-20 reveal text-center flex flex-col items-center">
+          <Heading as="h2" size="4xl" font="sans" className="inline-block mb-4 tracking-[0.1em] font-extrabold bg-gradient-to-r from-brand-gold via-brand-green to-brand-blue text-transparent bg-clip-text drop-shadow-sm uppercase">
+            Our Packages
+          </Heading>
+          <Heading as="h3" size="xl" className="font-serif font-light text-text-dark/80 tracking-wide max-w-2xl">
+            Inspiration, Not Fixed Products
+          </Heading>
+          <Text size="md" className="text-text-dark/60 mt-4 max-w-xl">
+            Every package is a starting point. We customize everything around your travel style.
+          </Text>
+        </div>
         
         <Grid cols={3} gap={8} className="max-w-6xl mx-auto">
           {(PACKAGES as PackageItem[]).map((p, i) => (

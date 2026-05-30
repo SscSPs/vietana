@@ -43,13 +43,15 @@ export default function App() {
   const [isBuilderOpen, setIsBuilderOpen] = useState(false);
   const [builderDestinations, setBuilderDestinations] = useState<string[]>([]);
   const [initialDestination, setInitialDestination] = useState<string | undefined>(undefined);
+  const [initialPrompt, setInitialPrompt] = useState<string | undefined>(undefined);
   const [isMagicModeOpen, setIsMagicModeOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navClass = useNavStyle(scrollY, isScrolled);
 
-  const openPlanner = (destination?: string) => {
+  const openPlanner = (destination?: string, prompt?: string) => {
     setInitialDestination(destination);
+    setInitialPrompt(prompt);
     setIsPlannerOpen(true);
   };
 
@@ -88,8 +90,9 @@ export default function App() {
           <Suspense>
             <AIPlanner 
               isOpen={isPlannerOpen} 
-              onClose={() => { setIsPlannerOpen(false); setInitialDestination(undefined); }} 
+              onClose={() => { setIsPlannerOpen(false); setInitialDestination(undefined); setInitialPrompt(undefined); }} 
               initialDestination={initialDestination}
+              initialPrompt={initialPrompt}
             />
           </Suspense>
         )}
@@ -112,6 +115,7 @@ export default function App() {
           isOpen={isBuilderOpen} 
           onClose={() => setIsBuilderOpen(false)} 
           initialDestinations={builderDestinations}
+          onOpenAIPlanner={(prompt) => openPlanner(undefined, prompt)}
         />
         <Contact 
           isOpen={isContactOpen}

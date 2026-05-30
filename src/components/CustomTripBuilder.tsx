@@ -12,9 +12,10 @@ interface CustomTripBuilderProps {
   isOpen: boolean;
   onClose: () => void;
   initialDestinations?: string[];
+  onOpenAIPlanner?: (prompt: string) => void;
 }
 
-const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose, initialDestinations = [] }) => {
+const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose, initialDestinations = [], onOpenAIPlanner }) => {
   const [selectedCities, setSelectedCities] = useState<string[]>(initialDestinations);
   const [style, setStyle] = useState<'budget' | 'comfort' | 'luxury'>('budget');
   const [days, setDays] = useState(7);
@@ -196,7 +197,7 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose, 
       </div>
 
       {/* FOOTER */}
-      <div className="p-8 border-t border-white/5 relative z-10 bg-black/30 backdrop-blur-3xl flex flex-col md:flex-row gap-6 items-center">
+      <div className="p-8 border-t border-white/5 relative z-10 bg-black/30 backdrop-blur-3xl flex flex-col md:flex-row gap-4 items-center">
         <div className="flex-1 w-full relative group">
             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 transition-colors group-focus-within:text-brand-gold flex items-center justify-center">
               <Icon name="Edit3" size={16} />
@@ -209,12 +210,29 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose, 
                className="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-12 pr-6 text-white text-sm outline-none focus:border-brand-gold/40 focus:bg-white/10 transition-all placeholder:text-white/30"
             />
         </div>
-        <Button 
-           className="w-full md:w-auto px-8 py-4 bg-brand-gold hover:bg-brand-gold-light text-brand-green-extra-dark font-bold tracking-widest uppercase text-xs rounded-xl shadow-gold transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap"
-           onClick={sendToWhatsApp}
-        >
-          <Icon name="MessageCircle" size={18} /> Send to WhatsApp
-        </Button>
+        
+        <div className="flex gap-4 w-full md:w-auto">
+          {onOpenAIPlanner && (
+            <Button 
+               variant="glass"
+               className="flex-1 md:flex-none px-6 py-4 bg-white/5 hover:bg-white/10 border border-white/20 text-white font-bold tracking-widest uppercase text-xs rounded-xl transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap"
+               onClick={() => {
+                 onClose();
+                 const details = `I'd like to plan a trip with the following parameters:\n- Destinations: ${selectedCities.length > 0 ? selectedCities.join(', ') : 'Not sure yet'}\n- Style: ${style}\n- Duration: ${days} Days\n- Travelers: ${pax} People\n- Special Notes: ${notes || 'None'}`;
+                 onOpenAIPlanner(details);
+               }}
+            >
+              <Icon name="Sparkles" size={18} /> Plan with AI
+            </Button>
+          )}
+
+          <Button 
+             className="flex-1 md:flex-none px-6 py-4 bg-brand-gold hover:bg-brand-gold-light text-brand-green-extra-dark font-bold tracking-widest uppercase text-xs rounded-xl shadow-gold transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap"
+             onClick={sendToWhatsApp}
+          >
+            <Icon name="MessageCircle" size={18} /> Send to WhatsApp
+          </Button>
+        </div>
       </div>
     </Modal>
   );

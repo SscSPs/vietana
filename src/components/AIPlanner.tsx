@@ -11,9 +11,10 @@ interface AIPlannerProps {
   isOpen: boolean;
   onClose: () => void;
   initialDestination?: string;
+  initialPrompt?: string;
 }
 
-const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestination }) => {
+const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestination, initialPrompt }) => {
   const { t } = useTranslation();
   const {
     messages,
@@ -24,7 +25,7 @@ const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestinati
     isFinished,
     preferences,
     handleSend
-  } = useAIPlanner(isOpen ? initialDestination : undefined);
+  } = useAIPlanner(isOpen ? initialDestination : undefined, isOpen ? initialPrompt : undefined);
 
   const pcMsgsRef = useRef<HTMLDivElement>(null);
 
