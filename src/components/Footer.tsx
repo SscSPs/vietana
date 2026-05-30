@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
                     <Text 
                       size="sm" 
                       variant="none"
-                      className="text-white/40 transition-colors duration-300 hover:text-brand-gold"
+                      className="text-white/70 transition-colors duration-300 hover:text-brand-gold"
                     >
                       {link}
                     </Text>

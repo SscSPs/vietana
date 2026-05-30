@@ -24,7 +24,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
     <div className={`mb-20 reveal ${centered ? 'text-center' : ''} ${className}`}>
       {label && (
         <Heading
-          as="h4"
+          as="div"
           size="xs"
           font="sans"
           className={`inline-block mb-5 tracking-[0.28em] uppercase ${isDark ? 'text-brand-gold-light' : 'text-brand-gold'}`}
