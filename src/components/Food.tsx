@@ -39,7 +39,7 @@ const FoodAccordion = ({
           <div className="w-10 h-10 rounded-full bg-brand-green/10 flex items-center justify-center text-brand-green">
             <Icon name={icon as any} size={20} />
           </div>
-          <Heading as="h4" size="lg" className="font-serif text-brand-green-dark m-0">{title}</Heading>
+          <Heading as="h4" size="lg" weight="medium" className="font-serif text-brand-green-dark m-0 tracking-wide">{title}</Heading>
         </div>
         <div className={`text-brand-green transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
           <Icon name="ChevronDown" size={24} />
@@ -62,8 +62,13 @@ const FoodAccordion = ({
               <div className="flex-1 pr-8">
                 <div className="flex items-center gap-2 mb-1">
                   <Text size="sm" variant="muted" weight="semibold" className="w-6 text-brand-gold/60">{idx + 1}.</Text>
-                  <Heading as="h5" size="md" className="font-serif text-brand-green-dark group-hover:text-brand-blue transition-colors m-0">
+                  <Heading as="h5" size="md" className="font-serif text-brand-green-dark group-hover:text-brand-blue transition-colors m-0 relative">
                     {item.name}
+                    
+                    {/* Hover Image Reveal */}
+                    <div className="absolute top-1/2 -translate-y-1/2 left-[110%] w-[150px] h-[150px] pointer-events-none z-50 hidden sm:block opacity-0 group-hover:opacity-100 transition-all duration-300 scale-90 group-hover:scale-100 shadow-xl rounded-full border-4 border-white overflow-hidden">
+                      <img src={item.img} alt={item.name} className="w-full h-full object-cover" />
+                    </div>
                   </Heading>
                 </div>
               </div>
@@ -104,12 +109,16 @@ const Food: React.FC = () => {
       <div className="absolute bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] bg-brand-green/5 rounded-full blur-[100px] pointer-events-none z-0" />
       
       <Container className="relative z-10">
-        <div className="text-center mb-16 reveal">
-          <SectionHeader 
-            label="🍛 Food (Indian & Vietnamese)"
-            title="Explore Vietnam through food"
-            description="From Indian comfort dishes to authentic Vietnamese flavours."
-          />
+        <div className="text-center mb-16 reveal flex flex-col items-center">
+          <Heading as="h2" size="4xl" font="serif" className="text-brand-green-dark mb-2">
+            🍛 Food
+          </Heading>
+          <Text size="lg" variant="accent" weight="medium" className="uppercase tracking-[0.2em] text-brand-gold mb-6">
+            Indian & Vietnamese
+          </Text>
+          <Text size="xl" variant="muted" className="max-w-2xl text-text-dark/80 font-light">
+            Explore Vietnam through food — from Indian comfort dishes to authentic Vietnamese flavours.
+          </Text>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
@@ -120,41 +129,34 @@ const Food: React.FC = () => {
             {/* Food Accordions */}
             <div className="mb-16 relative">
               <FoodAccordion 
-                title="VIETNAMESE VEGETARIAN" 
+                title="Vietnamese Vegetarian" 
                 icon="Leaf" 
                 items={VIETNAMESE_VEG_ITEMS} 
                 onSelectFood={setSelectedFood} 
                 setHoveredImage={setHoveredImage} 
               />
               <FoodAccordion 
-                title="VIETNAMESE NON-VEGETARIAN (No Beef)" 
+                title="Vietnamese Non-Vegetarian (No Beef)" 
                 icon="Drumstick" 
                 items={VIETNAMESE_NON_VEG_ITEMS} 
                 onSelectFood={setSelectedFood} 
                 setHoveredImage={setHoveredImage} 
               />
               <FoodAccordion 
-                title="INDIAN VEGETARIAN" 
+                title="Indian Vegetarian" 
                 icon="LeafyGreen" 
                 items={INDIAN_VEG_ITEMS} 
                 onSelectFood={setSelectedFood} 
                 setHoveredImage={setHoveredImage} 
               />
               <FoodAccordion 
-                title="INDIAN NON-VEGETARIAN (No Beef)" 
+                title="Indian Non-Vegetarian (No Beef)" 
                 icon="UtensilsCrossed" 
                 items={INDIAN_NON_VEG_ITEMS} 
                 onSelectFood={setSelectedFood} 
                 setHoveredImage={setHoveredImage} 
               />
 
-              {/* Floating Image Reveal (Option 5 Style) - Hidden on mobile, visible on LG when hovering */}
-              <div className="absolute top-[20%] -right-16 translate-x-full w-[300px] h-[300px] pointer-events-none z-50 hidden xl:block perspective-[1000px]">
-                <div 
-                  className={`w-full h-full rounded-full bg-cover bg-center transition-all duration-500 ease-out shadow-strong border-4 border-white rotate-y-[-10deg] rotate-x-[5deg] ${hoveredImage ? 'opacity-100 scale-100' : 'opacity-0 scale-90 translate-y-8'}`}
-                  style={{ backgroundImage: hoveredImage ? `url(${hoveredImage})` : 'none' }}
-                />
-              </div>
             </div>
 
             {/* Famous Cafes */}
@@ -181,33 +183,15 @@ const Food: React.FC = () => {
           <div className="w-full lg:w-[400px] xl:w-[450px] shrink-0 space-y-8 reveal delay-200">
             
             {/* The Spicy Spoon Card */}
-            <Card variant="white" padding="lg" className="flex flex-col items-center text-center shadow-medium border-brand-gold/10 relative overflow-hidden group">
+            <Card variant="white" padding="lg" className="flex flex-col items-center justify-center text-center shadow-medium border-brand-gold/10 relative overflow-hidden group min-h-[220px]">
               <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <img src="/spicy_spoon_new.png" alt="The Spicy Spoon" width="180" height="180" className="mb-6 mix-blend-multiply transition-transform group-hover:scale-105" />
-              <Heading as="h4" size="lg" className="font-serif text-brand-green-dark mb-2">
-                THE SPICY SPOON
-              </Heading>
-              <Text size="sm" variant="subtle" className="mb-4 italic">
-                Crafted with Indian Soul™
-              </Text>
-              <Badge variant="gold-filled" className="mb-6">
-                COMING SOON
-              </Badge>
-              <Text size="xs" variant="muted" className="border-t border-black/5 pt-4">
-                A new Indian dining experience by VIETANA™
-              </Text>
+              <img src="/spicy_spoon_new.png" alt="The Spicy Spoon" className="mix-blend-multiply transition-transform duration-500 group-hover:scale-105 max-h-[160px] object-contain" />
             </Card>
 
             {/* Mi Quang Co Vien Card */}
-            <Card variant="white" padding="lg" className="flex flex-col items-center text-center shadow-medium border-brand-green/10 relative overflow-hidden group">
+            <Card variant="white" padding="lg" className="flex flex-col items-center justify-center text-center shadow-medium border-brand-green/10 relative overflow-hidden group min-h-[220px]">
               <div className="absolute inset-0 bg-gradient-to-br from-brand-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <img src="/mi_quang_new.png" alt="Mì Quảng Cô Viên" width="160" height="160" className="mb-6 mix-blend-multiply transition-transform group-hover:scale-105" />
-              <Heading as="h4" size="lg" className="font-serif text-brand-green-dark mb-2">
-                MÌ QUẢNG CÔ VIÊN
-              </Heading>
-              <Text size="sm" variant="subtle" className="mb-6 italic">
-                Authentic Vietnamese Flavours™
-              </Text>
+              <img src="/mi_quang_new.png" alt="Mì Quảng Cô Viên" className="mb-6 mix-blend-multiply transition-transform duration-500 group-hover:scale-105 max-h-[120px] object-contain" />
               <Button 
                 variant="outline" 
                 size="sm" 
