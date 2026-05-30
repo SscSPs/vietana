@@ -27,11 +27,13 @@ const About: React.FC = () => {
         <div className="flex gap-8 animate-slide w-fit">
           {[...GALLERY, ...GALLERY].map((item, i) => (
             <div key={i} className="group w-[280px] h-[380px] md:w-[350px] md:h-[450px] rounded-xl overflow-hidden relative flex-shrink-0">
-              <div 
-                className="w-full h-full bg-cover bg-center transition-transform duration-700 ease-smooth group-hover:scale-110" 
-                style={{ backgroundImage: `url(${item.img})` }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8 opacity-0 group-hover:opacity-100 transition-opacity duration-400">
+              <div className="absolute inset-[-15%] z-0 scroll-parallax-slow">
+                <div 
+                  className="w-full h-full bg-cover bg-center transition-transform duration-700 ease-smooth group-hover:scale-110" 
+                  style={{ backgroundImage: `url(${item.img})` }}
+                />
+              </div>
+              <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8 opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none">
                 <Text variant="white" size="sm" weight="medium">{item.t}</Text>
               </div>
             </div>

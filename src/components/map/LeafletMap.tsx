@@ -2,7 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import ReactDOMServer from 'react-dom/server';
 import { MAP_DEFAULT_ROUTE } from '../../data/destinations';
+import Icon from '../ui/Icon';
 
 // Fix for Leaflet markers
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -58,7 +60,7 @@ const PlaneAnimation: React.FC<PlaneAnimationProps> = ({ routeCoords }) => {
     }, [routeCoords]);
 
     const planeIcon = L.divIcon({
-        html: `<div class="text-2xl drop-shadow-md" style="transform: rotate(${planeAngle}deg);">✈️</div>`,
+        html: `<div class="text-white drop-shadow-md" style="transform: rotate(${planeAngle}deg);">${ReactDOMServer.renderToString(<Icon name="Plane" size={24} className="fill-current" />)}</div>`,
         className: '',
         iconSize: [24, 24],
         iconAnchor: [12, 12]

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from '../contexts/LanguageContext';
-import { WHATSAPP_INDIA } from '../utils/whatsapp';
 import { FoodItem } from '../types';
-import { VEG_ITEMS, NON_VEG_ITEMS, CAFES } from '../data/food';
+import { VIETNAMESE_VEG_ITEMS, VIETNAMESE_NON_VEG_ITEMS, INDIAN_VEG_ITEMS, INDIAN_NON_VEG_ITEMS, CAFES } from '../data/food';
 import { MessagingService } from '../services/messagingService';
 import SectionHeader from './ui/SectionHeader';
 import Button from './ui/Button';
@@ -12,247 +11,351 @@ import Container from './ui/layout/Container';
 import Card from './ui/Card';
 import { Heading, Text } from './ui/Typography';
 import Badge from './ui/Badge';
+import Icon from './ui/Icon';
+
+// Accordion Component for Food Categories
+const FoodAccordion = ({ 
+  title, 
+  icon, 
+  items, 
+  onSelectFood, 
+  setHoveredImage 
+}: { 
+  title: string, 
+  icon: string, 
+  items: FoodItem[], 
+  onSelectFood: (item: FoodItem) => void,
+  setHoveredImage: (img: string | null) => void 
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="mb-4 bg-white/40 backdrop-blur-md border border-brand-blue/10 rounded-2xl overflow-hidden shadow-sm transition-all duration-300">
+      <button 
+        className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none hover:bg-white/50 transition-colors"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-brand-green/10 flex items-center justify-center text-brand-green">
+            <Icon name={icon as any} size={20} />
+          </div>
+          <Heading as="h4" size="lg" className="font-serif text-brand-green-dark m-0">{title}</Heading>
+        </div>
+        <div className={`text-brand-green transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
+          <Icon name="ChevronDown" size={24} />
+        </div>
+      </button>
+      
+      {/* Accordion Content - Fine Dining Minimalist Style */}
+      <div 
+        className={`transition-all duration-500 ease-in-out ${isOpen ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}
+      >
+        <div className="px-6 pb-6 pt-2 space-y-2">
+          {items.map((item, idx) => (
+            <div 
+              key={idx}
+              className="group flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 border-b border-black/5 cursor-pointer hover:border-brand-blue/30 transition-colors last:border-0"
+              onClick={() => onSelectFood(item)}
+              onMouseEnter={() => setHoveredImage(item.img)}
+              onMouseLeave={() => setHoveredImage(null)}
+            >
+              <div className="flex-1 pr-8">
+                <div className="flex items-center gap-2 mb-1">
+                  <Text size="sm" variant="muted" weight="semibold" className="w-6 text-brand-gold/60">{idx + 1}.</Text>
+                  <Heading as="h5" size="md" className="font-serif text-brand-green-dark group-hover:text-brand-blue transition-colors m-0">
+                    {item.name}
+                  </Heading>
+                </div>
+              </div>
+              <div className="hidden sm:flex items-center gap-2 text-brand-blue/60 group-hover:text-brand-blue transition-colors">
+                <Text size="xs" variant="accent" weight="semibold" className="uppercase tracking-widest">
+                  View
+                </Text>
+                <Icon name="ArrowRight" size={14} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 
 const Food: React.FC = () => {
   const { t } = useTranslation();
   const [selectedFood, setSelectedFood] = useState<FoodItem | null>(null);
+  const [selectedCafe, setSelectedCafe] = useState<typeof CAFES[0] | null>(null);
   const [foodPref, setFoodPref] = useState('');
+  const [hoveredImage, setHoveredImage] = useState<string | null>(null);
 
-  const openFoodModal = (item: FoodItem) => setSelectedFood(item);
-  const closeFoodModal = () => setSelectedFood(null);
+  const INDIAN_WHATSAPP = '+919953294543';
 
-  const PREF_OPTIONS = [
-    { label: '🥦 Pure Veg', value: 'I need pure veg options.' },
-    { label: '🧄 No Garlic/Onion', value: 'No garlic or onion please.' },
-    { label: '🌶️ Non-Spicy', value: 'I prefer non-spicy food.' },
-    { label: '🍤 No Seafood', value: 'No seafood or fish sauce.' },
-    { label: '🥩 Halal', value: 'I prefer Halal meat.' },
-  ];
-
-  const addPref = (val: string) => {
-    setFoodPref(prev => prev.includes(val) ? prev : prev ? `${prev} ${val}` : val);
+  const sendPreferences = () => {
+    const text = encodeURIComponent(`Hi VIETANA! Here are my food preferences for my upcoming trip:\n\n${foodPref}`);
+    window.open(`https://wa.me/${INDIAN_WHATSAPP}?text=${text}`, '_blank');
   };
 
   return (
-    <Section id="food" variant="warm" spacing="lg">
-      {/* Morphing Liquid Background Elements */}
-      <div className="absolute top-[30%] left-[5%] w-[45vw] h-[45vw] max-w-[600px] max-h-[600px] bg-brand-gold/5 rounded-full blur-[100px] animate-blob-float pointer-events-none z-0 mix-blend-multiply opacity-50" />
-      <div className="absolute bottom-[10%] right-[5%] w-[35vw] h-[35vw] max-w-[400px] max-h-[400px] bg-brand-green/5 rounded-full blur-[80px] animate-blob-float pointer-events-none z-0 mix-blend-multiply opacity-40" style={{ animationDelay: '4s' }} />
-
-      <div className="absolute top-8 -right-4 font-serif text-[clamp(5rem,14vw,13rem)] font-light text-black opacity-[0.03] tracking-wider pointer-events-none select-none z-0 whitespace-nowrap">
-        {t.food.title}
-      </div>
+    <Section id="food" variant="white" spacing="lg" className="relative overflow-hidden">
+      
+      {/* Bright Theme Soft Accents */}
+      <div className="absolute top-[10%] left-[-10%] w-[50vw] h-[50vw] bg-brand-blue/5 rounded-full blur-[100px] pointer-events-none z-0" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] bg-brand-green/5 rounded-full blur-[100px] pointer-events-none z-0" />
       
       <Container className="relative z-10">
-        <div className="flex flex-col lg:flex-row gap-20 items-start">
+        <div className="text-center mb-16 reveal">
+          <SectionHeader 
+            label="🍛 Food (Indian & Vietnamese)"
+            title="Explore Vietnam through food"
+            description="From Indian comfort dishes to authentic Vietnamese flavours."
+          />
+        </div>
+
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
           
-          {/* LEFT SIDE: Brands */}
-          <div className="flex-[0.8] min-w-[320px] w-full reveal">
-            <SectionHeader 
-              label={t.food.title}
-              title={t.food.heading}
-              centered={false}
-              className="mb-14"
-            />
-            <Card variant="white" padding="lg" className="flex flex-col items-center justify-center gap-16 shadow-medium mt-8">
-              <div className="flex flex-col items-center text-center w-full">
-                <img src="/spicy_spoon_new.png" alt="The Spicy Spoon" width="220" height="220" className="max-w-[220px] h-auto mb-6 mix-blend-multiply" />
-                <Text size="md" variant="subtle" weight="semibold" className="uppercase tracking-widest text-brand-gold-muted mb-4">
-                  BY INDIANS &lt; FOR THE INDIANS
-                </Text>
-                <Badge variant="gold-filled">
-                  Coming Soon
-                </Badge>
-              </div>
-              <div className="flex flex-col items-center text-center w-full pt-8 border-t border-black/5">
-                <a href="https://www.google.com/maps/search/Mì+Quảng+Cô+Viên" target="_blank" rel="noreferrer" className="group no-underline flex flex-col items-center">
-                  <img src="/mi_quang_new.png" alt="Mì Quảng Cô Viên" width="220" height="220" className="max-w-[220px] h-auto mb-6 mix-blend-multiply" />
-                  <Text size="sm" variant="subtle" weight="medium" className="text-black/60 italic mb-6 max-w-xs">
-                    "we own, VIETNAMESE central food, currently 4 restaurents."
-                  </Text>
-                  <Button variant="outline" size="sm" className="w-[160px] tracking-[0.1em]">
-                    View on Map 📍
-                  </Button>
-                </a>
-              </div>
-            </Card>
-          </div>
+          {/* LEFT SIDE: Food Guide & Cafes */}
+          <div className="flex-1 w-full reveal">
+            
+            {/* Food Accordions */}
+            <div className="mb-16 relative">
+              <FoodAccordion 
+                title="VIETNAMESE VEGETARIAN" 
+                icon="Leaf" 
+                items={VIETNAMESE_VEG_ITEMS} 
+                onSelectFood={setSelectedFood} 
+                setHoveredImage={setHoveredImage} 
+              />
+              <FoodAccordion 
+                title="VIETNAMESE NON-VEGETARIAN (No Beef)" 
+                icon="Drumstick" 
+                items={VIETNAMESE_NON_VEG_ITEMS} 
+                onSelectFood={setSelectedFood} 
+                setHoveredImage={setHoveredImage} 
+              />
+              <FoodAccordion 
+                title="INDIAN VEGETARIAN" 
+                icon="LeafyGreen" 
+                items={INDIAN_VEG_ITEMS} 
+                onSelectFood={setSelectedFood} 
+                setHoveredImage={setHoveredImage} 
+              />
+              <FoodAccordion 
+                title="INDIAN NON-VEGETARIAN (No Beef)" 
+                icon="UtensilsCrossed" 
+                items={INDIAN_NON_VEG_ITEMS} 
+                onSelectFood={setSelectedFood} 
+                setHoveredImage={setHoveredImage} 
+              />
 
-          {/* RIGHT SIDE: Food Lists */}
-          <div className="flex-[1.2] min-w-[320px] w-full reveal delay-200">
-            
-            <div className="mb-14">
-              <Heading as="h3" size="lg" variant="accent" className="mb-5 border-b border-brand-gold/20 pb-2.5">
-                Indian Vegan Dishes
-              </Heading>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none h-[400px] overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-brand-gold/30">
-                {VEG_ITEMS.map((item, i) => (
-                  <li key={i} className="flex">
-                    <Text 
-                      as="span"
-                      size="sm"
-                      variant="muted"
-                      weight="medium"
-                      className="cursor-pointer transition-all duration-300 flex items-center gap-2 hover:text-brand-gold-muted hover:translate-x-1.5" 
-                      onClick={() => openFoodModal(item)}
-                    >
-                      <span className="text-brand-gold text-lg">⭐</span> {item.name}
-                    </Text>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            
-            <div className="mb-14">
-              <Heading as="h3" size="lg" variant="accent" className="mb-5 border-b border-brand-gold/20 pb-2.5">
-                Indian Non-Vegan Dishes
-              </Heading>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none h-[400px] overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-brand-gold/30">
-                {NON_VEG_ITEMS.map((item, i) => (
-                  <li key={i} className="flex">
-                    <Text 
-                      as="span"
-                      size="sm"
-                      variant="muted"
-                      weight="medium"
-                      className="cursor-pointer transition-all duration-300 flex items-center gap-2 hover:text-brand-gold-muted hover:translate-x-1.5" 
-                      onClick={() => openFoodModal(item)}
-                    >
-                      <span className="text-brand-gold text-lg">⭐</span> {item.name}
-                    </Text>
-                  </li>
-                ))}
-              </ul>
+              {/* Floating Image Reveal (Option 5 Style) - Hidden on mobile, visible on LG when hovering */}
+              <div className="absolute top-[20%] -right-16 translate-x-full w-[300px] h-[300px] pointer-events-none z-50 hidden xl:block perspective-[1000px]">
+                <div 
+                  className={`w-full h-full rounded-full bg-cover bg-center transition-all duration-500 ease-out shadow-strong border-4 border-white rotate-y-[-10deg] rotate-x-[5deg] ${hoveredImage ? 'opacity-100 scale-100' : 'opacity-0 scale-90 translate-y-8'}`}
+                  style={{ backgroundImage: hoveredImage ? `url(${hoveredImage})` : 'none' }}
+                />
+              </div>
             </div>
 
-            <div>
-              <Heading as="h3" size="lg" variant="accent" className="mb-5 border-b border-brand-gold/20 pb-2.5">
-                Famous Cafes
+            {/* Famous Cafes */}
+            <div className="bg-white/40 backdrop-blur-md p-8 rounded-3xl border border-brand-blue/10 shadow-sm reveal">
+              <Heading as="h3" size="lg" className="font-serif text-brand-green-dark mb-6 border-b border-black/5 pb-4">
+                FAMOUS CAFÉS
               </Heading>
               <div className="flex flex-wrap gap-3">
                 {CAFES.map((cafe, i) => (
-                  <div key={i} className="bg-brand-gold/8 px-5 py-2.5 rounded-full border border-brand-gold/15 flex items-center">
-                    <Text size="sm" variant="muted" weight="semibold">
-                      {cafe}
-                    </Text>
-                  </div>
+                  <button 
+                    key={i} 
+                    onClick={() => setSelectedCafe(cafe)}
+                    className="bg-white hover:bg-brand-blue/5 border border-brand-blue/10 px-5 py-2.5 rounded-full text-brand-green-dark text-sm font-medium transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5"
+                  >
+                    {cafe.name}
+                  </button>
                 ))}
               </div>
             </div>
+
+          </div>
+
+          {/* RIGHT SIDE: Brands & Preferences */}
+          <div className="w-full lg:w-[400px] xl:w-[450px] shrink-0 space-y-8 reveal delay-200">
+            
+            {/* The Spicy Spoon Card */}
+            <Card variant="white" padding="lg" className="flex flex-col items-center text-center shadow-medium border-brand-gold/10 relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <img src="/spicy_spoon_new.png" alt="The Spicy Spoon" width="180" height="180" className="mb-6 mix-blend-multiply transition-transform group-hover:scale-105" />
+              <Heading as="h4" size="lg" className="font-serif text-brand-green-dark mb-2">
+                THE SPICY SPOON
+              </Heading>
+              <Text size="sm" variant="subtle" className="mb-4 italic">
+                Crafted with Indian Soul™
+              </Text>
+              <Badge variant="gold-filled" className="mb-6">
+                COMING SOON
+              </Badge>
+              <Text size="xs" variant="muted" className="border-t border-black/5 pt-4">
+                A new Indian dining experience by VIETANA™
+              </Text>
+            </Card>
+
+            {/* Mi Quang Co Vien Card */}
+            <Card variant="white" padding="lg" className="flex flex-col items-center text-center shadow-medium border-brand-green/10 relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <img src="/mi_quang_new.png" alt="Mì Quảng Cô Viên" width="160" height="160" className="mb-6 mix-blend-multiply transition-transform group-hover:scale-105" />
+              <Heading as="h4" size="lg" className="font-serif text-brand-green-dark mb-2">
+                MÌ QUẢNG CÔ VIÊN
+              </Heading>
+              <Text size="sm" variant="subtle" className="mb-6 italic">
+                Authentic Vietnamese Flavours™
+              </Text>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="w-full flex items-center justify-center gap-2 border-brand-green/30 text-brand-green hover:bg-brand-green/5"
+                onClick={() => window.open("https://www.google.com/maps/search/Mì+Quảng+Cô+Viên", "_blank")}
+              >
+                View on Maps <Icon name="MapPin" size={16} />
+              </Button>
+            </Card>
+
+            {/* Food Preferences */}
+            <Card variant="white" padding="lg" className="shadow-medium border-brand-blue/10 bg-white/60 backdrop-blur-md">
+              <div className="flex items-center gap-3 mb-6">
+                <Icon name="MessageSquare" size={20} className="text-brand-blue" />
+                <Heading as="h4" size="md" className="font-serif text-brand-green-dark m-0">
+                  Share Your Food Preferences
+                </Heading>
+              </div>
+              
+              <textarea 
+                value={foodPref} 
+                onChange={(e) => setFoodPref(e.target.value)}
+                placeholder="Vegetarian?&#10;Jain?&#10;Halal?&#10;Food allergies?&#10;Need Indian food daily?&#10;Want local food recommendations?&#10;&#10;Tell us anything." 
+                className="w-full h-48 p-4 border border-black/10 rounded-xl mb-6 font-inherit text-sm resize-none bg-white/50 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all placeholder:text-black/30 shadow-inner"
+              />
+              
+              <Button 
+                className="w-full bg-brand-whatsapp text-white hover:bg-brand-whatsapp/90 border-none shadow-whatsapp hover:shadow-whatsapp-hover"
+                onClick={sendPreferences}
+                icon={<Icon name="MessageCircle" size={18} />}
+              >
+                Send to WhatsApp India
+              </Button>
+            </Card>
+
           </div>
         </div>
 
         {/* BOTTOM SECTION */}
-        <div className="mt-24 flex flex-col md:flex-row justify-between items-end gap-12 border-t border-black/5 pt-16 reveal">
-          <Heading as="h3" size="lg" weight="semibold" className="flex-1 min-w-[300px] !text-brand-green leading-relaxed">
-            We own, partner, and connect with restaurants across Vietnam.<br />
-            So you never have to worry about where to eat.
+        <div className="mt-24 text-center border-t border-black/5 pt-16 max-w-3xl mx-auto reveal">
+          <Heading as="h3" size="lg" weight="medium" className="text-brand-green-dark leading-relaxed mb-4">
+            We own, partner and work closely with restaurants across Vietnam — so you'll never have to worry about where to eat.
           </Heading>
-          
-          <div className="flex-1 min-w-[300px] w-full flex justify-end">
-            <Card variant="white" padding="md" className="w-full max-w-md">
-              <Text variant="primary" weight="bold" className="mb-4">
-                Share your food preferences
-              </Text>
-              
-              <div className="flex flex-wrap gap-2 mb-4">
-                {PREF_OPTIONS.map((opt, i) => (
-                  <button
-                    key={i}
-                    onClick={() => addPref(opt.value)}
-                    className="px-3 py-1.5 rounded-full border border-brand-green/10 bg-brand-green/5 text-brand-green text-xs font-medium hover:bg-brand-gold/10 hover:border-brand-gold hover:text-brand-gold-dark transition-all cursor-pointer"
-                  >
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-
-              <textarea 
-                value={foodPref} 
-                onChange={(e) => setFoodPref(e.target.value)}
-                placeholder="E.g., I need pure veg options, no garlic/onion..." 
-                className="w-full h-32 p-4 border border-gray-100 rounded-xl mb-6 font-inherit text-sm resize-none bg-gray-50 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-all"
-              />
-              <Button 
-                className="w-full bg-brand-whatsapp text-white hover:bg-brand-whatsapp/90 border-none shadow-whatsapp hover:shadow-whatsapp-hover"
-                onClick={() => window.open(MessagingService.generateFoodPreferencesWhatsApp(foodPref), '_blank')}
-                icon={<span>💬</span>}
-              >
-                Send to WhatsApp
-              </Button>
-            </Card>
-          </div>
+          <Text variant="subtle" size="sm" weight="bold" className="uppercase tracking-widest text-brand-gold">
+            Travel Gets Better with VIETANA™
+          </Text>
         </div>
       </Container>
 
+      {/* DISH MODAL */}
       <Modal 
         isOpen={!!selectedFood} 
-        onClose={closeFoodModal}
+        onClose={() => setSelectedFood(null)}
         maxWidth="max-w-xl"
         className="overflow-hidden"
         variant="light"
       >
         {selectedFood && (
-          <div className="flex flex-col">
-            <div className="relative h-80 w-full overflow-hidden">
+          <div className="flex flex-col bg-white">
+            <div className="relative h-64 sm:h-80 w-full overflow-hidden">
               <img 
                 src={selectedFood.img} 
                 alt={selectedFood.name} 
-                className="w-full h-full object-cover transition-transform duration-700 hover:scale-110" 
+                className="w-full h-full object-cover" 
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              <div className="absolute bottom-6 left-8 right-8 text-white">
-                <Heading as="h3" size="xl" font="serif" variant="none" className="mb-2 drop-shadow-md">
-                  {selectedFood.name}
-                </Heading>
-                <div className="flex flex-wrap gap-2">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+              <div className="absolute bottom-6 left-8 right-8">
+                <div className="flex flex-wrap gap-2 mb-3">
                   {selectedFood.tags?.map((tag: string, i: number) => (
-                    <Badge key={i} variant="gold" className="!bg-brand-gold/20 !border-brand-gold/40 !text-white text-[10px] py-1">
+                    <Badge key={i} variant="gold" className="!bg-white/20 backdrop-blur-md !border-white/30 !text-white text-[10px] py-1">
                       {tag}
                     </Badge>
                   ))}
                 </div>
+                <Heading as="h3" size="xl" font="serif" variant="white" className="drop-shadow-md m-0 leading-tight">
+                  {selectedFood.name}
+                </Heading>
               </div>
             </div>
-            <div className="p-10 bg-surface-cream/50">
-              <div className="flex items-center gap-4 mb-6 pb-6 border-b border-brand-green/5">
-                <div className="w-12 h-12 rounded-full bg-brand-gold/10 flex items-center justify-center text-xl">
-                  🥣
+            <div className="p-8 sm:p-10">
+              <div className="mb-8">
+                <Text size="xs" variant="accent" weight="bold" className="uppercase tracking-widest text-brand-blue mb-2">
+                  Ingredients / Description
+                </Text>
+                <Text variant="primary" size="lg" className="leading-relaxed text-text-dark/90 font-light">
+                  {selectedFood.desc}
+                </Text>
+              </div>
+              
+              <div className="bg-brand-green/5 border border-brand-green/10 rounded-xl p-4 mb-8 flex items-start gap-4">
+                <div className="text-brand-green mt-1">
+                  <Icon name="MapPin" size={20} />
                 </div>
                 <div>
-                  <Text size="xs" variant="muted" weight="bold" className="uppercase tracking-widest mb-1">
-                    Authentic Recipe
-                  </Text>
-                  <Text size="sm" weight="medium" className="text-brand-green-dark">
-                    Local Specialty
-                  </Text>
+                  <Text size="sm" weight="bold" className="text-brand-green-dark mb-1">Where to try it in Vietnam</Text>
+                  <Text size="sm" variant="subtle">Available at our trusted partner restaurants and exclusive VIETANA curated food tours across the country.</Text>
                 </div>
               </div>
-              <Text variant="primary" size="lg" className="leading-relaxed text-text-dark/90">
-                {selectedFood.desc}
-              </Text>
-              
-              <div className="mt-10 flex gap-4">
-                <Button 
-                  className="flex-1"
-                  onClick={() => window.open(MessagingService.generateFoodInterestWhatsApp(selectedFood.name), '_blank')}
-                >
-                  Plan with this Dish
-                </Button>
-                <Button 
-                  variant="outline"
-                  onClick={closeFoodModal}
-                >
-                  Close
-                </Button>
-              </div>
+
+              <Button 
+                className="w-full"
+                onClick={() => window.open(MessagingService.generateFoodInterestWhatsApp(selectedFood.name), '_blank')}
+              >
+                Plan a Trip with this Dish
+              </Button>
             </div>
           </div>
         )}
       </Modal>
+
+      {/* CAFE MODAL */}
+      <Modal 
+        isOpen={!!selectedCafe} 
+        onClose={() => setSelectedCafe(null)}
+        maxWidth="max-w-sm"
+        className="overflow-hidden rounded-3xl"
+        variant="light"
+      >
+        {selectedCafe && (
+          <div className="flex flex-col bg-white">
+            <div className="relative h-48 w-full overflow-hidden">
+              <img 
+                src={selectedCafe.img} 
+                alt={selectedCafe.name} 
+                className="w-full h-full object-cover" 
+              />
+            </div>
+            <div className="p-8 text-center">
+              <Heading as="h3" size="xl" font="serif" className="text-brand-green-dark mb-4">
+                {selectedCafe.name}
+              </Heading>
+              <Text variant="subtle" size="sm" className="mb-8">
+                {selectedCafe.desc}
+              </Text>
+              <Button 
+                variant="outline"
+                className="w-full flex items-center justify-center gap-2 border-brand-blue/30 text-brand-blue hover:bg-brand-blue/5"
+                onClick={() => window.open(`https://www.google.com/maps/search/${encodeURIComponent(selectedCafe.mapQuery || selectedCafe.name)}`, '_blank')}
+              >
+                View on Maps <Icon name="MapPin" size={16} />
+              </Button>
+            </div>
+          </div>
+        )}
+      </Modal>
+
     </Section>
   );
 };
 
 export default Food;
-

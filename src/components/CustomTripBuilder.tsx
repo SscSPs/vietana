@@ -6,6 +6,7 @@ import { MessagingService } from '../services/messagingService';
 import Modal from './ui/Modal';
 import Button from './ui/Button';
 import { Heading, Text } from './ui/Typography';
+import Icon from './ui/Icon';
 
 interface CustomTripBuilderProps {
   isOpen: boolean;
@@ -76,7 +77,7 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose, 
         {/* LEFT: Destinations */}
         <div className="flex-1 md:flex-[0.55] p-10 border-r border-white/5 flex flex-col gap-8">
           <Heading as="h3" variant="none" className="text-brand-gold/70 uppercase tracking-[0.2em] text-xs font-semibold flex items-center gap-3">
-            <span>📍</span> Destinations
+            <Icon name="MapPin" size={16} /> Destinations
           </Heading>
           
           <div className="grid grid-cols-2 gap-4">
@@ -110,7 +111,7 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose, 
         {/* RIGHT: Settings & Estimate */}
         <div className="flex-1 md:flex-[0.45] p-10 glass-dark bg-black/40 flex flex-col shadow-inner border-l border-white/5 rounded-none border-t-0 border-r-0 border-b-0">
            <Heading as="h3" variant="none" className="text-white/40 uppercase tracking-[0.2em] text-xs font-semibold mb-8 flex items-center gap-3">
-              <span>⚙️</span> Trip Parameters
+              <Icon name="Settings" size={16} /> Trip Parameters
            </Heading>
 
            {/* Travel Style */}
@@ -165,21 +166,21 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose, 
              
              <div className="flex flex-col gap-4">
                 <div className="flex justify-between items-center">
-                  <Text variant="none" className="text-white/60 text-sm font-light tracking-wide">✈️ Flights (IN ↔ VN)</Text>
+                  <Text variant="none" className="text-white/60 text-sm font-light tracking-wide flex items-center gap-2"><Icon name="Plane" size={14} className="text-brand-gold/60"/> Flights (IN ↔ VN)</Text>
                   <Text variant="none" className="text-white/90 text-sm font-mono tracking-wider">₹{estimate.flight.toLocaleString('en-IN')}</Text>
                 </div>
                 <div className="flex justify-between items-center">
-                  <Text variant="none" className="text-white/60 text-sm font-light tracking-wide">🛂 E-Visa</Text>
+                  <Text variant="none" className="text-white/60 text-sm font-light tracking-wide flex items-center gap-2"><Icon name="Passport" size={14} className="text-brand-gold/60"/> E-Visa</Text>
                   <Text variant="none" className="text-white/90 text-sm font-mono tracking-wider">₹{estimate.visa.toLocaleString('en-IN')}</Text>
                 </div>
                 <div className="flex justify-between items-center">
                   <Text variant="none" className="text-white/60 text-sm font-light tracking-wide flex items-center gap-2">
-                    🚄 Transit <span className="text-brand-gold/40 text-[0.55rem] uppercase tracking-widest">₹3k/hop</span>
+                    <Icon name="Train" size={14} className="text-brand-gold/60"/> Transit <span className="text-brand-gold/40 text-[0.55rem] uppercase tracking-widest">₹3k/hop</span>
                   </Text>
                   <Text variant="none" className="text-white/90 text-sm font-mono tracking-wider">₹{estimate.transit.toLocaleString('en-IN')}</Text>
                 </div>
                 <div className="flex justify-between items-center">
-                  <Text variant="none" className="text-white/60 text-sm font-light tracking-wide">🏨 Daily Expenses</Text>
+                  <Text variant="none" className="text-white/60 text-sm font-light tracking-wide flex items-center gap-2"><Icon name="Building" size={14} className="text-brand-gold/60"/> Daily Expenses</Text>
                   <Text variant="none" className="text-white/90 text-sm font-mono tracking-wider">₹{estimate.daily.toLocaleString('en-IN')}</Text>
                 </div>
                 
@@ -197,7 +198,9 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose, 
       {/* FOOTER */}
       <div className="p-8 border-t border-white/5 relative z-10 bg-black/30 backdrop-blur-3xl flex flex-col md:flex-row gap-6 items-center">
         <div className="flex-1 w-full relative group">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 transition-colors group-focus-within:text-brand-gold">📝</span>
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 transition-colors group-focus-within:text-brand-gold flex items-center justify-center">
+              <Icon name="Edit3" size={16} />
+            </span>
             <input 
                type="text"
                value={notes}
@@ -207,10 +210,10 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose, 
             />
         </div>
         <Button 
-           className="w-full md:w-auto px-8 py-4 bg-brand-gold hover:bg-brand-gold-light text-brand-green-extra-dark font-bold tracking-widest uppercase text-xs rounded-xl shadow-gold transition-all duration-300 flex items-center justify-center gap-3 whitespace-nowrap"
+           className="w-full md:w-auto px-8 py-4 bg-brand-gold hover:bg-brand-gold-light text-brand-green-extra-dark font-bold tracking-widest uppercase text-xs rounded-xl shadow-gold transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap"
            onClick={sendToWhatsApp}
         >
-          💬 Send to WhatsApp
+          <Icon name="MessageCircle" size={18} /> Send to WhatsApp
         </Button>
       </div>
     </Modal>

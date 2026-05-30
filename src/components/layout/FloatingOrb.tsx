@@ -28,7 +28,7 @@ const FloatingOrb: React.FC<FloatingOrbProps> = ({ onClick }) => {
       <div className="absolute inset-[-10px] rounded-full bg-[radial-gradient(circle,rgba(201,168,76,0.15)_0%,transparent_70%)] animate-orb-glow" />
       
       <div className="absolute text-xl drop-shadow-[0_0_5px_var(--color-brand-gold)] animate-orb-spin">
-        ✨
+        <Icon name="Sparkles" />
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { MAGIC_DESTINATIONS, MAGIC_MODE_SLIDES } from '../data/magicMode';
 import Button from './ui/Button';
 import { Heading, Text } from './ui/Typography';
 import Card from './ui/Card';
+import Icon from './ui/Icon';
 
 interface MagicModeProps {
   isOpen: boolean;
@@ -110,7 +111,7 @@ const MagicMode: React.FC<MagicModeProps> = ({ isOpen, onClose, onOpenPlanner })
           onClick={handleOrbClick}
         >
           <div className="w-72 h-72 rounded-full bg-white/5 border border-brand-gold/25 backdrop-blur-3xl flex flex-col items-center justify-center text-center p-6 shadow-deep hover:border-brand-gold/45 transition-all duration-300 overflow-hidden">
-            <Heading as="h2" size="lg" variant="white" className="font-bold mb-2 drop-shadow-[0_2px_10px_rgba(255,255,255,0.3)]">✨ Touch Vietnam</Heading>
+            <Heading as="h2" size="lg" variant="white" className="font-bold mb-2 drop-shadow-[0_2px_10px_rgba(255,255,255,0.3)] flex items-center justify-center gap-2"><Icon name="Sparkles" size={24} /> Touch Vietnam</Heading>
             <Text variant="white" className="opacity-80 leading-relaxed">Not all journeys begin with a destination.<br />Some begin with a feeling.</Text>
           </div>
         </div>
@@ -155,10 +156,12 @@ const MagicMode: React.FC<MagicModeProps> = ({ isOpen, onClose, onOpenPlanner })
         <Text variant="white" size="lg" className="leading-relaxed mb-8 whitespace-pre-line">
           {selectedDest?.desc}
         </Text>
-        <Button variant="primary" className="w-full py-3" onClick={handleExploreFeeling}>
-          Explore this destination →
+        <Button variant="primary" className="w-full py-3 flex items-center justify-center gap-2" onClick={handleExploreFeeling}>
+          Explore this destination <Icon name="ChevronRight" size={18} />
         </Button>
-        <button className="absolute top-4 right-5 bg-transparent border-none text-white text-3xl cursor-pointer opacity-60 hover:opacity-100 transition-opacity" onClick={() => setSelectedDest(null)}>×</button>
+        <button className="absolute top-4 right-5 bg-transparent border-none text-white cursor-pointer opacity-60 hover:opacity-100 transition-opacity flex items-center justify-center" onClick={() => setSelectedDest(null)}>
+          <Icon name="X" size={24} />
+        </button>
       </Card>
 
       {/* FLASH EFFECT */}
@@ -168,9 +171,11 @@ const MagicMode: React.FC<MagicModeProps> = ({ isOpen, onClose, onOpenPlanner })
       <div className="absolute bottom-8 w-full flex flex-col items-center gap-4 z-30 opacity-0 animate-fade-in [animation-delay:1s] pointer-events-auto">
         <div className="flex items-center gap-3 opacity-80">
           <Text size="sm" variant="white">Not sure?</Text>
-          <Button size="sm" onClick={() => handleClose(() => onOpenPlanner())}>✨ Let VIETANA™ understand you</Button>
+          <Button size="sm" className="flex items-center justify-center gap-2" onClick={() => handleClose(() => onOpenPlanner())}>
+            <Icon name="Sparkles" size={16} /> Let VIETANA™ understand you
+          </Button>
         </div>
-        <Button variant="glass" size="sm" className="px-4 py-1.5" onClick={() => handleClose()}>Return to reality ↩</Button>
+        <Button variant="glass" size="sm" className="px-4 py-1.5 flex items-center justify-center gap-2" onClick={() => handleClose()}>Return to reality</Button>
       </div>
     </div>
   );

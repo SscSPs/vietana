@@ -10,9 +10,11 @@ import Container from './ui/layout/Container';
 import Grid from './ui/Grid';
 import Card from './ui/Card';
 import { Heading, Text } from './ui/Typography';
+import Icon, { IconName } from './ui/Icon';
 
 interface ServiceModalItem {
   key: string;
+  iconName: IconName;
   title: string;
   content: string;
   cta: string;
@@ -22,65 +24,74 @@ interface ServiceModalItem {
 const SERVICE_MODAL_DATA: ServiceModalItem[] = [
   {
     key: 'visa',
-    title: "📋 Visa Assistance — VIETANA™",
+    iconName: 'ClipboardList',
+    title: "Visa Assistance — VIETANA™",
     content: "<strong>Documents</strong><br>✓ Passport (6+ months)<br>✓ Passport photo<br>✓ Passport scan<br>✓ Travel dates<br><br><strong>Time</strong><br>⏱ 3–5 working days<br>⚡ Urgent: 24–48 hrs<br><br><strong>Official:</strong><br><a href='https://evisa.gov.vn' target='_blank'>https://evisa.gov.vn</a>",
-    cta: "💬 VIETANA™ can guide you",
+    cta: "VIETANA™ can guide you",
     action: 'whatsapp'
   },
   {
     key: 'planning',
-    title: "🗺️ Custom Planning — VIETANA™",
+    iconName: 'Map',
+    title: "Custom Planning — VIETANA™",
     content: "<strong>Perfect for</strong><br>💕 Honeymoon<br>👨‍👩‍👧 Family<br>✨ Luxury<br>🌴 Hidden experiences<br><br><strong>Built around</strong><br>💰 Budget<br>🍛 Food<br>🎯 Travel style",
-    cta: "✨🤖 Plan with VIETANA™",
+    cta: "Plan with VIETANA™",
     action: 'planner'
   },
   {
     key: 'pickup',
-    title: "🚗 Airport Pickup — VIETANA™",
+    iconName: 'Car',
+    title: "Airport Pickup — VIETANA™",
     content: "<strong>Included</strong><br>✓ AC vehicle<br>✓ Flight tracking<br>✓ Hotel drop-off<br>✓ Arrival assistance<br><br>🚘 Sedan • SUV • Van",
-    cta: "💬 Book with VIETANA™",
+    cta: "Book with VIETANA™",
     action: 'whatsapp'
   },
   {
     key: 'hotel',
-    title: "🏨 Hotel Booking — VIETANA™",
+    iconName: 'Building',
+    title: "Hotel Booking — VIETANA™",
     content: "<strong>Stay options</strong><br>✓ Budget<br>✓ Premium<br>✓ Family<br>✓ Honeymoon<br><br>🍛 Indian food nearby available",
-    cta: "✨🤖 Find my stay with VIETANA™",
+    cta: "Find my stay with VIETANA™",
     action: 'planner'
   },
   {
     key: 'sim',
-    title: "📶 SIM & Travel Essentials — VIETANA™",
+    iconName: 'Wifi',
+    title: "SIM & Travel Essentials — VIETANA™",
     content: "<strong>Ready instantly</strong><br>✓ eSIM support<br>✓ Local SIM<br>✓ Grab setup<br>✓ Maps help<br><br>📱 Stay connected from arrival",
-    cta: "💬 Setup with VIETANA™",
+    cta: "Setup with VIETANA™",
     action: 'whatsapp'
   },
   {
     key: 'tickets',
-    title: "🎫 Tickets & Guides — VIETANA™",
+    iconName: 'Ticket',
+    title: "Tickets & Guides — VIETANA™",
     content: "<strong>Popular bookings</strong><br>✓ Ba Na Hills<br>✓ Ha Long Cruise<br>✓ VinWonders<br>✓ Local guides<br><br>🎟 Book before landing",
-    cta: "💬 Reserve with VIETANA™",
+    cta: "Reserve with VIETANA™",
     action: 'whatsapp'
   },
   {
     key: 'food',
-    title: "🍛 Food Support — VIETANA™",
+    iconName: 'Soup',
+    title: "Food Support — VIETANA™",
     content: "<strong>Available</strong><br>✓ Vegetarian<br>✓ Jain<br>✓ North Indian<br>✓ South Indian<br><br>🍜 Hidden food recommendations included",
-    cta: "✨🤖 Eat better with VIETANA™",
+    cta: "Eat better with VIETANA™",
     action: 'planner'
   },
   {
     key: 'tailored',
-    title: "✨ Tailored Experiences — VIETANA™",
+    iconName: 'Sparkles',
+    title: "Tailored Experiences — VIETANA™",
     content: "<strong>Choose your vibe</strong><br>💕 Honeymoon<br>🌃 Nightlife<br>📸 Hidden gems<br>👨‍👩‍👧 Family journeys<br><br>🌴 Built around you",
-    cta: "✨🤖 Travel your way with VIETANA™",
+    cta: "Travel your way with VIETANA™",
     action: 'planner'
   },
   {
     key: 'support',
-    title: "🛡️ Local Support — VIETANA™",
+    iconName: 'ShieldCheck',
+    title: "Local Support — VIETANA™",
     content: "<strong>Always available</strong><br>✓ Hindi & English<br>✓ India + Vietnam support<br>✓ Local guidance<br><br>📍 Real people on the ground",
-    cta: "💬 Talk with VIETANA™",
+    cta: "Talk with VIETANA™",
     action: 'whatsapp'
   }
 ];
@@ -107,8 +118,14 @@ const Services: React.FC<ServicesProps> = ({ onOpenPlanner }) => {
       </div>
 
       {/* Morphing Liquid Background Elements */}
-      <div className="absolute top-[20%] right-[10%] w-[40vw] h-[40vw] max-w-[400px] max-h-[400px] bg-brand-gold/10 rounded-full blur-[80px] animate-blob-float pointer-events-none z-0 mix-blend-multiply opacity-70" />
-      <div className="absolute bottom-[10%] left-[5%] w-[30vw] h-[30vw] max-w-[350px] max-h-[350px] bg-brand-green/5 rounded-full blur-[60px] animate-blob-float pointer-events-none z-0 mix-blend-multiply opacity-60" style={{ animationDelay: '2s' }} />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="scroll-parallax absolute top-[20%] right-[10%] w-[40vw] h-[40vw] max-w-[400px] max-h-[400px]">
+          <div className="w-full h-full bg-brand-gold/10 rounded-full blur-[80px] animate-blob-float mix-blend-multiply opacity-70" />
+        </div>
+        <div className="scroll-parallax-slow absolute bottom-[10%] left-[5%] w-[30vw] h-[30vw] max-w-[350px] max-h-[350px]">
+          <div className="w-full h-full bg-brand-green/5 rounded-full blur-[60px] animate-blob-float mix-blend-multiply opacity-60" style={{ animationDelay: '2s' }} />
+        </div>
+      </div>
       
       <Container className="relative z-10">
         <div className="mb-20 reveal text-center">
@@ -135,8 +152,8 @@ const Services: React.FC<ServicesProps> = ({ onOpenPlanner }) => {
               >
                 <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-brand-green to-brand-gold scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-smooth" />
                 
-                <div className="w-14 h-14 rounded-2xl mb-6 flex items-center justify-center text-3xl bg-gradient-to-br from-brand-green/5 to-brand-gold/10 group-hover:scale-110 group-hover:-rotate-6 group-hover:from-brand-green/15 group-hover:to-brand-gold/20 transition-all duration-500 ease-elastic">
-                  {s.ico}
+                <div className="w-14 h-14 rounded-2xl mb-6 flex items-center justify-center text-brand-green group-hover:scale-110 group-hover:-rotate-6 group-hover:text-brand-gold transition-all duration-500 ease-elastic">
+                  <Icon name={s.ico as IconName} size={32} />
                 </div>
                 
                 <Heading as="h3" size="sm" font="sans" className="mb-2">
@@ -164,8 +181,10 @@ const Services: React.FC<ServicesProps> = ({ onOpenPlanner }) => {
               size="md"
               font="sans"
               className="text-white flex items-center gap-2 [&_strong]:text-brand-gold-light" 
-              dangerouslySetInnerHTML={{ __html: selectedSrv.title }} 
-            />
+            >
+              <Icon name={selectedSrv.iconName} size={24} className="text-brand-gold" />
+              <span dangerouslySetInnerHTML={{ __html: selectedSrv.title }} />
+            </Heading>
 
             <Text 
               variant="white"
@@ -174,7 +193,7 @@ const Services: React.FC<ServicesProps> = ({ onOpenPlanner }) => {
               dangerouslySetInnerHTML={{ __html: selectedSrv.content }} 
             />
             <Button 
-              className="w-full"
+              className="w-full flex items-center justify-center gap-2"
               variant="primary"
               onClick={() => {
                 closeSrvModal();
@@ -185,6 +204,7 @@ const Services: React.FC<ServicesProps> = ({ onOpenPlanner }) => {
                 }
               }}
             >
+              <Icon name={selectedSrv.action === 'whatsapp' ? 'MessageCircle' : 'Sparkles'} size={18} />
               {selectedSrv.cta}
             </Button>
           </div>

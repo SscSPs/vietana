@@ -103,8 +103,14 @@ const Packages: React.FC<PackagesProps> = ({ onOpenBuilder }) => {
   return (
     <Section id="packages" variant="cream" spacing="lg">
       {/* Morphing Liquid Background Elements */}
-      <div className="absolute top-[10%] left-[5%] w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-brand-gold/5 rounded-full blur-[90px] animate-blob-float pointer-events-none z-0 mix-blend-multiply opacity-60" />
-      <div className="absolute bottom-[20%] right-[10%] w-[35vw] h-[35vw] max-w-[400px] max-h-[400px] bg-brand-green/5 rounded-full blur-[70px] animate-blob-float pointer-events-none z-0 mix-blend-multiply opacity-50" style={{ animationDelay: '3s' }} />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="scroll-parallax absolute top-[10%] left-[5%] w-[40vw] h-[40vw] max-w-[500px] max-h-[500px]">
+          <div className="w-full h-full bg-brand-gold/5 rounded-full blur-[90px] animate-blob-float mix-blend-multiply opacity-60" />
+        </div>
+        <div className="scroll-parallax-slow absolute bottom-[20%] right-[10%] w-[35vw] h-[35vw] max-w-[400px] max-h-[400px]">
+          <div className="w-full h-full bg-brand-green/5 rounded-full blur-[70px] animate-blob-float mix-blend-multiply opacity-50" style={{ animationDelay: '3s' }} />
+        </div>
+      </div>
       <Container className="relative z-10">
         <SectionHeader 
           label="Our Packages"
@@ -121,10 +127,10 @@ const Packages: React.FC<PackagesProps> = ({ onOpenBuilder }) => {
           <Card 
             padding="none"
             hover={false}
-            className="col-span-full flex flex-col md:flex-row items-center gap-8 p-12 md:p-16 border-white/10 bg-cover bg-center relative overflow-hidden group reveal shadow-medium" 
-            style={{ backgroundImage: `linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9)), url("https://images.unsplash.com/photo-1528127269322-539801943592?w=1600&q=80")` }}
+            className="col-span-full flex flex-col md:flex-row items-center gap-8 p-12 md:p-16 border-white/10 relative overflow-hidden group reveal shadow-medium" 
             onClick={() => onOpenBuilder([])}
           >
+            <div className="absolute inset-[-10%] z-0 scroll-parallax-slow bg-cover bg-center" style={{ backgroundImage: `linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9)), url("https://images.unsplash.com/photo-1528127269322-539801943592?w=1600&q=80")` }} />
             <div className="flex-1 text-center md:text-left relative z-10">
               <Badge variant="gold-filled" className="mb-4">
                 Fully Custom

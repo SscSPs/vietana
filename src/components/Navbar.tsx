@@ -4,6 +4,7 @@ import { WHATSAPP_DEFAULT, buildWhatsAppLink, WHATSAPP_NUMBERS } from '../utils/
 import { useTranslation } from '../contexts/LanguageContext';
 import Button from './ui/Button';
 import { Heading, Text } from './ui/Typography';
+import Icon from './ui/Icon';
 
 interface NavbarProps {
   scrolled: boolean;
@@ -99,9 +100,9 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, navClass, mobileMenuOpen, set
               onClick={toggleLang}
             >
               <Text size="xs" variant="none" weight="medium" className={`tracking-wide flex items-center gap-1.5 ${isLight ? 'text-text-muted' : 'text-white/88'}`}>
-                <span>🌐</span><span id="langLabel">{language}</span>
+                <Icon name="Globe" size={14} /><span id="langLabel">{language}</span>
               </Text>
-              <span className={`text-xxs opacity-60 transition-transform duration-300 ${isLight ? 'text-text-muted' : 'text-white/88'} ${langOpen ? 'rotate-180' : ''}`}>▾</span>
+              <Icon name="ChevronDown" size={14} className={`opacity-60 transition-transform duration-300 ${isLight ? 'text-text-muted' : 'text-white/88'} ${langOpen ? 'rotate-180' : ''}`} />
             </div>
             
             <div className={`absolute top-[calc(100%+0.6rem)] right-0 glass-dark rounded-xl overflow-hidden min-w-[155px] shadow-deep transition-all duration-300 ease-smooth z-[600]
@@ -125,7 +126,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, navClass, mobileMenuOpen, set
                   <Text size="xs" variant="none" className="opacity-50 text-white/78">
                     {lang.code}
                   </Text>
-                  {language === lang.code && <span className="ml-auto text-xs text-brand-gold">✓</span>}
+                  {language === lang.code && <Icon name="Check" size={16} className="ml-auto text-brand-gold" />}
                 </button>
               ))}
             </div>
@@ -192,8 +193,8 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, navClass, mobileMenuOpen, set
               </button>
             ))}
         </div>
-        <a href={buildWhatsAppLink(WHATSAPP_NUMBERS.DEFAULT)} className="text-brand-gold text-xl no-underline" target="_blank" rel="noreferrer">
-          💬 +91 9953294543
+        <a href={buildWhatsAppLink(WHATSAPP_NUMBERS.DEFAULT)} className="text-brand-gold text-xl no-underline flex items-center gap-2" target="_blank" rel="noreferrer">
+          <Icon name="MessageCircle" size={24} /> +91 9953294543
         </a>
       </div>
 

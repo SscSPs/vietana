@@ -5,6 +5,7 @@ import Modal from './ui/Modal';
 import Button from './ui/Button';
 import { Heading, Text } from './ui/Typography';
 import { useAIPlanner } from '../hooks/useAIPlanner';
+import Icon, { IconName } from './ui/Icon';
 
 interface AIPlannerProps {
   isOpen: boolean;
@@ -50,7 +51,7 @@ const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestinati
       <div className="flex-1 md:flex-[0.65] flex flex-col relative z-10 border-r border-white/5">
         <div className="p-10 pb-6 text-left relative">
           <Heading as="h3" variant="white" className="text-3xl font-serif tracking-wide flex items-center gap-3">
-            <span className="text-brand-gold-light">🌿</span> {t.planner.title}
+            <span className="text-brand-gold-light"><Icon name="Leaf" size={32} /></span> {t.planner.title}
           </Heading>
           <Text variant="none" className="text-white/50 text-sm mt-2 font-light tracking-wide">
             {t.planner.tagline}
@@ -67,8 +68,8 @@ const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestinati
                 <div key={i} className="animate-msg-fade-in w-full my-6 flex justify-center">
                   <div className="bg-brand-green-dark/40 border border-brand-gold/30 rounded-3xl p-8 backdrop-blur-md shadow-gold max-w-[500px] w-full text-center relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand-gold to-transparent opacity-50" />
-                    <Heading as="h4" variant="none" className="text-xl font-serif text-brand-gold-light mb-4">
-                      ✨ Your Vietnam Journey Blueprint
+                    <Heading as="h4" variant="none" className="text-xl font-serif text-brand-gold-light mb-4 flex justify-center items-center gap-2">
+                      <Icon name="Sparkles" size={20} /> Your Vietnam Journey Blueprint
                     </Heading>
                     <Text variant="none" className="text-sm font-light text-white/80 leading-relaxed mb-8">
                       Your trip will focus on <span className="text-brand-gold-light font-medium italic">{preferences.focus}</span>, 
@@ -77,13 +78,13 @@ const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestinati
 
                     <div className="flex flex-col gap-3">
                       <a href={whatsappIndiaLink} target="_blank" rel="noopener noreferrer" className="bg-white/5 border border-white/10 hover:bg-white/10 hover:border-brand-gold/50 text-white py-3 px-6 rounded-2xl transition-all duration-300 text-sm tracking-wide flex justify-center items-center gap-2">
-                        💬 WhatsApp India
+                        <Icon name="MessageCircle" size={16} /> WhatsApp India
                       </a>
                       <a href={whatsappVietnamLink} target="_blank" rel="noopener noreferrer" className="bg-white/5 border border-white/10 hover:bg-white/10 hover:border-brand-gold/50 text-white py-3 px-6 rounded-2xl transition-all duration-300 text-sm tracking-wide flex justify-center items-center gap-2">
-                        💬 WhatsApp Vietnam
+                        <Icon name="MessageCircle" size={16} /> WhatsApp Vietnam
                       </a>
-                      <a href={emailLink} className="text-xs tracking-widest uppercase text-white/50 hover:text-white transition-colors mt-2">
-                        ✉ support@vietana.com
+                      <a href={emailLink} className="text-xs tracking-widest uppercase text-white/50 hover:text-white transition-colors mt-2 flex justify-center items-center gap-2">
+                        <Icon name="Mail" size={12} /> support@vietana.com
                       </a>
                     </div>
                   </div>
@@ -95,7 +96,7 @@ const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestinati
               <div key={i} className={`flex gap-4 items-end animate-msg-fade-in ${msg.type === 'user' ? 'flex-row-reverse' : ''}`}>
                 {msg.type === 'bot' && (
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-gold to-brand-green-dark flex shrink-0 items-center justify-center shadow-strong border border-white/10 mb-2">
-                    <span className="text-white text-xs">🌿</span>
+                    <span className="text-white flex items-center justify-center"><Icon name="Leaf" size={14} /></span>
                   </div>
                 )}
                 <div className={`max-w-[80%] ${msg.type === 'user'
@@ -114,7 +115,7 @@ const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestinati
           {isTyping && (
              <div className="flex gap-4 items-end animate-msg-fade-in">
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-gold to-brand-green-dark flex shrink-0 items-center justify-center shadow-strong border border-white/10 mb-2">
-                  <span className="text-white text-xs">🌿</span>
+                  <span className="text-white flex items-center justify-center"><Icon name="Leaf" size={14} /></span>
                 </div>
                 <div className="bg-white/5 border border-white/10 rounded-2xl rounded-bl-sm p-5 backdrop-blur-md">
                    <div className="flex items-center gap-1.5 h-6">
@@ -144,7 +145,7 @@ const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestinati
 
           <div className="relative bg-white/5 border border-white/10 rounded-2xl p-2 transition-all duration-300 shadow-inner focus-within:border-brand-gold/40 focus-within:bg-white/10 backdrop-blur-sm">
             <div className="flex items-center gap-3">
-              <span className="text-white/30 pl-4 text-xl">🎤</span>
+              <span className="text-white/30 pl-4 flex items-center justify-center"><Icon name="Mic" size={20} /></span>
               <input
                 type="text"
                 className="flex-1 bg-transparent border-none py-3 text-white text-lg font-light outline-none placeholder:text-white/30"
@@ -173,19 +174,19 @@ const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestinati
 
         <div className="flex flex-col gap-8 flex-1 mt-2">
           {[
-            { label: t.planner.labels.vibe, value: preferences.vibe, icon: '✨' },
-            { label: t.planner.labels.style, value: preferences.style, icon: '🏰' },
-            { label: t.planner.labels.food, value: preferences.food, icon: '🍲' },
-            { label: t.planner.labels.group, value: preferences.group, icon: '👥' },
-            { label: t.planner.labels.nightlife, value: preferences.nightlife, icon: '🌙' },
-            { label: t.planner.labels.focus, value: preferences.focus, icon: '🎯' },
-            { label: t.planner.labels.extras, value: preferences.extras, icon: '📍' }
+            { label: t.planner.labels.vibe, value: preferences.vibe, icon: 'Sparkles' as IconName },
+            { label: t.planner.labels.style, value: preferences.style, icon: 'Castle' as IconName },
+            { label: t.planner.labels.food, value: preferences.food, icon: 'Soup' as IconName },
+            { label: t.planner.labels.group, value: preferences.group, icon: 'Users' as IconName },
+            { label: t.planner.labels.nightlife, value: preferences.nightlife, icon: 'Moon' as IconName },
+            { label: t.planner.labels.focus, value: preferences.focus, icon: 'Target' as IconName },
+            { label: t.planner.labels.extras, value: preferences.extras, icon: 'MapPin' as IconName }
           ].map((item, i) => {
             const isSet = !!item.value;
             return (
               <div key={i} className="flex flex-col gap-1.5">
                 <Text variant="none" className="text-xs text-white/40 uppercase tracking-widest font-semibold flex items-center gap-2">
-                  <span className="opacity-70">{item.icon}</span> {item.label}
+                  <span className="opacity-70"><Icon name={item.icon} size={14} /></span> {item.label}
                 </Text>
                 <Text
                   variant="none"
@@ -203,10 +204,10 @@ const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestinati
         <div className="mt-12 flex flex-col gap-4">
           <Button
             variant="glass"
-            className="w-full bg-white/5 border-white/10 hover:bg-brand-gold/20 hover:border-brand-gold/40 text-white"
+            className="w-full bg-white/5 border-white/10 hover:bg-brand-gold/20 hover:border-brand-gold/40 text-white flex items-center justify-center gap-2"
             onClick={() => window.open(MessagingService.generateBlueprintWhatsApp(preferences.focus, preferences.vibe, preferences.style, preferences.food, 'INDIA'), '_blank')}
           >
-            💬 Ask an Expert
+            <Icon name="MessageCircle" size={18} /> Ask an Expert
           </Button>
         </div>
       </div>

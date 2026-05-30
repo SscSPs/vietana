@@ -8,6 +8,7 @@ import Container from './ui/layout/Container';
 import { Heading, Text } from './ui/Typography';
 import Clock from './Clock';
 import Badge from './ui/Badge';
+import Icon from './ui/Icon';
 
 interface HeroProps {
   onOpenMagic: () => void;
@@ -152,18 +153,18 @@ const Hero: React.FC<HeroProps> = ({ onOpenMagic }) => {
           
           <div className="flex gap-5 flex-wrap animate-reveal-up [animation-delay:1.08s]">
             <Button 
-              className="group relative overflow-hidden text-brand-green-extra-dark font-bold" 
+              className="group relative overflow-hidden text-brand-green-extra-dark font-bold flex items-center justify-center gap-2" 
               onClick={() => window.open(WHATSAPP_DEFAULT, '_blank')}
             >
               <span className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-350" />
-              💬 {t.hero.plan}
+              <Icon name="MessageCircle" size={18} /> {t.hero.plan}
             </Button>
             <Button 
               variant="glass" 
               onClick={onOpenMagic}
-              className="font-semibold"
+              className="font-semibold flex items-center justify-center gap-2"
             >
-              ✦ {t.hero.discover}
+              <Icon name="Sparkles" size={18} /> {t.hero.discover}
             </Button>
           </div>
         </div>

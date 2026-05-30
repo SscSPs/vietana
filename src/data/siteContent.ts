@@ -15,15 +15,15 @@ export const NAV_LINKS = [
 ];
 
 export const SERVICES: ServiceItem[] = [
-  { ico: '📋', key: 'visa' },
-  { ico: '🗺️', key: 'planning' },
-  { ico: '🚗', key: 'pickup' },
-  { ico: '🏨', key: 'hotel' },
-  { ico: '📶', key: 'sim' },
-  { ico: '🎫', key: 'tickets' },
-  { ico: '🍛', key: 'food' },
-  { ico: '✨', key: 'tailored' },
-  { ico: '🛡️', key: 'support' }
+  { ico: 'ClipboardList', key: 'visa' },
+  { ico: 'Map', key: 'planning' },
+  { ico: 'Car', key: 'pickup' },
+  { ico: 'Building', key: 'hotel' },
+  { ico: 'Wifi', key: 'sim' },
+  { ico: 'Ticket', key: 'tickets' },
+  { ico: 'Soup', key: 'food' },
+  { ico: 'Sparkles', key: 'tailored' },
+  { ico: 'ShieldCheck', key: 'support' }
 ];
 
 export const PACKAGES: Package[] = [

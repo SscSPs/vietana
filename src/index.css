@@ -260,6 +260,48 @@ html {
   transform: none;
 }
 
+@supports (animation-timeline: view()) and (animation-range: entry) {
+  .reveal {
+    opacity: 0;
+    animation: reveal-up linear both;
+    animation-timeline: view();
+    animation-range: entry 10% cover 30%;
+    transition: none !important;
+  }
+
+  .scroll-parallax {
+    animation: parallax linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+    will-change: transform;
+  }
+
+  .scroll-parallax-slow {
+    animation: parallax-slow linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+    will-change: transform;
+  }
+
+  @keyframes parallax {
+    from {
+      transform: translateY(-80px) scale(1.1);
+    }
+    to {
+      transform: translateY(80px) scale(1.1);
+    }
+  }
+
+  @keyframes parallax-slow {
+    from {
+      transform: translateY(-40px) scale(1.05);
+    }
+    to {
+      transform: translateY(40px) scale(1.05);
+    }
+  }
+}
+
 /* Editorial Redesign Utilities */
 .text-editorial-huge {
   font-family: 'Cormorant Garamond', serif;
