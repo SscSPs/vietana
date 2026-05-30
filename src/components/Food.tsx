@@ -30,43 +30,42 @@ const FoodAccordion = ({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="mb-4 bg-white/40 backdrop-blur-md border border-brand-blue/10 rounded-2xl overflow-hidden shadow-sm transition-all duration-300">
+    <div className="mb-3 bg-white/40 backdrop-blur-md rounded-2xl border border-brand-blue/10 shadow-sm overflow-hidden transition-all duration-500">
       <button 
-        className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none hover:bg-white/50 transition-colors"
         onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between p-4 lg:p-5 bg-gradient-to-r hover:from-brand-blue/5 hover:to-transparent transition-colors group"
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-brand-green/10 flex items-center justify-center text-brand-green">
+          <div className="w-10 h-10 rounded-full bg-brand-green/10 flex items-center justify-center text-brand-green group-hover:scale-110 group-hover:bg-brand-green group-hover:text-white transition-all duration-300">
             <Icon name={icon as any} size={20} />
           </div>
-          <Heading as="h4" size="lg" weight="medium" className="font-serif text-brand-green-dark m-0 tracking-wide">{title}</Heading>
+          <Heading as="h4" size="sm" className="font-serif text-brand-green-dark m-0 text-left font-medium">
+            {title}
+          </Heading>
         </div>
-        <div className={`text-brand-green transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
-          <Icon name="ChevronDown" size={24} />
+        <div className={`w-8 h-8 rounded-full border border-brand-green/20 flex items-center justify-center text-brand-green transition-transform duration-500 ${isOpen ? 'rotate-180 bg-brand-green text-white' : ''}`}>
+          <Icon name="ChevronDown" size={16} />
         </div>
       </button>
-      
-      {/* Accordion Content - Fine Dining Minimalist Style */}
-      <div 
-        className={`transition-all duration-500 ease-in-out ${isOpen ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}
-      >
-        <div className="px-6 pb-6 pt-2 space-y-2">
+
+      <div className={`grid transition-all duration-500 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+        <div className="overflow-hidden">
           {items.map((item, idx) => (
             <div 
               key={idx}
-              className="group flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 border-b border-black/5 cursor-pointer hover:border-brand-blue/30 transition-colors last:border-0"
+              className="flex items-center justify-between p-3 lg:p-4 hover:bg-brand-blue/5 border-t border-brand-blue/5 cursor-pointer group transition-colors relative"
               onClick={() => onSelectFood(item)}
               onMouseEnter={() => setHoveredImage(item.img)}
               onMouseLeave={() => setHoveredImage(null)}
             >
-              <div className="flex-1 pr-8">
+              <div className="flex-1 pr-6">
                 <div className="flex items-center gap-2 mb-1">
-                  <Text size="xs" variant="muted" weight="semibold" className="w-6 text-brand-gold/60">{idx + 1}.</Text>
-                  <Heading as="h6" size="sm" className="font-serif text-brand-green-dark group-hover:text-brand-blue transition-colors m-0 relative">
+                  <Text size="xs" variant="muted" weight="semibold" className="w-5 text-brand-gold/60 text-[10px]">{idx + 1}.</Text>
+                  <Heading as="h6" size="xs" className="font-serif text-brand-green-dark group-hover:text-brand-blue transition-colors m-0 relative">
                     {item.name}
                     
                     {/* Hover Image Reveal */}
-                    <div className="absolute top-1/2 -translate-y-1/2 left-[110%] w-[120px] h-[120px] pointer-events-none z-50 hidden sm:block opacity-0 group-hover:opacity-100 transition-all duration-300 scale-90 group-hover:scale-100 shadow-xl rounded-full border-4 border-white overflow-hidden">
+                    <div className="absolute top-1/2 -translate-y-1/2 left-[110%] w-[100px] h-[100px] pointer-events-none z-50 hidden sm:block opacity-0 group-hover:opacity-100 transition-all duration-300 scale-90 group-hover:scale-100 shadow-xl rounded-full border-4 border-white overflow-hidden">
                       <img src={item.img} alt={item.name} className="w-full h-full object-cover" />
                     </div>
                   </Heading>
@@ -128,35 +127,47 @@ const Food: React.FC = () => {
             
             {/* Food Accordions */}
             <div className="mb-16 relative">
-              <FoodAccordion 
-                title="Vietnamese Vegetarian" 
-                icon="Leaf" 
-                items={VIETNAMESE_VEG_ITEMS} 
-                onSelectFood={setSelectedFood} 
-                setHoveredImage={setHoveredImage} 
-              />
-              <FoodAccordion 
-                title="Vietnamese Non-Vegetarian (No Beef)" 
-                icon="Drumstick" 
-                items={VIETNAMESE_NON_VEG_ITEMS} 
-                onSelectFood={setSelectedFood} 
-                setHoveredImage={setHoveredImage} 
-              />
-              <FoodAccordion 
-                title="Indian Vegetarian" 
-                icon="LeafyGreen" 
-                items={INDIAN_VEG_ITEMS} 
-                onSelectFood={setSelectedFood} 
-                setHoveredImage={setHoveredImage} 
-              />
-              <FoodAccordion 
-                title="Indian Non-Vegetarian (No Beef)" 
-                icon="UtensilsCrossed" 
-                items={INDIAN_NON_VEG_ITEMS} 
-                onSelectFood={setSelectedFood} 
-                setHoveredImage={setHoveredImage} 
-              />
+              {/* Indian Food Section */}
+              <div className="mb-8">
+                <Heading as="h3" size="sm" className="font-serif text-brand-green-dark mb-4 border-b border-black/5 pb-2 uppercase tracking-wide">
+                  INDIAN FOOD
+                </Heading>
+                <FoodAccordion 
+                  title="Indian Vegetarian" 
+                  icon="LeafyGreen" 
+                  items={INDIAN_VEG_ITEMS} 
+                  onSelectFood={setSelectedFood} 
+                  setHoveredImage={setHoveredImage} 
+                />
+                <FoodAccordion 
+                  title="Indian Non-Vegetarian (No Beef)" 
+                  icon="UtensilsCrossed" 
+                  items={INDIAN_NON_VEG_ITEMS} 
+                  onSelectFood={setSelectedFood} 
+                  setHoveredImage={setHoveredImage} 
+                />
+              </div>
 
+              {/* Vietnamese Food Section */}
+              <div>
+                <Heading as="h3" size="sm" className="font-serif text-brand-green-dark mb-4 border-b border-black/5 pb-2 uppercase tracking-wide">
+                  VIETNAMESE FOOD
+                </Heading>
+                <FoodAccordion 
+                  title="Vietnamese Vegetarian" 
+                  icon="Leaf" 
+                  items={VIETNAMESE_VEG_ITEMS} 
+                  onSelectFood={setSelectedFood} 
+                  setHoveredImage={setHoveredImage} 
+                />
+                <FoodAccordion 
+                  title="Vietnamese Non-Vegetarian (No Beef)" 
+                  icon="Drumstick" 
+                  items={VIETNAMESE_NON_VEG_ITEMS} 
+                  onSelectFood={setSelectedFood} 
+                  setHoveredImage={setHoveredImage} 
+                />
+              </div>
             </div>
 
             {/* Famous Cafes */}
