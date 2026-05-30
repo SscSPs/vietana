@@ -53,10 +53,9 @@ const FAQ: React.FC<FAQProps> = ({ onOpenPlanner }) => {
     if (!text.includes('VIETANA')) return text;
     return text.split(/(VIETANA)/g).map((part, i) =>
       part === 'VIETANA' ? (
-        <React.Fragment key={i}>
-          <img src="/vietana_logo.png" className="h-[1.2em] inline-block align-middle mx-1 brightness-110" alt="" />
+        <strong key={i} className="font-bold text-brand-gold-dark mx-1">
           VIETANA
-        </React.Fragment>
+        </strong>
       ) : part
     );
   };
