@@ -119,8 +119,8 @@ const Hero: React.FC<HeroProps> = ({ onOpenMagic }) => {
       <Container className="relative z-[10]">
         <div className="max-w-4xl">
           <div className="flex items-center gap-4 mb-8 animate-reveal-up [animation-delay:0.35s]">
-            <div className="w-10 h-px bg-gradient-to-r from-brand-gold to-transparent"></div>
-            <Text as="span" size="xs" variant="none" className="uppercase tracking-[0.25em] text-brand-gold-light font-bold">
+            <div className="w-10 h-px bg-gradient-to-r from-brand-blue to-transparent"></div>
+            <Text as="span" size="xs" variant="none" className="uppercase tracking-[0.25em] text-brand-blue font-bold">
               India–Vietnam Travel Experts
             </Text>
           </div>
@@ -129,17 +129,17 @@ const Hero: React.FC<HeroProps> = ({ onOpenMagic }) => {
             as="h1" 
             size="3xl"
             variant="none" 
-            className="!text-brand-blue mb-2 animate-reveal-up [animation-duration:1.1s] [animation-delay:0.58s] drop-shadow-[0_8px_60px_rgba(0,0,0,0.8)] tracking-tight leading-none"
+            className="!text-brand-gold-light mb-2 animate-reveal-up [animation-duration:1.1s] [animation-delay:0.58s] drop-shadow-[0_8px_60px_rgba(0,0,0,0.8)] tracking-tight leading-none"
           >
             Feel <em className="not-italic pr-2">Vietnam</em>,
-            <span className="block mt-1 text-brand-blue">Your Way 🇻🇳</span>
+            <span className="block mt-1 text-brand-gold-light">Your Way 🇻🇳</span>
           </Heading>
           
           <Text 
             size="lg"
             variant="none" 
             weight="medium"
-            className="italic mb-6 text-brand-gold-light animate-reveal-up [animation-delay:0.72s] drop-shadow-[0_2px_10px_rgba(0,0,0,0.3)] block"
+            className="italic mb-6 text-brand-blue animate-reveal-up [animation-delay:0.72s] drop-shadow-[0_2px_10px_rgba(0,0,0,0.3)] block"
           >
             Travel Gets Better with <BrandName />
           </Text>
@@ -148,7 +148,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenMagic }) => {
             variant="white" 
             size="lg"
             weight="medium"
-            className="max-w-[580px] animate-reveal-up [animation-duration:1s] [animation-delay:0.82s] mb-4 drop-shadow-[0_2px_15px_rgba(0,0,0,0.4)]"
+            className="max-w-[580px] animate-reveal-up [animation-duration:1s] [animation-delay:0.82s] mb-4 drop-shadow-[0_2px_15px_rgba(0,0,0,0.4)] text-white"
           >
             {t.hero.sub}
           </Text>
