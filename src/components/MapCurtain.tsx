@@ -67,65 +67,17 @@ const MapCurtain: React.FC<MapCurtainProps> = ({ isOpen, onClose, onOpenPlanner 
           <div className="flex-1 w-full h-full relative">
             <Suspense fallback={<div className="w-full h-full flex items-center justify-center text-brand-gold font-serif text-xl animate-pulse bg-brand-green-extra-dark">Charting course...</div>}>
               <LeafletMap 
-                  destinations={MAP_DESTINATIONS}
+                  destinations={MAP_DESTINATIONS as any}
                   selectedCityIdx={selectedCityIdx}
                   mapCenter={mapCenter}
                   onCityClick={handleCityClick}
+                  onOpenPlanner={(dest) => {
+                    onClose();
+                    onOpenPlanner(dest);
+                  }}
+                  onDeselect={() => setSelectedCityIdx(null)}
               />
             </Suspense>
-
-            <AnimatePresence>
-              {selectedCityIdx !== null && (
-                <motion.div 
-                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 30, scale: 0.95 }}
-                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  className="absolute bottom-12 left-1/2 -translate-x-1/2 w-[90%] max-w-[450px] bg-surface-cream/95 backdrop-blur-xl p-8 shadow-2xl z-[3050] rounded-2xl border border-black/5"
-                >
-                  <button 
-                    className="absolute top-6 right-6 w-8 h-8 flex items-center justify-center rounded-full bg-black/5 hover:bg-black/10 transition-colors text-black/50 hover:text-black"
-                    onClick={() => setSelectedCityIdx(null)}
-                  >
-                    <Icon name="X" size={16} />
-                  </button>
-                  
-                  <Text className="text-editorial-meta text-brand-gold mb-4 editorial-line-accent inline-block">
-                    Destination
-                  </Text>
-                  
-                  <Heading as="h3" className="text-3xl font-serif text-brand-green-extra-dark mb-4 mt-2">
-                    {MAP_DESTINATIONS[selectedCityIdx].name}
-                  </Heading>
-                  
-                  <Text className="text-[0.6rem] tracking-[0.2em] uppercase text-black/50 mb-6">
-                    Optimal Season: <span className="text-brand-green-extra-dark font-bold">{MAP_DESTINATIONS[selectedCityIdx].time}</span>
-                  </Text>
-                  
-                  <Text className="text-sm font-light text-text-muted leading-relaxed mb-8">
-                    {MAP_DESTINATIONS[selectedCityIdx].desc}
-                  </Text>
-                  
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-                    <button 
-                      className="w-full sm:w-auto editorial-border px-8 py-3 text-[0.65rem] tracking-[0.2em] uppercase text-brand-green-extra-dark hover:bg-brand-green-extra-dark hover:text-white transition-colors duration-500"
-                      onClick={() => {
-                        onClose();
-                        onOpenPlanner(MAP_DESTINATIONS[selectedCityIdx].name);
-                      }}
-                    >
-                      Plan Visit
-                    </button>
-                    <button 
-                      className="w-full sm:w-auto text-[0.65rem] tracking-[0.2em] uppercase text-black/40 hover:text-brand-gold transition-colors duration-300 border-b border-transparent hover:border-brand-gold pb-1 text-center"
-                      onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent(MAP_DESTINATIONS[selectedCityIdx].name + ' Vietnam')}`, '_blank')}
-                    >
-                      Google Maps
-                    </button>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
         </motion.div>
       )}

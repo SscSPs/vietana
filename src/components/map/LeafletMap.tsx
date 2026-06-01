@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, useMap, GeoJSON } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMap, GeoJSON, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import ReactDOMServer from 'react-dom/server';
 import { MAP_DEFAULT_ROUTE } from '../../data/destinations';
 import Icon from '../ui/Icon';
+import { Heading, Text } from '../ui/Typography';
 import vietnamGeoJson from '../../data/vietnam.json';
 
 // Fix for Leaflet markers
@@ -35,11 +36,13 @@ const MapController = ({ center }: { center: [number, number] }) => {
 };
 
 interface LeafletMapProps {
-    destinations: { name: string; lat: number; lng: number }[];
+    destinations: { name: string; lat: number; lng: number; time?: string; desc?: string; img?: string }[];
     selectedCityIdx: number | null;
     mapCenter: [number, number];
     onCityClick: (idx: number) => void;
     routeCoords?: [number, number][];
+    onOpenPlanner?: (dest: string) => void;
+    onDeselect?: () => void;
 }
 
 const LeafletMap: React.FC<LeafletMapProps> = ({ 
@@ -47,7 +50,9 @@ const LeafletMap: React.FC<LeafletMapProps> = ({
     selectedCityIdx, 
     mapCenter, 
     onCityClick,
-    routeCoords = MAP_DEFAULT_ROUTE
+    routeCoords = MAP_DEFAULT_ROUTE,
+    onOpenPlanner,
+    onDeselect
 }) => {
     return (
         <MapContainer 
@@ -85,8 +90,51 @@ const LeafletMap: React.FC<LeafletMapProps> = ({
                         iconSize: [24, 24],
                         iconAnchor: [12, 12]
                     })}
-                    eventHandlers={{ click: () => onCityClick(i) }}
-                />
+                    eventHandlers={{ 
+                        click: () => onCityClick(i),
+                        popupclose: () => onDeselect && onDeselect()
+                    }}
+                >
+                    <Popup className="glassmorphism-popup" closeButton={false} autoPanPadding={[20, 20]}>
+                        <div className="w-[320px] bg-surface-cream/90 backdrop-blur-xl rounded-xl border border-black/10 overflow-hidden shadow-2xl flex flex-col">
+                            {d.img && (
+                                <div className="w-full h-32 relative">
+                                    <div className="absolute inset-0 bg-gradient-to-t from-surface-cream/90 to-transparent z-10" />
+                                    <img src={d.img} alt={d.name} className="w-full h-full object-cover" />
+                                </div>
+                            )}
+                            <div className="p-6 relative z-20 -mt-6">
+                                <Text className="text-editorial-meta text-brand-gold mb-2 editorial-line-accent inline-block">
+                                    Destination
+                                </Text>
+                                <Heading as="h3" className="text-2xl font-serif text-brand-green-extra-dark mb-2 mt-1">
+                                    {d.name}
+                                </Heading>
+                                {d.time && (
+                                    <Text className="text-[0.6rem] tracking-[0.2em] uppercase text-black/50 mb-4">
+                                        Season: <span className="text-brand-green-extra-dark font-bold">{d.time}</span>
+                                    </Text>
+                                )}
+                                {d.desc && (
+                                    <Text className="text-xs font-light text-text-muted leading-relaxed mb-6">
+                                        {d.desc}
+                                    </Text>
+                                )}
+                                <div className="flex items-center gap-4">
+                                    <button 
+                                        className="editorial-border px-4 py-2 text-[0.6rem] tracking-[0.2em] uppercase text-brand-green-extra-dark hover:bg-brand-green-extra-dark hover:text-white transition-colors duration-500"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            if(onOpenPlanner) onOpenPlanner(d.name);
+                                        }}
+                                    >
+                                        Plan Visit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </Popup>
+                </Marker>
             ))}
 
             <MapController center={mapCenter} />

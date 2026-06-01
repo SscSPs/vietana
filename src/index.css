@@ -385,3 +385,18 @@ html {
     filter: drop-shadow(0 0 25px rgba(201,168,76,0.3));
   }
 }
+
+/* Glassmorphism Leaflet Popup Overrides */
+.glassmorphism-popup .leaflet-popup-content-wrapper {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  border-radius: 0;
+}
+.glassmorphism-popup .leaflet-popup-content {
+  margin: 0;
+  width: auto !important;
+}
+.glassmorphism-popup .leaflet-popup-tip-container {
+  display: none;
+}
