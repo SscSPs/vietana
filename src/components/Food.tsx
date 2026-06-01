@@ -214,7 +214,7 @@ const Food: React.FC = () => {
           </div>
 
           {/* RIGHT SIDE: Brands & Preferences */}
-          <div className="w-full lg:w-[320px] xl:w-[380px] shrink-0 space-y-6 reveal delay-200">
+          <div className="w-full lg:w-[320px] xl:w-[380px] shrink-0 space-y-6">
             
             {/* Restaurant Cards */}
             <div className="grid grid-cols-2 gap-4">
