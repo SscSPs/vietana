@@ -126,10 +126,10 @@ const Food: React.FC = () => {
           </Text>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-10 lg:gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
           
           {/* LEFT SIDE: Food Guide & Cafes */}
-          <div className="flex-1 min-w-0 w-full reveal">
+          <div className="lg:col-span-7 xl:col-span-8 w-full min-w-0 reveal">
             
             {/* Food Accordions */}
             <div className="mb-16 relative">
@@ -181,7 +181,7 @@ const Food: React.FC = () => {
             </div>
 
             {/* Famous Cafes */}
-            <div className="bg-gradient-to-br from-brand-gold/20 via-rose-400/10 to-brand-blue/20 p-6 rounded-3xl border border-white/50 shadow-sm reveal">
+            <div className="bg-gradient-to-br from-brand-gold/20 via-rose-400/10 to-brand-blue/20 p-6 rounded-3xl border border-white/50 shadow-sm reveal relative z-10 w-full overflow-hidden">
               <div className="flex items-center justify-between mb-4 border-b border-black/5 pb-3">
                 <Heading as="h3" size="md" className="font-serif text-brand-green-dark m-0">
                   FAMOUS CAFÉS
@@ -189,7 +189,7 @@ const Food: React.FC = () => {
                 <Text size="xs" variant="accent" className="text-brand-green/60 uppercase tracking-widest hidden sm:block">Scroll &rarr;</Text>
               </div>
               
-              <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 -mx-2 px-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                 <style>{`
                   div::-webkit-scrollbar { display: none; }
                 `}</style>
@@ -214,7 +214,7 @@ const Food: React.FC = () => {
           </div>
 
           {/* RIGHT SIDE: Brands & Preferences */}
-          <div className="w-full lg:w-[320px] xl:w-[380px] shrink-0 space-y-6">
+          <div className="lg:col-span-5 xl:col-span-4 w-full space-y-6">
             
             {/* Restaurant Cards */}
             <div className="grid grid-cols-2 gap-4">
