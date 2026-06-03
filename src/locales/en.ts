@@ -7,7 +7,7 @@ export const en: TranslationSchema = {
     aiPlanner: 'AI Planner',
     food: 'Food',
     experiences: 'Experiences',
-    about: 'About',
+    about: 'Why Vietana?',
     contact: 'Contact',
     cta: 'Plan My Trip'
   },

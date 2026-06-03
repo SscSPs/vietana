@@ -1,118 +1,175 @@
 import React from 'react';
-import SectionHeader from './ui/SectionHeader';
-import Section from './ui/layout/Section';
-import Container from './ui/layout/Container';
-import { Heading, Text } from './ui/Typography';
-import BrandName from './ui/BrandName';
+import Modal from './ui/Modal';
+import { motion } from 'motion/react';
 
-const TIMELINE = [
+interface AboutModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const CARDS = [
   {
-    year: 'The Vision',
-    title: 'Bridging Two Worlds',
-    desc: 'VIETANA wasn\'t just born out of a business idea; it was born out of a genuine love for two incredible cultures. When our founder first arrived in Vietnam, it was love at first sight with the breathtaking landscapes and vibrant energy.',
-    img: 'https://images.unsplash.com/photo-1555921015-5532091f6026?w=800&q=80',
-    align: 'left'
+    id: 1,
+    icon: '🌿',
+    title: 'Local Presence',
+    desc: 'Real support from people living and working in Vietnam.',
+    image: '/why_1.png',
   },
   {
-    year: 'The Challenge',
-    title: 'Navigating The Unknown',
-    desc: 'However, navigating local nuances as an Indian traveler came with its own set of unique challenges—from finding the right familiar flavors, understanding dietary restrictions, to communicating in the local language.',
-    img: 'https://images.unsplash.com/photo-1528127269322-539801943592?w=800&q=80',
-    align: 'right'
+    id: 2,
+    icon: '🍛',
+    title: 'Food Confidence',
+    desc: 'Indian, vegetarian and local food recommendations throughout your journey.',
+    image: '/why_2.png',
   },
   {
-    year: 'The Solution',
-    title: 'Boots on the Ground',
-    desc: 'We realized Indian travelers needed a bridge. Someone who deeply understands the craving for a warm cup of masala chai or a comforting dal, but also someone deeply rooted in Vietnam to unlock its absolute best-kept secrets.',
-    img: 'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=800&q=80',
-    align: 'left'
+    id: 3,
+    icon: '💬',
+    title: 'Human Support',
+    desc: 'Hindi and English assistance before and during your trip.',
+    image: '/why_3.png',
   },
   {
-    year: 'The Promise',
-    title: 'Your Family in Vietnam',
-    desc: '"When you travel with us, you aren\'t just a tourist or a booking number. You become part of our extended family. From the moment you land to your very last dinner, we handle everything locally from Ho Chi Minh City."',
-    img: 'https://images.unsplash.com/photo-1504457047772-27faf1c005b7?w=800&q=80',
-    align: 'right'
+    id: 4,
+    icon: '✨',
+    title: 'Personalized Journeys',
+    desc: 'No fixed packages. Every journey is shaped around you.',
+    image: '/why_4.png',
+  },
+  {
+    id: 5,
+    icon: '📍',
+    title: 'Trusted Local Network',
+    desc: 'Hotels. Restaurants. Guides. Experiences.',
+    image: '/why_5.png',
+  },
+  {
+    id: 6,
+    icon: '🛡',
+    title: 'Peace Of Mind',
+    desc: 'Travel should feel exciting. Not overwhelming.',
+    image: '/why_6.png',
   }
 ];
 
-const About: React.FC = () => {
+const PILLARS = [
+  { icon: '🇻🇳', text: 'Local Knowledge' },
+  { icon: '🍛', text: 'Food Confidence' },
+  { icon: '💬', text: 'Human Support' },
+  { icon: '✨', text: 'Personalized Travel' },
+];
+
+const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
   return (
-    <Section id="about" variant="cream" spacing="lg" className="overflow-hidden relative">
-      <div className="absolute top-0 left-0 w-full h-[300px] bg-gradient-to-b from-brand-gold/5 to-transparent pointer-events-none" />
-      
-      <Container>
-        <div className="text-center mb-24 reveal">
-          <Text size="xs" variant="accent" weight="bold" className="uppercase tracking-[0.3em] text-brand-gold mb-4">
-            The <BrandName /> Story
-          </Text>
-          <Heading as="h2" size="3xl" font="serif" className="text-brand-green-dark">
-            Created for Indian Travelers,<br />
-            <span className="italic text-brand-green-light font-light">by Locals who Care.</span>
-          </Heading>
+    <Modal 
+      isOpen={isOpen} 
+      onClose={onClose}
+      variant="light"
+      maxWidth="max-w-[950px]"
+      className="!bg-[rgba(255,255,255,0.70)] !backdrop-blur-[35px] !border !border-[rgba(255,255,255,0.5)] !rounded-[36px] overflow-y-auto max-h-[85vh] relative custom-scrollbar"
+      style={{ boxShadow: '0 25px 80px rgba(0,0,0,0.08)' }}
+    >
+      {/* Background Effects */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[36px] z-[-1]">
+        <motion.div 
+          animate={{ x: [0, 50, 0], y: [0, -30, 0] }}
+          transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+          className="absolute top-10 left-10 w-[300px] h-[300px] bg-[#EAF7FF] rounded-full blur-[80px] opacity-60"
+        />
+        <motion.div 
+          animate={{ x: [0, -40, 0], y: [0, 40, 0] }}
+          transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+          className="absolute bottom-10 right-10 w-[400px] h-[400px] bg-[#F1FFF3] rounded-full blur-[90px] opacity-50"
+        />
+      </div>
+
+      <div className="p-[30px] md:p-[50px] relative z-10 text-center flex flex-col items-center">
+        
+        {/* Header */}
+        <p className="text-[14px] font-semibold tracking-[2px] text-[#3D8B7D] uppercase mb-4">
+          🌿 Why Vietana?
+        </p>
+
+        {/* Main Title */}
+        <h2 className="font-['SF_Pro_Display',-apple-system,BlinkMacSystemFont,sans-serif] font-bold text-[38px] md:text-[54px] leading-[1.15] text-[#1F2328] mb-4">
+          Travel Gets Better<br/>with VIETANA™
+        </h2>
+
+        {/* Subtitle */}
+        <p className="text-[18px] font-normal text-[#68707B] mb-12">
+          Thoughtful travel. Local knowledge. Human support.
+        </p>
+
+        {/* Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-16">
+          {CARDS.map((card) => (
+            <motion.div 
+              key={card.id}
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.3 }}
+              className="bg-[rgba(255,255,255,0.55)] backdrop-blur-[25px] rounded-[28px] overflow-hidden flex flex-col sm:flex-row shadow-[0_10px_30px_rgba(0,0,0,0.04)] border border-white/60 text-left h-full"
+            >
+              <div className="w-full sm:w-[140px] h-[180px] sm:h-auto shrink-0 relative">
+                <img 
+                  src={card.image} 
+                  alt={card.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-6 flex flex-col justify-center">
+                <h3 className="text-[18px] font-semibold text-[#1F2328] mb-2 flex items-center gap-2">
+                  <span>{card.icon}</span> {card.title}
+                </h3>
+                <p className="text-[#68707B] text-[15px] leading-relaxed">
+                  {card.desc}
+                </p>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
-        {/* TIMELINE WRAPPER */}
-        <div className="relative max-w-5xl mx-auto py-10">
-          
-          {/* VERTICAL LINE (Desktop) */}
-          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-brand-gold/30 to-transparent -translate-x-1/2" />
-          
-          {/* VERTICAL LINE (Mobile) */}
-          <div className="block md:hidden absolute left-4 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-brand-gold/30 to-transparent" />
+        {/* Bottom Section */}
+        <div className="max-w-[700px] mx-auto text-center mb-12">
+          <h3 className="text-[24px] md:text-[28px] font-semibold text-[#2E3135] leading-snug mb-10">
+            Not a marketplace.<br className="hidden md:block" />
+            Not another package company.<br className="hidden md:block" />
+            Just thoughtful travel and people who genuinely care.
+          </h3>
 
-          <div className="flex flex-col gap-20 md:gap-32 relative z-10">
-            {TIMELINE.map((item, idx) => (
-              <div key={idx} className={`relative flex flex-col md:flex-row items-center gap-8 md:gap-16 reveal ${item.align === 'right' ? 'md:flex-row-reverse' : ''}`}>
-                
-                {/* Timeline Node (Center Dot) */}
-                <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-brand-gold shadow-[0_0_15px_rgba(201,168,76,0.6)] z-20" />
-                
-                {/* Timeline Node (Mobile) */}
-                <div className="flex md:hidden absolute left-4 top-10 -translate-x-1/2 w-3 h-3 rounded-full bg-brand-gold shadow-[0_0_10px_rgba(201,168,76,0.6)] z-20" />
-
-                {/* IMAGE HALF */}
-                <div className="flex-1 w-full pl-10 md:pl-0">
-                  <div className={`relative h-[300px] md:h-[400px] w-full rounded-2xl overflow-hidden shadow-xl transform transition-transform duration-700 hover:scale-105 ${item.align === 'left' ? 'md:mr-auto' : 'md:ml-auto'}`}>
-                    <img src={item.img} alt={item.title} className="absolute inset-0 w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-brand-green-dark/10 mix-blend-multiply" />
-                  </div>
-                </div>
-
-                {/* TEXT HALF */}
-                <div className="flex-1 w-full pl-10 md:pl-0">
-                  <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-black/5 w-full relative z-10 hover:shadow-2xl transition-shadow duration-300">
-                    <Text size="xs" weight="bold" className="uppercase tracking-[0.2em] text-brand-gold mb-3 inline-block bg-brand-gold/10 px-3 py-1 rounded-full">
-                      {item.year}
-                    </Text>
-                    <Heading as="h3" size="xl" font="serif" className="text-brand-green-dark mb-4 leading-tight">
-                      {item.title}
-                    </Heading>
-                    <Text variant="muted" size="lg" className="leading-relaxed font-light text-text-dark">
-                      {item.desc}
-                    </Text>
-                  </div>
-                </div>
-
+          {/* Pillars */}
+          <div className="flex flex-wrap justify-center gap-4 mb-12">
+            {PILLARS.map((pillar, idx) => (
+              <div 
+                key={idx}
+                className="bg-[rgba(255,255,255,0.6)] backdrop-blur-md border border-white/50 rounded-full px-5 py-2.5 flex items-center gap-2 text-[14px] text-[#2E3135] font-medium shadow-sm"
+              >
+                <span>{pillar.icon}</span>
+                {pillar.text}
               </div>
             ))}
           </div>
+
+          <div className="h-px w-24 bg-gradient-to-r from-transparent via-[#3D8B7D]/30 to-transparent mx-auto mb-8"></div>
+
+          {/* Signature & Button */}
+          <p className="text-[16px] font-medium text-[#3D8B7D] mb-8">
+            Travel Gets Better with VIETANA™
+          </p>
+
+          <button 
+            onClick={onClose}
+            className="group relative px-8 py-4 bg-white rounded-full text-[#3D8B7D] font-semibold tracking-wide text-[16px] transition-all duration-300 shadow-[0_8px_20px_rgba(61,139,125,0.15)] hover:shadow-[0_12px_25px_rgba(61,139,125,0.25)] hover:-translate-y-1 overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-emerald-50/0 group-hover:bg-[#EAF7FF]/50 transition-colors duration-300"></div>
+            <span className="relative z-10 flex items-center gap-2">
+              ✨ Start Planning
+            </span>
+          </button>
         </div>
 
-        {/* BOTTOM CTA */}
-        <div className="mt-32 text-center reveal">
-          <div className="w-20 h-px bg-brand-gold/50 mx-auto mb-8" />
-          <Heading as="h4" size="lg" font="serif" className="text-brand-green-dark mb-4">
-            Ready to experience Vietnam like a local?
-          </Heading>
-          <Text variant="subtle" className="mb-8 font-light max-w-md mx-auto">
-            Travel Gets Better with <BrandName />. Join our extended family today.
-          </Text>
-        </div>
-      </Container>
-    </Section>
+      </div>
+    </Modal>
   );
 };
 
-export default About;
-
+export default AboutModal;
