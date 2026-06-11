@@ -81,9 +81,9 @@ export default function App() {
         <Hero onOpenMagic={() => setIsMagicModeOpen(true)} />
         
         <Suspense fallback={<SectionPlaceholder />}>
-          <Services onOpenPlanner={(dest) => openPlanner(dest)} />
-          <Separator variant="green" />
           <Packages onOpenBuilder={(dest) => { setBuilderDestinations(dest || []); setIsBuilderOpen(true); }} />
+          <Separator variant="green" />
+          <Services onOpenPlanner={(dest) => openPlanner(dest)} />
           <Separator variant="gold" />
           <Food />
           <FAQ onOpenPlanner={(dest, prompt) => openPlanner(dest, prompt)} />
