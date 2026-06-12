@@ -149,7 +149,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenMagic }) => {
       </div>
 
       {/* CONTENT */}
-      <Container className="relative z-[10] h-full flex items-center pt-32 pb-20">
+      <Container size="full" className="relative z-[10] h-full flex items-center pt-32 pb-20">
         <div className="max-w-3xl flex flex-col items-start text-left">
           
           <Heading 
