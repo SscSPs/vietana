@@ -172,9 +172,9 @@ export const MAP_DESTINATIONS: Destination[] = [
     "desc": "Tropical island paradise with white sand beaches.",
     "lat": 10.2289,
     "lng": 103.9572,
-    "img": "https://upload.wikimedia.org/wikipedia/commons/2/28/Phu_Quoc_Beach.jpg",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Phu_Quoc_Sao_Beach.jpg",
     "images": [
-      "https://upload.wikimedia.org/wikipedia/commons/2/28/Phu_Quoc_Beach.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/c/c5/Phu_Quoc_Sao_Beach.jpg",
       "https://upload.wikimedia.org/wikipedia/commons/e/e0/Phu_Quoc_island_coast.jpg",
       "https://upload.wikimedia.org/wikipedia/commons/c/c5/Phu_Quoc_Sao_Beach.jpg",
       "https://upload.wikimedia.org/wikipedia/commons/2/22/Sun_World_Hon_Thom_Phu_Quoc.jpg",
@@ -254,7 +254,7 @@ export const CITIES: CityDestination[] = [
   {
     id: "hcmc",
     name: "Ho Chi Minh City",
-    coverImage: "https://upload.wikimedia.org/wikipedia/commons/2/28/Phu_Quoc_Beach.jpg",
+    coverImage: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Phu_Quoc_Sao_Beach.jpg",
     shortDesc: "The vibrant heart of the south.",
     fullDesc: "A high-octane city of commerce and culture that drives the country forward. Sleek skyscrapers stand shoulder-to-shoulder with ornate temples and colonial relics.",
     sights: [
