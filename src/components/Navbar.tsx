@@ -91,6 +91,16 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, navClass, mobileMenuOpen, set
             </li>
           ))}
           <li>
+            <a 
+              href="/vietana_emergency_medical_card.pdf"
+              download
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-red-500/50 text-red-500 hover:bg-red-500/10 transition-colors no-underline"
+            >
+              <Icon name="AlertCircle" size={14} />
+              <span className="text-xs font-bold tracking-widest uppercase">Emergency</span>
+            </a>
+          </li>
+          <li>
             <Button 
               onClick={() => window.open(WHATSAPP_DEFAULT, '_blank')}
               size="sm"
@@ -207,6 +217,16 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, navClass, mobileMenuOpen, set
           </a>
         ))}
         <div className="h-px w-2/3 bg-white/10 my-4"></div>
+
+        <a 
+          href="/vietana_emergency_medical_card.pdf"
+          download
+          onClick={() => setMobileMenuOpen(false)}
+          className="flex items-center gap-3 px-6 py-3 rounded-full bg-red-500/20 border border-red-500/50 text-red-400 transition-colors no-underline"
+        >
+          <Icon name="AlertCircle" size={20} />
+          <span className="text-lg font-medium tracking-wide uppercase">Emergency</span>
+        </a>
         
         <button 
           onClick={() => {
