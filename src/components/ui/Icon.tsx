@@ -41,6 +41,7 @@ import {
   LeafyGreen,
   UtensilsCrossed,
   MessageSquare,
+  ArrowRight,
   AlertTriangle,
   AlertCircle,
   HeartPulse,
