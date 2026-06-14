@@ -151,7 +151,11 @@ const Hero: React.FC<HeroProps> = ({ onOpenMagic }) => {
       {/* CONTENT */}
       <Container size="full" className="relative z-[10] w-full h-full flex items-center justify-start pt-32 pb-20">
         <div className="max-w-3xl flex flex-col items-start text-left ml-0 pl-0">
-          
+          <img 
+            src="/vietana_logo.png" 
+            alt="Vietana Logo" 
+            className="h-[60px] md:h-[80px] mb-4 animate-reveal-up [animation-duration:1.1s] [animation-delay:0.2s]" 
+          />
           <Heading 
             as="h1" 
             size="4xl"

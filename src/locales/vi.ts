@@ -2,11 +2,13 @@ import { TranslationSchema } from '../translations';
 
 export const vi: TranslationSchema = {
   nav: {
-    destinations: 'Điểm đến',
-    experiences: 'Trải nghiệm',
-    journal: 'Tạp chí',
-    team: 'Đội ngũ',
-    cta: 'Lên kế hoạch'
+    destinations: 'Điểm Đến',
+    essentials: 'Thiết Yếu',
+    food: 'Ẩm Thực',
+    experiences: 'Trải Nghiệm',
+    journal: 'Nhật Ký',
+    team: 'Đội Ngũ',
+    cta: 'Lên Kế Hoạch'
   },
   hero: {
     welcome: 'VIETANA',

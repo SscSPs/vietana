@@ -3,6 +3,8 @@ import { TranslationSchema } from '../translations';
 export const hi: TranslationSchema = {
   nav: {
     destinations: 'मंज़िलें',
+    essentials: 'आवश्यक चीजें',
+    food: 'भोजन',
     experiences: 'अनुभव',
     journal: 'पत्रिका',
     team: 'हमारी टीम',

@@ -3,6 +3,8 @@ import { TranslationSchema } from '../translations';
 export const en: TranslationSchema = {
   nav: {
     destinations: 'Destinations',
+    essentials: 'Essentials',
+    food: 'Food',
     experiences: 'Experiences',
     journal: 'Journal',
     team: 'The Team',

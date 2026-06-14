@@ -101,15 +101,6 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, navClass, mobileMenuOpen, set
               <span className="text-xs font-bold tracking-widest uppercase">Emergency</span>
             </button>
           </li>
-          <li>
-            <Button 
-              onClick={() => window.open(WHATSAPP_DEFAULT, '_blank')}
-              size="sm"
-              className="px-5 py-2 font-semibold text-xs tracking-wider"
-            >
-              {t.nav.cta}
-            </Button>
-          </li>
         </ul>
 
         <div className="flex items-center gap-4 shrink-0">
