@@ -92,18 +92,18 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, navClass, mobileMenuOpen, set
               </a>
             </li>
           ))}
-          <li>
-            <button 
-              onClick={() => setEmergencyOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-red-500/50 text-red-500 hover:bg-red-500/10 transition-colors no-underline cursor-pointer bg-transparent"
-            >
-              <Icon name="AlertCircle" size={14} />
-              <span className="text-xs font-bold tracking-widest uppercase">Emergency</span>
-            </button>
-          </li>
+
         </ul>
 
         <div className="flex items-center gap-4 shrink-0">
+          <button 
+            onClick={() => setEmergencyOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-red-500/50 text-red-500 hover:bg-red-500/10 transition-colors no-underline cursor-pointer bg-transparent"
+          >
+            <Icon name="AlertCircle" size={14} />
+            <span className="text-xs font-bold tracking-widest uppercase">Emergency</span>
+          </button>
+
           <button 
             onClick={() => onOpenMapCurtain()}
             className={`hidden sm:flex items-center gap-2 px-4 py-1.5 rounded-full transition-colors border ${isLight ? 'glass border-brand-green/20 text-brand-green-extra-dark hover:bg-brand-green/10' : 'glass-dark border-white/20 text-surface-cream hover:bg-white/10'}`}
