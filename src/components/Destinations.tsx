@@ -15,7 +15,7 @@ const Destinations: React.FC = () => {
   const [isAllCitiesOpen, setIsAllCitiesOpen] = useState(false);
 
   return (
-    <Section id="destinations" spacing="lg" className="bg-gradient-to-b from-[#0a2016] to-[#05100b] text-white relative overflow-hidden">
+    <Section id="destinations" spacing="lg" className="bg-gradient-to-br from-[#0f172a] to-[#020617] text-white relative overflow-hidden">
       <Container className="relative z-10">
         <div className="mb-16 md:mb-20 flex flex-col justify-start gap-4">
           <Heading as="h2" size="3xl" font="serif" className="text-white tracking-tight">
