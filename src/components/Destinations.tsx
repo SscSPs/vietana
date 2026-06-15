@@ -6,6 +6,7 @@ import { useTranslation } from '../contexts/LanguageContext';
 import { CITIES, CityDestination } from '../data/destinations';
 import Modal from './ui/Modal';
 import Icon from './ui/Icon';
+import Particles from './ui/Particles';
 
 const Destinations: React.FC = () => {
   const { t } = useTranslation();
@@ -14,8 +15,9 @@ const Destinations: React.FC = () => {
   const [isAllCitiesOpen, setIsAllCitiesOpen] = useState(false);
 
   return (
-    <Section id="destinations" spacing="lg" className="bg-black text-white relative">
-      <Container>
+    <Section id="destinations" spacing="lg" className="bg-black text-white relative overflow-hidden">
+      <Particles count={70} color="212, 175, 55" className="opacity-40" />
+      <Container className="relative z-10">
         <div className="mb-16 md:mb-20 flex flex-col justify-start gap-4">
           <Heading as="h2" size="3xl" font="serif" className="text-white tracking-tight">
             {t.nav.destinations}
