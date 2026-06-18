@@ -35,7 +35,6 @@ const AIPlanner = lazy(() => import('./components/AIPlanner'));
 const MagicMode = lazy(() => import('./components/MagicMode'));
 const CustomTripBuilder = lazy(() => import('./components/CustomTripBuilder'));
 const ExperiencesDrawer = lazy(() => import('./components/ExperiencesDrawer'));
-const MapCurtain = lazy(() => import('./components/MapCurtain'));
 
 export default function App() {
   const { t } = useTranslation();
@@ -51,7 +50,6 @@ export default function App() {
   const [isMagicModeOpen, setIsMagicModeOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [isExperiencesOpen, setIsExperiencesOpen] = useState(false);
-  const [isMapOpen, setIsMapOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navClass = useNavStyle(scrollY, isScrolled);
@@ -76,7 +74,6 @@ export default function App() {
         onOpenPlanner={() => openPlanner()} 
         onOpenContact={() => setIsContactOpen(true)}
         onOpenExperiences={() => setIsExperiencesOpen(true)}
-        onOpenMapCurtain={() => setIsMapOpen(true)}
         onOpenAbout={() => setIsAboutOpen(true)}
       />
 
@@ -134,11 +131,6 @@ export default function App() {
         <ExperiencesDrawer 
           isOpen={isExperiencesOpen}
           onClose={() => setIsExperiencesOpen(false)}
-          onOpenPlanner={(dest) => openPlanner(dest)}
-        />
-        <MapCurtain 
-          isOpen={isMapOpen}
-          onClose={() => setIsMapOpen(false)}
           onOpenPlanner={(dest) => openPlanner(dest)}
         />
         <Contact 

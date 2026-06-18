@@ -15,11 +15,10 @@ interface NavbarProps {
   onOpenPlanner: () => void;
   onOpenContact: () => void;
   onOpenExperiences: () => void;
-  onOpenMapCurtain: () => void;
   onOpenAbout: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ scrolled, navClass, mobileMenuOpen, setMobileMenuOpen, onOpenPlanner, onOpenContact, onOpenExperiences, onOpenMapCurtain, onOpenAbout }) => {
+const Navbar: React.FC<NavbarProps> = ({ scrolled, navClass, mobileMenuOpen, setMobileMenuOpen, onOpenPlanner, onOpenContact, onOpenExperiences, onOpenAbout }) => {
   const { language, setLanguage, t } = useTranslation();
   const [langOpen, setLangOpen] = useState(false);
   const [emergencyOpen, setEmergencyOpen] = useState(false);
@@ -106,13 +105,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, navClass, mobileMenuOpen, set
         <div className="flex items-center gap-4 shrink-0">
 
 
-          <button 
-            onClick={() => onOpenMapCurtain()}
-            className={`hidden sm:flex items-center gap-2 px-4 py-1.5 rounded-full transition-colors border ${isLight ? 'glass border-brand-green/20 text-brand-green-extra-dark hover:bg-brand-green/10' : 'glass-dark border-white/20 text-surface-cream hover:bg-white/10'}`}
-          >
-            <Icon name="Map" size={14} />
-            <span className="text-xs tracking-[0.1em] font-medium uppercase">Map</span>
-          </button>
+          {/* Map button removed */}
           
           <div className="relative flex items-center">
             <div 
