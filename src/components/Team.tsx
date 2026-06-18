@@ -59,6 +59,38 @@ const AnimatedCounter = ({ value, label }: { value: string | number, label: stri
   );
 };
 
+const LiveClock = ({ timeZone, label }: { timeZone: string, label: string }) => {
+  const [time, setTime] = React.useState('');
+
+  React.useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const formatted = new Intl.DateTimeFormat('en-US', {
+        timeZone,
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      }).format(now);
+      setTime(formatted);
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 60000);
+    return () => clearInterval(interval);
+  }, [timeZone]);
+
+  return (
+    <div className="flex items-center gap-2 mb-2">
+      <div className="relative flex h-2.5 w-2.5">
+        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+      </div>
+      <Text size="xs" weight="bold" className="uppercase tracking-widest text-[#1D1D1F]/70">
+        {label} — {time}
+      </Text>
+    </div>
+  );
+};
+
 const AnimatedMapLine = () => {
   return (
     <div className="relative w-full max-w-lg mx-auto h-32 flex items-center justify-between mt-12 mb-20 px-8">
@@ -232,9 +264,7 @@ const Connection: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24 max-w-4xl mx-auto">
             {/* India Office */}
             <div className="bg-[#FAF8F3] rounded-[28px] p-10 border border-[#1D1D1F]/5">
-              <Text size="sm" weight="bold" className="uppercase tracking-widest text-[#1D1D1F]/50 mb-2">
-                🇮🇳 India Office
-              </Text>
+              <LiveClock timeZone="Asia/Kolkata" label="🇮🇳 Delhi" />
               <Heading as="h3" size="2xl" font="serif" className="mb-6">
                 Delhi
               </Heading>
@@ -259,9 +289,7 @@ const Connection: React.FC = () => {
 
             {/* Vietnam Office */}
             <div className="bg-[#FAF8F3] rounded-[28px] p-10 border border-[#1D1D1F]/5">
-              <Text size="sm" weight="bold" className="uppercase tracking-widest text-[#1D1D1F]/50 mb-2">
-                🇻🇳 Vietnam Office
-              </Text>
+              <LiveClock timeZone="Asia/Ho_Chi_Minh" label="🇻🇳 Ho Chi Minh City" />
               <Heading as="h3" size="2xl" font="serif" className="mb-6">
                 Ho Chi Minh City
               </Heading>
@@ -320,12 +348,19 @@ const Connection: React.FC = () => {
 
           {/* Final Quote & Secret Weapon */}
           <div className="text-center pb-20">
-            <Heading as="h2" size="4xl" font="serif" className="mb-6 font-normal tracking-tight text-[#1D1D1F]">
-              Great journeys are built on trust.
-            </Heading>
-            <Text size="xl" className="text-[#1D1D1F]/60 font-light italic mb-40">
-              Feel Vietnam, Your Way.
-            </Text>
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-20%" }}
+              transition={{ duration: 1.5, ease: [0.25, 1, 0.5, 1] }}
+            >
+              <Heading as="h2" size="4xl" font="serif" className="mb-6 font-normal tracking-tight text-[#1D1D1F]">
+                Great journeys are built on trust.
+              </Heading>
+              <Text size="xl" className="text-[#1D1D1F]/60 font-light italic mb-40">
+                Feel Vietnam, Your Way.
+              </Text>
+            </motion.div>
 
             {/* Secret Weapon */}
             <div className="inline-block relative">
