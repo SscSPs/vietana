@@ -269,11 +269,14 @@ const Connection: React.FC = () => {
                 Delhi
               </Heading>
               <Text className="text-[#1D1D1F]/70 mb-8 font-light leading-relaxed max-w-xs">
-                Level 2, Connaught Place, <br/>New Delhi, 110001, India
+                RZ 35/36, Indra Park Extension, <br/>
+                Near Hanuman Mandir, <br/>
+                Uttam Nagar East, <br/>
+                Delhi – 110059, India
               </Text>
               <div className="flex gap-4">
                 <button 
-                  onClick={() => copyToClipboard("Level 2, Connaught Place, New Delhi, 110001, India")}
+                  onClick={() => copyToClipboard("RZ 35/36, Indra Park Extension, Near Hanuman Mandir, Uttam Nagar East, Delhi – 110059, India")}
                   className="px-6 py-3 border border-[#1D1D1F]/10 rounded-full text-sm font-medium hover:bg-[#1D1D1F]/5 transition-colors"
                 >
                   Copy Address
@@ -294,11 +297,13 @@ const Connection: React.FC = () => {
                 Ho Chi Minh City
               </Heading>
               <Text className="text-[#1D1D1F]/70 mb-8 font-light leading-relaxed max-w-xs">
-                District 1, <br/>Ho Chi Minh City, Vietnam
+                45 Nguyễn Quý Đức, <br/>
+                An Phú, Bình Trưng, <br/>
+                Ho Chi Minh City 756000, Vietnam
               </Text>
               <div className="flex gap-4">
                 <button 
-                  onClick={() => copyToClipboard("District 1, Ho Chi Minh City, Vietnam")}
+                  onClick={() => copyToClipboard("45 Nguyễn Quý Đức, An Phú, Bình Trưng, Ho Chi Minh City 756000, Vietnam")}
                   className="px-6 py-3 border border-[#1D1D1F]/10 rounded-full text-sm font-medium hover:bg-[#1D1D1F]/5 transition-colors"
                 >
                   Copy Address
