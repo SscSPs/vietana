@@ -120,7 +120,7 @@ const ServicePopup: React.FC<ServicePopupProps> = ({ isOpen, onClose, service })
                 <span>WhatsApp</span>
               </button>
               <button 
-                onClick={() => window.open('https://zalo.me/84834880993', '_blank')}
+                onClick={() => window.open('https://zalo.me/84902434006', '_blank')}
                 className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-black/10 hover:border-[#0068FF] hover:bg-[#0068FF] hover:text-white transition-all text-sm font-medium text-text-charcoal bg-white shadow-sm"
               >
                 <span className="font-bold tracking-tighter">Zalo</span>

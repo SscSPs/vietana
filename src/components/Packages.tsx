@@ -405,8 +405,7 @@ Please load this itinerary and let me customize it!`;
                 }
 
                 return {
-                  pdf: `/itineraries/PDFs/${category}/${filename}.pdf`,
-                  word: `/itineraries/Word Documents/${category}/${filename}.docx`
+                  pdf: `/itineraries/PDFs/${category}/${filename}.pdf`
                 };
               };
 
@@ -414,24 +413,16 @@ Please load this itinerary and let me customize it!`;
               return (
                 <div className="px-6 py-4 bg-white/5 border-t border-white/5 shrink-0 flex flex-col gap-2">
                   <span className="text-[0.65rem] uppercase tracking-widest text-brand-gold-light font-semibold text-center mb-1">
-                    Download Luxury Handbooks (No Pricing)
+                    Download Luxury Handbook (No Pricing)
                   </span>
                   <div className="flex border border-white/10 rounded-2xl overflow-hidden shadow-strong">
                     <a
                       href={paths.pdf}
                       download
-                      className="flex-1 py-3 px-4 bg-[#1E4D45]/40 hover:bg-[#1E4D45]/60 text-white text-xs font-bold uppercase tracking-wider text-center flex items-center justify-center gap-2 border-r border-white/10 transition-colors duration-300"
+                      className="w-full py-3 px-4 bg-[#1E4D45]/45 hover:bg-[#1E4D45]/75 text-white text-xs font-bold uppercase tracking-wider text-center flex items-center justify-center gap-2 transition-colors duration-300"
                     >
                       <Icon name="FileText" size={14} className="text-brand-gold" />
-                      PDF Itinerary
-                    </a>
-                    <a
-                      href={paths.word}
-                      download
-                      className="flex-1 py-3 px-4 bg-brand-gold hover:bg-brand-gold-light text-brand-green-extra-dark text-xs font-bold uppercase tracking-wider text-center flex items-center justify-center gap-2 transition-colors duration-300"
-                    >
-                      <Icon name="FileText" size={14} className="text-brand-green-extra-dark" />
-                      Word Document
+                      Download PDF Itinerary
                     </a>
                   </div>
                 </div>
