@@ -504,6 +504,83 @@ export const CITIES: CityDestination[] = [
   }
 ];
 
+export interface MapSight {
+  name: string;
+  cityName: string;
+  lat: number;
+  lng: number;
+  desc: string;
+  img: string;
+}
+
+export const MAP_SIGHTS: MapSight[] = [
+  {
+    name: "Fansipan Peak",
+    cityName: "Sa Pa",
+    lat: 22.3033,
+    lng: 103.7758,
+    desc: "The Roof of Indochina, 3,143m high, accessible via scenic cable car.",
+    img: "/images/sights/sapa.jpg"
+  },
+  {
+    name: "Hoan Kiem Lake",
+    cityName: "Hanoi",
+    lat: 21.0264,
+    lng: 105.8523,
+    desc: "The peaceful lake in the center of old Hanoi with the red Huc Bridge.",
+    img: "https://images.unsplash.com/photo-1627918458925-502a5f57fc1c?w=800&q=80"
+  },
+  {
+    name: "Cu Chi Tunnels",
+    cityName: "Ho Chi Minh City",
+    lat: 11.1419,
+    lng: 106.4633,
+    desc: "Vast historic underground combat tunnels used during the Vietnam War.",
+    img: "/images/sights/hcmc6.jpg"
+  },
+  {
+    name: "Ben Thanh Market",
+    cityName: "Ho Chi Minh City",
+    lat: 10.7725,
+    lng: 106.6980,
+    desc: "Famous central market offering souvenirs, local foods, and fresh produce.",
+    img: "https://images.unsplash.com/photo-1528127269322-539801943592?w=800&q=80"
+  },
+  {
+    name: "Ba Na Hills & Golden Bridge",
+    cityName: "Da Nang",
+    lat: 15.9989,
+    lng: 107.9968,
+    desc: "The iconic pedestrian bridge held by giant stone hands in the mountains.",
+    img: "https://images.unsplash.com/photo-1531737212413-667205e1cda7?w=800&q=80"
+  },
+  {
+    name: "Japanese Covered Bridge",
+    cityName: "Hoi An",
+    lat: 15.8771,
+    lng: 108.3259,
+    desc: "Historic 18th-century pagoda bridge, a symbol of Hoi An's ancient town.",
+    img: "https://images.unsplash.com/photo-1591539268804-09852f8295ee?w=800&q=80"
+  },
+  {
+    name: "Trang An Caves",
+    cityName: "Ninh Binh",
+    lat: 20.2506,
+    lng: 105.8972,
+    desc: "Stunning UNESCO landscape explored on serene hand-paddled boat tours.",
+    img: "/images/sights/ninhbinh.jpg"
+  },
+  {
+    name: "Sung Sot Cave",
+    cityName: "Ha Long Bay",
+    lat: 20.8450,
+    lng: 107.1350,
+    desc: "The grandest and most spectacular stalactite cave in Halong Bay.",
+    img: "https://images.unsplash.com/photo-1557750255-c76072a7aad1?w=800&q=80"
+  }
+];
+
+
 
 
 

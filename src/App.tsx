@@ -46,7 +46,25 @@ export default function App() {
 
   const [isPlannerOpen, setIsPlannerOpen] = useState(false);
   const [isBuilderOpen, setIsBuilderOpen] = useState(false);
-  const [builderDestinations, setBuilderDestinations] = useState<string[]>([]);
+  
+  const [builderDestinations, setBuilderDestinations] = useState<string[]>(() => {
+    const cached = localStorage.getItem('vietana_trip_cities');
+    return cached ? JSON.parse(cached) : [];
+  });
+  
+  const [builderSights, setBuilderSights] = useState<string[]>(() => {
+    const cached = localStorage.getItem('vietana_trip_sights');
+    return cached ? JSON.parse(cached) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('vietana_trip_cities', JSON.stringify(builderDestinations));
+  }, [builderDestinations]);
+
+  useEffect(() => {
+    localStorage.setItem('vietana_trip_sights', JSON.stringify(builderSights));
+  }, [builderSights]);
+
   const [initialDestination, setInitialDestination] = useState<string | undefined>(undefined);
   const [initialPrompt, setInitialPrompt] = useState<string | undefined>(undefined);
   const [isMagicModeOpen, setIsMagicModeOpen] = useState(false);
@@ -135,6 +153,9 @@ export default function App() {
           isOpen={isBuilderOpen} 
           onClose={() => setIsBuilderOpen(false)} 
           initialDestinations={builderDestinations}
+          initialSights={builderSights}
+          onUpdateCities={setBuilderDestinations}
+          onUpdateSights={setBuilderSights}
           onOpenAIPlanner={(prompt) => openPlanner(undefined, prompt)}
         />
         <ExperiencesDrawer 
@@ -147,12 +168,18 @@ export default function App() {
           onClose={() => setIsMapOpen(false)}
           onOpenPlanner={(dest) => openPlanner(dest)}
           selectedCities={builderDestinations}
+          selectedSights={builderSights}
           onAddCity={(city) => {
             setBuilderDestinations(prev => {
               const next = prev.includes(city) ? prev.filter(c => c !== city) : [...prev, city];
               setIsBuilderOpen(true);
               return next;
             });
+          }}
+          onAddSight={(city, sight) => {
+            setBuilderDestinations(prev => prev.includes(city) ? prev : [...prev, city]);
+            setBuilderSights(prev => prev.includes(sight) ? prev.filter(s => s !== sight) : [...prev, sight]);
+            setIsBuilderOpen(true);
           }}
         />
         <Contact 

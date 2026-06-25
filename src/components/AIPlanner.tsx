@@ -36,7 +36,8 @@ const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestinati
     isFinished,
     preferences,
     itinerary,
-    handleSend
+    handleSend,
+    resetPlanner
   } = useAIPlanner(isOpen ? initialDestination : undefined, isOpen ? initialPrompt : undefined);
 
   const pcMsgsRef = useRef<HTMLDivElement>(null);
@@ -62,13 +63,22 @@ const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestinati
 
       {/* LEFT: Chat Consultation (Lush Glassmorphism) */}
       <div className="flex-1 md:flex-[0.58] flex flex-col relative z-10 border-r border-white/5 w-full">
-        <div className="p-6 md:p-10 pb-4 md:pb-6 text-left relative">
-          <Heading as="h3" variant="white" className="text-2xl md:text-3xl font-serif tracking-wide flex items-center gap-3">
-            <span className="text-brand-gold-light"><Icon name="Leaf" size={24} className="md:w-8 md:h-8" /></span> {t.planner.title}
-          </Heading>
-          <Text variant="none" className="text-white/50 text-xs md:text-sm mt-2 font-light tracking-wide">
-            {t.planner.tagline}
-          </Text>
+        <div className="p-6 md:p-10 pb-4 md:pb-6 text-left relative flex justify-between items-start">
+          <div>
+            <Heading as="h3" variant="white" className="text-2xl md:text-3xl font-serif tracking-wide flex items-center gap-3">
+              <span className="text-brand-gold-light"><Icon name="Leaf" size={24} className="md:w-8 md:h-8" /></span> {t.planner.title}
+            </Heading>
+            <Text variant="none" className="text-white/50 text-xs md:text-sm mt-2 font-light tracking-wide">
+              {t.planner.tagline}
+            </Text>
+          </div>
+          <button
+            onClick={resetPlanner}
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-white/10 hover:border-brand-gold/30 hover:bg-white/5 text-white/60 hover:text-brand-gold transition-all duration-300 text-xs cursor-pointer font-medium uppercase tracking-wider mt-1"
+            title="Reset Chat"
+          >
+            <Icon name="RotateCcw" size={12} /> Clear
+          </button>
         </div>
 
         <div ref={pcMsgsRef} className="flex-1 overflow-y-auto px-6 md:px-10 py-4 flex flex-col gap-4 md:gap-6 scroll-smooth scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">

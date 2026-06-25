@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { geoMercator, geoPath, GeoProjection } from 'd3-geo';
 import { json } from 'd3-fetch';
 import { feature } from 'topojson-client';
-import { MAP_DESTINATIONS } from '../../data/destinations';
+import { MAP_DESTINATIONS, MAP_SIGHTS, MapSight } from '../../data/destinations';
 import { Text, Heading } from '../ui/Typography';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -16,10 +16,13 @@ const MARKER_HOVER_COLOR = '#D4AF37'; // Gold accent
 interface VietnamVectorMapProps {
   selectedCities?: string[];
   onAddCity?: (city: string) => void;
+  selectedSights?: string[];
+  onAddSight?: (city: string, sight: string) => void;
 }
 
-const VietnamVectorMap: React.FC<VietnamVectorMapProps> = ({ selectedCities = [], onAddCity }) => {
+const VietnamVectorMap: React.FC<VietnamVectorMapProps> = ({ selectedCities = [], onAddCity, selectedSights = [], onAddSight }) => {
   const [hoveredDest, setHoveredDest] = useState<number | null>(null);
+  const [hoveredSight, setHoveredSight] = useState<MapSight | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [geoData, setGeoData] = useState<any>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -132,6 +135,43 @@ const VietnamVectorMap: React.FC<VietnamVectorMapProps> = ({ selectedCities = []
             </g>
           );
         })}
+
+        {/* Sight markers (Gold Diamonds) */}
+        {MAP_SIGHTS.map((sight, idx) => {
+          const [x, y] = projection([sight.lng, sight.lat]) as [number, number];
+          const isSelected = selectedSights.includes(sight.name);
+          const currentMarkerColor = '#D4AF37'; // Gold for sights
+          return (
+            <g
+              key={sight.name}
+              className="cursor-pointer font-sans"
+              onMouseEnter={() => setHoveredSight(sight)}
+              onMouseLeave={() => setHoveredSight(null)}
+              onClick={() => {
+                if (onAddSight) {
+                  onAddSight(sight.cityName, sight.name);
+                }
+              }}
+            >
+              {/* Glowing diamond ring */}
+              <motion.polygon
+                points={`${x},${y-8} ${x+8},${y} ${x},${y+8} ${x-8},${y}`}
+                fill={currentMarkerColor}
+                opacity={0.15}
+                animate={{ scale: isSelected ? [1, 1.4, 1] : [1, 1.6, 1], opacity: [0.15, 0.4, 0.15] }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut', delay: idx * 0.1 }}
+              />
+              {/* Center diamond dot */}
+              <polygon
+                points={`${x},${y-4} ${x+4},${y} ${x},${y+4} ${x-4},${y}`}
+                fill={isSelected ? '#D4AF37' : '#FAF8F3'}
+                stroke="#1E4D45"
+                strokeWidth={1}
+                className="transition-colors duration-300"
+              />
+            </g>
+          );
+        })}
       </svg>
 
       {/* Hover Cards (Apple Style) */}
@@ -168,6 +208,47 @@ const VietnamVectorMap: React.FC<VietnamVectorMapProps> = ({ selectedCities = []
               <div className="flex items-center justify-between mt-2 pt-2 border-t border-[#1D1D1F]/5">
                 <span className={`text-[0.6rem] font-bold tracking-widest uppercase ${selectedCities.includes(MAP_DESTINATIONS[hoveredDest].name) ? 'text-[#D4AF37]' : 'text-gray-400'}`}>
                   {selectedCities.includes(MAP_DESTINATIONS[hoveredDest].name) ? '✓ IN ITINERARY' : 'CLICK TO ADD'}
+                </span>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Sight Hover Cards */}
+      <AnimatePresence>
+        {hoveredSight !== null && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.15, ease: 'easeOut' }}
+            className="absolute pointer-events-none z-50 w-64 bg-white/95 backdrop-blur-xl rounded-[24px] overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-[#1D1D1F]/5"
+            style={cardStyle}
+          >
+            <div className="h-32 w-full relative">
+              <img
+                src={hoveredSight.img}
+                alt={hoveredSight.name}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <div className="absolute bottom-4 left-4 text-white">
+                <Text size="xs" weight="bold" className="tracking-widest uppercase text-brand-gold mb-1">
+                  📍 {hoveredSight.cityName} Attraction
+                </Text>
+                <Heading as="h4" size="lg" font="serif" className="leading-none drop-shadow-md">
+                  {hoveredSight.name}
+                </Heading>
+              </div>
+            </div>
+            <div className="p-4 bg-white flex flex-col gap-2">
+              <Text size="sm" className="text-[#2B2B2B]/70 leading-snug">
+                {hoveredSight.desc}
+              </Text>
+              <div className="flex items-center justify-between mt-2 pt-2 border-t border-[#1D1D1F]/5">
+                <span className={`text-[0.6rem] font-bold tracking-widest uppercase ${selectedSights.includes(hoveredSight.name) ? 'text-[#D4AF37]' : 'text-gray-400'}`}>
+                  {selectedSights.includes(hoveredSight.name) ? '✓ IN ITINERARY' : 'CLICK TO ADD'}
                 </span>
               </div>
             </div>

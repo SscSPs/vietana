@@ -49,28 +49,66 @@ const getSystemKnowledge = () => {
 
 export const useAIPlanner = (initialDestination?: string, initialPrompt?: string) => {
   const { t } = useTranslation();
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [history, setHistory] = useState<{role: string, parts: {text: string}[]}[]>([]);
+  
+  const [messages, setMessages] = useState<Message[]>(() => {
+    const cached = localStorage.getItem('vietana_ai_messages');
+    return cached ? JSON.parse(cached) : [];
+  });
+  
+  const [history, setHistory] = useState<{role: string, parts: {text: string}[]}[]>(() => {
+    const cached = localStorage.getItem('vietana_ai_history');
+    return cached ? JSON.parse(cached) : [];
+  });
+
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [options, setOptions] = useState<string[]>([]);
-  const [itinerary, setItinerary] = useState<Itinerary | null>(null);
-  const [preferences, setPreferences] = useState<Preferences>({
-    focus: initialDestination || undefined
+  
+  const [itinerary, setItinerary] = useState<Itinerary | null>(() => {
+    const cached = localStorage.getItem('vietana_ai_itinerary');
+    return cached ? JSON.parse(cached) : null;
+  });
+
+  const [preferences, setPreferences] = useState<Preferences>(() => {
+    const cached = localStorage.getItem('vietana_ai_preferences');
+    const parsed = cached ? JSON.parse(cached) : {};
+    if (initialDestination) {
+      parsed.focus = initialDestination;
+    }
+    return parsed;
   });
 
   const initialized = useRef(false);
 
   useEffect(() => {
+    localStorage.setItem('vietana_ai_messages', JSON.stringify(messages));
+  }, [messages]);
+
+  useEffect(() => {
+    localStorage.setItem('vietana_ai_history', JSON.stringify(history));
+  }, [history]);
+
+  useEffect(() => {
+    localStorage.setItem('vietana_ai_preferences', JSON.stringify(preferences));
+  }, [preferences]);
+
+  useEffect(() => {
+    if (itinerary) {
+      localStorage.setItem('vietana_ai_itinerary', JSON.stringify(itinerary));
+    } else {
+      localStorage.removeItem('vietana_ai_itinerary');
+    }
+  }, [itinerary]);
+
+  useEffect(() => {
     if (initialized.current) return;
-    if (messages.length > 0) return;
     initialized.current = true;
     
-    // Initial greeting
-    const greeting = "Namaste! I'm your local Vietana expert. Ask me anything about Vietnam, from the best Indian restaurants in Hanoi to hidden gems in Da Nang! How can I help you plan your dream trip today?";
-    setMessages([{ text: greeting, type: 'bot' }]);
-    // DO NOT add the bot greeting to the history array. Gemini requires history to start with a 'user' message.
-    setHistory([]);
+    if (messages.length === 0) {
+      const greeting = "Namaste! I'm your local Vietana expert. Ask me anything about Vietnam, from the best Indian restaurants in Hanoi to hidden gems in Da Nang! How can I help you plan your dream trip today?";
+      setMessages([{ text: greeting, type: 'bot' }]);
+      setHistory([]);
+    }
 
     if (initialPrompt) {
       setTimeout(() => {
@@ -78,6 +116,18 @@ export const useAIPlanner = (initialDestination?: string, initialPrompt?: string
       }, 1500);
     }
   }, [initialDestination, initialPrompt]);
+
+  const resetPlanner = () => {
+    const greeting = "Namaste! I'm your local Vietana expert. Ask me anything about Vietnam, from the best Indian restaurants in Hanoi to hidden gems in Da Nang! How can I help you plan your dream trip today?";
+    setMessages([{ text: greeting, type: 'bot' }]);
+    setHistory([]);
+    setPreferences({});
+    setItinerary(null);
+    localStorage.removeItem('vietana_ai_messages');
+    localStorage.removeItem('vietana_ai_history');
+    localStorage.removeItem('vietana_ai_preferences');
+    localStorage.removeItem('vietana_ai_itinerary');
+  };
 
   const handleSend = async (text: string = inputValue) => {
     if (!text.trim()) return;
@@ -153,6 +203,7 @@ export const useAIPlanner = (initialDestination?: string, initialPrompt?: string
     isFinished: false,
     preferences,
     itinerary,
-    handleSend
+    handleSend,
+    resetPlanner
   };
 };

@@ -11,9 +11,11 @@ interface MapCurtainProps {
   onOpenPlanner: (destination?: string) => void;
   selectedCities?: string[];
   onAddCity?: (city: string) => void;
+  selectedSights?: string[];
+  onAddSight?: (city: string, sight: string) => void;
 }
 
-const MapCurtain: React.FC<MapCurtainProps> = ({ isOpen, onClose, selectedCities = [], onAddCity }) => {
+const MapCurtain: React.FC<MapCurtainProps> = ({ isOpen, onClose, selectedCities = [], onAddCity, selectedSights = [], onAddSight }) => {
   // Close on Escape key
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -69,7 +71,12 @@ const MapCurtain: React.FC<MapCurtainProps> = ({ isOpen, onClose, selectedCities
                 </Text>
               </div>
             }>
-              <VietnamMap selectedCities={selectedCities} onAddCity={onAddCity} />
+              <VietnamMap 
+                selectedCities={selectedCities} 
+                onAddCity={onAddCity} 
+                selectedSights={selectedSights} 
+                onAddSight={onAddSight} 
+              />
             </Suspense>
           </div>
         </motion.div>

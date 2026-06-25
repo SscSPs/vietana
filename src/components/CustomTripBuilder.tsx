@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { TRIP_BUILDER_CITIES } from '../data/tripBuilder';
+import { CITIES } from '../data/destinations';
 import { calculateTripEstimate, TravelStyle, FlightType, VisaType } from '../services/pricingService';
 import { MessagingService } from '../services/messagingService';
 import { TripEstimate } from '../types';
@@ -14,17 +15,68 @@ interface CustomTripBuilderProps {
   isOpen: boolean;
   onClose: () => void;
   initialDestinations?: string[];
+  initialSights?: string[];
+  onUpdateCities?: (cities: string[]) => void;
+  onUpdateSights?: (sights: string[]) => void;
   onOpenAIPlanner?: (prompt: string) => void;
 }
 
-const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose, initialDestinations = [], onOpenAIPlanner }) => {
-  const [selectedCities, setSelectedCities] = useState<string[]>(initialDestinations);
-  const [style, setStyle] = useState<TravelStyle>('comfort');
-  const [flightType, setFlightType] = useState<FlightType>('round');
-  const [visaType, setVisaType] = useState<VisaType>('single');
-  const [days, setDays] = useState(5);
-  const [pax, setPax] = useState(2);
-  const [notes, setNotes] = useState('');
+const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({
+  isOpen,
+  onClose,
+  initialDestinations = [],
+  initialSights = [],
+  onUpdateCities,
+  onUpdateSights,
+  onOpenAIPlanner
+}) => {
+  const [selectedCities, setSelectedCities] = useState<string[]>(() => {
+    const cached = localStorage.getItem('vietana_trip_cities');
+    return cached ? JSON.parse(cached) : initialDestinations;
+  });
+  const [selectedSights, setSelectedSights] = useState<string[]>(() => {
+    const cached = localStorage.getItem('vietana_trip_sights');
+    return cached ? JSON.parse(cached) : initialSights;
+  });
+  const [style, setStyle] = useState<TravelStyle>(() => {
+    const cached = localStorage.getItem('vietana_trip_style');
+    return (cached as TravelStyle) || 'comfort';
+  });
+  const [flightType, setFlightType] = useState<FlightType>(() => {
+    const cached = localStorage.getItem('vietana_trip_flight');
+    return (cached as FlightType) || 'round';
+  });
+  const [visaType, setVisaType] = useState<VisaType>(() => {
+    const cached = localStorage.getItem('vietana_trip_visa');
+    return (cached as VisaType) || 'single';
+  });
+  const [days, setDays] = useState<number>(() => {
+    const cached = localStorage.getItem('vietana_trip_days');
+    return cached ? parseInt(cached, 10) : 5;
+  });
+  const [pax, setPax] = useState<number>(() => {
+    const cached = localStorage.getItem('vietana_trip_pax');
+    return cached ? parseInt(cached, 10) : 2;
+  });
+  const [notes, setNotes] = useState<string>(() => {
+    return localStorage.getItem('vietana_trip_notes') || '';
+  });
+
+  // B2B States
+  const [b2bEnabled, setB2bEnabled] = useState<boolean>(() => {
+    return localStorage.getItem('vietana_b2b_enabled') === 'true';
+  });
+  const [agencyName, setAgencyName] = useState<string>(() => {
+    return localStorage.getItem('vietana_b2b_agency_name') || '';
+  });
+  const [agencyLogo, setAgencyLogo] = useState<string>(() => {
+    return localStorage.getItem('vietana_b2b_agency_logo') || '';
+  });
+  const [priceMarkup, setPriceMarkup] = useState<number>(() => {
+    const cached = localStorage.getItem('vietana_b2b_markup');
+    return cached ? parseFloat(cached) : 10;
+  });
+
   const [currentBg, setCurrentBg] = useState(0);
 
   const [estimate, setEstimate] = useState<TripEstimate>({
@@ -50,23 +102,141 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose, 
   }, [isOpen]);
 
   useEffect(() => {
-    setEstimate(calculateTripEstimate(selectedCities, style, days, pax, flightType, visaType));
-  }, [selectedCities, style, days, pax, flightType, visaType]);
+    const rawEstimate = calculateTripEstimate(selectedCities, style, days, pax, flightType, visaType);
+    if (b2bEnabled && priceMarkup > 0) {
+      const multiplier = 1 + (priceMarkup / 100);
+      setEstimate({
+        flight: Math.round(rawEstimate.flight * multiplier),
+        visa: Math.round(rawEstimate.visa * multiplier),
+        transfers: Math.round(rawEstimate.transfers * multiplier),
+        hotels: Math.round(rawEstimate.hotels * multiplier),
+        food: Math.round(rawEstimate.food * multiplier),
+        transport: Math.round(rawEstimate.transport * multiplier),
+        experiences: Math.round(rawEstimate.experiences * multiplier),
+        dailyTotal: Math.round(rawEstimate.dailyTotal * multiplier),
+        total: Math.round(rawEstimate.total * multiplier)
+      });
+    } else {
+      setEstimate(rawEstimate);
+    }
+  }, [selectedCities, style, days, pax, flightType, visaType, b2bEnabled, priceMarkup]);
 
   useEffect(() => {
     if (isOpen) {
-      setSelectedCities(initialDestinations);
+      if (initialDestinations.length > 0) {
+        setSelectedCities(initialDestinations);
+      }
+      if (initialSights.length > 0) {
+        setSelectedSights(initialSights);
+      }
     }
-  }, [isOpen, initialDestinations]);
+  }, [isOpen, initialDestinations, initialSights]);
+
+  useEffect(() => {
+    localStorage.setItem('vietana_trip_cities', JSON.stringify(selectedCities));
+    if (onUpdateCities) onUpdateCities(selectedCities);
+  }, [selectedCities]);
+
+  useEffect(() => {
+    localStorage.setItem('vietana_trip_sights', JSON.stringify(selectedSights));
+    if (onUpdateSights) onUpdateSights(selectedSights);
+  }, [selectedSights]);
+
+  useEffect(() => {
+    localStorage.setItem('vietana_trip_style', style);
+  }, [style]);
+
+  useEffect(() => {
+    localStorage.setItem('vietana_trip_flight', flightType);
+  }, [flightType]);
+
+  useEffect(() => {
+    localStorage.setItem('vietana_trip_visa', visaType);
+  }, [visaType]);
+
+  useEffect(() => {
+    localStorage.setItem('vietana_trip_days', days.toString());
+  }, [days]);
+
+  useEffect(() => {
+    localStorage.setItem('vietana_trip_pax', pax.toString());
+  }, [pax]);
+
+  useEffect(() => {
+    localStorage.setItem('vietana_trip_notes', notes);
+  }, [notes]);
+
+  useEffect(() => {
+    localStorage.setItem('vietana_b2b_enabled', b2bEnabled.toString());
+  }, [b2bEnabled]);
+
+  useEffect(() => {
+    localStorage.setItem('vietana_b2b_agency_name', agencyName);
+  }, [agencyName]);
+
+  useEffect(() => {
+    localStorage.setItem('vietana_b2b_agency_logo', agencyLogo);
+  }, [agencyLogo]);
+
+  useEffect(() => {
+    localStorage.setItem('vietana_b2b_markup', priceMarkup.toString());
+  }, [priceMarkup]);
 
   const toggleCity = (city: string) => {
-    setSelectedCities(prev => 
-      prev.includes(city) ? prev.filter(c => c !== city) : [...prev, city]
+    setSelectedCities(prev => {
+      const next = prev.includes(city) ? prev.filter(c => c !== city) : [...prev, city];
+      // If a city is removed, also remove all its sights
+      if (prev.includes(city)) {
+        const cityData = CITIES.find(c => c.name.toLowerCase() === city.toLowerCase());
+        if (cityData) {
+          const sightNames = cityData.sights.map(s => s.name);
+          setSelectedSights(sights => sights.filter(s => !sightNames.includes(s)));
+        }
+      }
+      return next;
+    });
+  };
+
+  const toggleSight = (sight: string) => {
+    setSelectedSights(prev =>
+      prev.includes(sight) ? prev.filter(s => s !== sight) : [...prev, sight]
     );
   };
 
+  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAgencyLogo(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const clearTripSelections = () => {
+    setSelectedCities([]);
+    setSelectedSights([]);
+    setStyle('comfort');
+    setFlightType('round');
+    setVisaType('single');
+    setDays(5);
+    setPax(2);
+    setNotes('');
+    localStorage.removeItem('vietana_trip_cities');
+    localStorage.removeItem('vietana_trip_sights');
+    localStorage.removeItem('vietana_trip_style');
+    localStorage.removeItem('vietana_trip_flight');
+    localStorage.removeItem('vietana_trip_visa');
+    localStorage.removeItem('vietana_trip_days');
+    localStorage.removeItem('vietana_trip_pax');
+    localStorage.removeItem('vietana_trip_notes');
+  };
+
   const sendToWhatsApp = () => {
-    const link = MessagingService.generateCustomTripWhatsApp(selectedCities, style, days, pax, estimate.total, notes);
+    const sightsText = selectedSights.length > 0 ? `\n- Sights: ${selectedSights.join(', ')}` : '';
+    const detailsWithSights = `${notes}${sightsText}`;
+    const link = MessagingService.generateCustomTripWhatsApp(selectedCities, style, days, pax, estimate.total, detailsWithSights);
     window.open(link, '_blank');
   };
 
@@ -191,10 +361,77 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose, 
             </div>
           </div>
 
+          {/* B2B Agent Portal */}
+          <div className="border border-white/10 rounded-xl p-5 bg-white/5 flex flex-col gap-4">
+            <div className="flex items-center justify-between cursor-pointer" onClick={() => setB2bEnabled(!b2bEnabled)}>
+              <Heading as="h4" variant="none" className="text-sm font-semibold tracking-wide text-white flex items-center gap-2">
+                <Icon name="Briefcase" size={16} className="text-brand-gold" /> B2B Agent Portal
+              </Heading>
+              <div className={`w-8 h-4 rounded-full p-0.5 transition-colors duration-300 ${b2bEnabled ? 'bg-brand-gold' : 'bg-white/20'}`}>
+                <div className={`w-3 h-3 rounded-full bg-brand-green-extra-dark transition-transform duration-300 ${b2bEnabled ? 'translate-x-4' : 'translate-x-0'}`} />
+              </div>
+            </div>
+
+            {b2bEnabled && (
+              <div className="flex flex-col gap-5 pt-4 border-t border-white/5 animate-msg-fade-in">
+                <div>
+                  <label className="text-white/50 text-[0.65rem] uppercase tracking-widest block mb-2 font-semibold">Agency Name</label>
+                  <input
+                    type="text"
+                    value={agencyName}
+                    onChange={(e) => setAgencyName(e.target.value)}
+                    placeholder="e.g. Royal India Travels"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-gold/40 focus:bg-white/10"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-white/50 text-[0.65rem] uppercase tracking-widest block mb-2 font-semibold">Agency Logo</label>
+                  <div className="flex items-center gap-4">
+                    {agencyLogo && (
+                      <img src={agencyLogo} alt="Logo" className="w-12 h-12 object-contain bg-white/10 rounded border border-white/10 p-1" />
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleLogoUpload}
+                      className="text-xs text-white/50 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-gold file:text-brand-green-extra-dark file:hover:bg-brand-gold-light file:cursor-pointer"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex justify-between items-end mb-2">
+                    <label className="text-white/50 text-[0.65rem] uppercase tracking-widest font-semibold">Price Markup</label>
+                    <span className="text-brand-gold-light text-sm font-semibold">{priceMarkup}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="30"
+                    value={priceMarkup}
+                    onChange={(e) => setPriceMarkup(parseInt(e.target.value))}
+                    className="w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer outline-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-brand-gold [&::-webkit-slider-thumb]:rounded-full transition-all"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="flex flex-col gap-6 mt-4">
-            <Heading as="h3" variant="none" className="text-brand-gold/70 uppercase tracking-[0.2em] text-xs font-semibold flex items-center gap-3">
-              <Icon name="MapPin" size={16} /> Destinations
-            </Heading>
+            <div className="flex justify-between items-center">
+              <Heading as="h3" variant="none" className="text-brand-gold/70 uppercase tracking-[0.2em] text-xs font-semibold flex items-center gap-3">
+                <Icon name="MapPin" size={16} /> Destinations
+              </Heading>
+              {(selectedCities.length > 0 || selectedSights.length > 0) && (
+                <button 
+                  onClick={clearTripSelections}
+                  className="text-[0.65rem] text-white/40 hover:text-brand-gold font-semibold uppercase tracking-wider transition-colors cursor-pointer"
+                >
+                  Reset Selections
+                </button>
+              )}
+            </div>
             
             <div className="grid grid-cols-2 xl:grid-cols-3 gap-3">
               {TRIP_BUILDER_CITIES.map(city => {
@@ -221,6 +458,39 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({ isOpen, onClose, 
                 );
               })}
             </div>
+
+            {/* Sights Checklist for Selected Cities */}
+            {selectedCities.map(cityName => {
+              const cityData = CITIES.find(c => c.name.toLowerCase() === cityName.toLowerCase());
+              if (!cityData || !cityData.sights || cityData.sights.length === 0) return null;
+              return (
+                <div key={cityName} className="mt-4 p-4 border border-white/5 bg-white/5 rounded-2xl animate-msg-fade-in">
+                  <Heading as="h4" variant="none" className="text-xs font-semibold text-brand-gold-light tracking-wide mb-3 flex items-center gap-1.5">
+                    <Icon name="Map" size={12} /> {cityName} Attractions
+                  </Heading>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {cityData.sights.map(sight => {
+                      const isSightSelected = selectedSights.includes(sight.name);
+                      return (
+                        <label
+                          key={sight.id}
+                          className={`flex items-center gap-3 p-2.5 rounded-xl border cursor-pointer transition-all duration-300 text-xs
+                            ${isSightSelected ? 'bg-brand-gold/10 border-brand-gold/30 text-white' : 'bg-white/5 border-white/10 text-white/60 hover:border-brand-gold/30'}`}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={isSightSelected}
+                            onChange={() => toggleSight(sight.name)}
+                            className="w-3.5 h-3.5 rounded border-white/10 text-brand-gold bg-transparent accent-brand-gold focus:ring-0 focus:ring-offset-0"
+                          />
+                          <span className="font-light truncate">{sight.name}</span>
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
         </div>
@@ -369,10 +639,24 @@ Please generate a structured day-by-day itinerary right away for this trip!`;
       {/* PRINT-ONLY AREA */}
       <div id="print-area" className="hidden print:block bg-white text-black p-8 max-w-3xl mx-auto">
         <div className="flex justify-between items-center border-b pb-6 mb-6">
-          <div>
-            <h1 className="text-3xl font-serif font-bold text-[#1E4D45]">VIETANA</h1>
-            <p className="text-xs uppercase tracking-widest text-gray-500 mt-1">Real-time Estimate Receipt & Itinerary</p>
-          </div>
+          {b2bEnabled ? (
+            <div className="flex items-center gap-4">
+              {agencyLogo ? (
+                <img src={agencyLogo} alt={agencyName} className="w-16 h-16 object-contain" />
+              ) : (
+                <h1 className="text-2xl font-serif font-bold text-[#1E4D45]">{agencyName || 'Travel Desk'}</h1>
+              )}
+              <div className="text-left">
+                <h2 className="text-lg font-serif font-semibold text-gray-800">{agencyName || 'Bespoke Travel'} Proposal</h2>
+                <p className="text-[10px] uppercase tracking-widest text-gray-500 mt-0.5">Prepared for your escape to Vietnam</p>
+              </div>
+            </div>
+          ) : (
+            <div className="text-left">
+              <h1 className="text-3xl font-serif font-bold text-[#1E4D45]">VIETANA</h1>
+              <p className="text-xs uppercase tracking-widest text-gray-500 mt-1">Real-time Estimate Receipt & Itinerary</p>
+            </div>
+          )}
           <div className="text-right">
             <p className="text-sm font-semibold text-[#D4AF37]">Premium Bespoke Vietnam Travel</p>
             <p className="text-xs text-gray-500">Managed from Ho Chi Minh City</p>
@@ -380,14 +664,17 @@ Please generate a structured day-by-day itinerary right away for this trip!`;
         </div>
 
         <div className="grid grid-cols-2 gap-6 mb-8 border-b pb-6">
-          <div>
+          <div className="text-left">
             <h3 className="text-xs uppercase tracking-wider text-gray-400 font-bold mb-2">Trip Specifications</h3>
             <p className="text-sm"><strong>Suggested Route:</strong> {suggestedRoute}</p>
             <p className="text-sm capitalize"><strong>Travel Vibe:</strong> {style} Explorer</p>
             <p className="text-sm"><strong>Duration:</strong> {days} Days</p>
             <p className="text-sm"><strong>Travelers:</strong> {pax} {pax === 1 ? 'Person' : 'People'}</p>
+            {selectedSights.length > 0 && (
+              <p className="text-sm mt-2"><strong>Attractions Included:</strong> {selectedSights.join(', ')}</p>
+            )}
           </div>
-          <div>
+          <div className="text-left">
             <h3 className="text-xs uppercase tracking-wider text-gray-400 font-bold mb-2">Flight & Entry</h3>
             <p className="text-sm"><strong>Flight Type:</strong> {flightType === 'round' ? 'Round Trip' : 'One Way'}</p>
             <p className="text-sm"><strong>E-Visa Type:</strong> {visaType === 'single' ? 'Single Entry' : 'Multiple Entry'}</p>
@@ -396,7 +683,7 @@ Please generate a structured day-by-day itinerary right away for this trip!`;
         </div>
 
         <div className="mb-8">
-          <h3 className="text-xs uppercase tracking-wider text-gray-400 font-bold mb-4">Cost Breakdown (Real-time Estimate)</h3>
+          <h3 className="text-xs uppercase tracking-wider text-gray-400 font-bold mb-4">Cost Breakdown (Estimate)</h3>
           <table className="w-full text-left text-sm border-collapse">
             <thead>
               <tr className="border-b font-semibold text-gray-600">
@@ -444,8 +731,8 @@ Please generate a structured day-by-day itinerary right away for this trip!`;
         </div>
 
         <div className="border-t pt-6 text-center text-xs text-gray-400">
-          <p>This is a custom digital quote prepared by Vietana.</p>
-          <p className="mt-1">For changes or offline bookings, message us on WhatsApp: +91 9953294543</p>
+          <p>{b2bEnabled ? `This proposal was compiled on behalf of ${agencyName || 'our agency'}.` : 'This is a custom digital quote prepared by Vietana.'}</p>
+          <p className="mt-1">{b2bEnabled ? 'Please contact your travel agent for bookings and adjustments.' : 'For changes or offline bookings, message us on WhatsApp: +91 9953294543'}</p>
         </div>
       </div>
     </Modal>
