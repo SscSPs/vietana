@@ -89,8 +89,12 @@ export default function App() {
       <SEO />
       <ProgressBar progress={scrollProgress} />
       <BackToTop visible={scrollY > 700} />
-      <FloatingWhatsApp />
-      <FloatingPlanner onClick={() => openPlanner()} />
+      {(!isPlannerOpen && !isBuilderOpen && !isMagicModeOpen && !isExperiencesOpen && !isMapOpen && !isContactOpen && !isAboutOpen) && (
+        <FloatingWhatsApp />
+      )}
+      {(!isPlannerOpen && !isBuilderOpen && !isMagicModeOpen && !isExperiencesOpen && !isMapOpen && !isContactOpen && !isAboutOpen) && (
+        <FloatingPlanner onClick={() => openPlanner()} />
+      )}
 
       <Navbar 
         scrolled={isScrolled}
@@ -105,7 +109,7 @@ export default function App() {
       />
 
       <main>
-        <Hero onOpenMagic={() => { setBuilderDestinations([]); setIsBuilderOpen(true); }} />
+        <Hero onOpenMagic={() => setIsMagicModeOpen(true)} />
         
         <Suspense fallback={<SectionPlaceholder />}>
           <Destinations />
@@ -148,6 +152,13 @@ export default function App() {
               isOpen={isMagicModeOpen} 
               onClose={() => setIsMagicModeOpen(false)} 
               onOpenPlanner={(dest) => openPlanner(dest)}
+              onOpenBuilder={() => { setBuilderDestinations([]); setIsBuilderOpen(true); }}
+              onOpenPackages={() => {
+                const packagesSection = document.getElementById('experiences');
+                if (packagesSection) {
+                  packagesSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
             />
           </Suspense>
         )}

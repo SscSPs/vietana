@@ -60,8 +60,8 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled: scrolledParam, navClass, mobi
         className={`fixed left-1/2 -translate-x-1/2 z-[1000] px-6 md:px-10 flex items-center justify-between transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] gap-2 md:gap-4 w-[95%] max-w-7xl rounded-full border 
           ${mobileMenuOpen 
             ? 'top-6 py-4 border-transparent shadow-none bg-transparent' 
-            : (scrolled 
-                ? 'top-4 py-3 bg-[#FAF8F3]/90 supports-[backdrop-filter]:bg-[#FAF8F3]/70 backdrop-blur-[20px] border-black/10 shadow-[0_8px_32px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.8)]' 
+            : (scrolledParam 
+                ? 'top-4 py-3 bg-[#111111]/85 supports-[backdrop-filter]:bg-[#111111]/60 backdrop-blur-[20px] border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)]' 
                 : 'top-6 py-4 bg-[#111111]/85 supports-[backdrop-filter]:bg-[#111111]/60 backdrop-blur-[10px] border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)]'
               )}`}
       >

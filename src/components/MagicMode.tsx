@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MAGIC_DESTINATIONS, MAGIC_MODE_SLIDES } from '../data/magicMode';
+import { MAGIC_MODE_SLIDES } from '../data/magicMode';
 import Button from './ui/Button';
 import { Heading, Text } from './ui/Typography';
 import Card from './ui/Card';
@@ -10,18 +10,20 @@ interface MagicModeProps {
   isOpen: boolean;
   onClose: () => void;
   onOpenPlanner: (destination?: string) => void;
+  onOpenBuilder: () => void;
+  onOpenPackages: () => void;
 }
 
-const MagicMode: React.FC<MagicModeProps> = ({ isOpen, onClose, onOpenPlanner }) => {
+const MagicMode: React.FC<MagicModeProps> = ({ 
+  isOpen, 
+  onClose, 
+  onOpenPlanner, 
+  onOpenBuilder, 
+  onOpenPackages 
+}) => {
   const [isActive, setIsActive] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [orbState, setOrbState] = useState<'visible' | 'hidden'>('visible');
-  const [showStars, setShowStars] = useState(false);
-  const [isFlashActive, setIsFlashActive] = useState(false);
-  const [selectedDest, setSelectedDest] = useState<{ label: string; desc: string } | null>(null);
-
   const particlesRef = useRef<HTMLDivElement>(null);
-
 
   useEffect(() => {
     if (isOpen) {
@@ -54,46 +56,29 @@ const MagicMode: React.FC<MagicModeProps> = ({ isOpen, onClose, onOpenPlanner })
       return () => clearInterval(slideInterval);
     } else {
       setIsActive(false);
-      setOrbState('visible');
-      setShowStars(false);
-      setSelectedDest(null);
-      setIsFlashActive(false);
     }
   }, [isOpen]);
 
-  const handleOrbClick = () => {
-    setIsFlashActive(true);
-    setTimeout(() => {
-      setOrbState('hidden');
-      setShowStars(true);
-      setTimeout(() => setIsFlashActive(false), 200);
-    }, 400);
-  };
-
-  const handleClose = (callback?: () => void) => {
+  const handleSelectOption = (action: () => void) => {
     setIsActive(false);
     setTimeout(() => {
       onClose();
-      if (callback) callback();
-    }, 1500);
-  };
-
-  const handleExploreFeeling = (e: React.MouseEvent) => {
-    e.preventDefault();
-    handleClose(() => onOpenPlanner(selectedDest?.label));
+      action();
+    }, 400);
   };
 
   if (!isOpen) return null;
 
   return (
-    <div id="magicMode" className={`fixed inset-0 z-[9999] bg-brand-green-extra-dark flex flex-col items-center justify-center transition-opacity duration-1500 ease-soft overflow-hidden text-white ${isActive ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+    <div id="magicMode" className={`fixed inset-0 z-[9999] bg-brand-green-extra-dark flex flex-col items-center justify-between transition-opacity duration-500 ease-soft overflow-y-auto overscroll-contain text-white py-12 px-6 ${isActive ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+      
       {/* BACKGROUND SLIDESHOW */}
       <div className="absolute inset-0 z-0">
         {MAGIC_MODE_SLIDES.map((url, idx) => (
           <div
             key={idx}
-            className={`absolute inset-0 bg-cover bg-center transition-all duration-2000 ease-in-out after:content-[''] after:absolute after:inset-0 after:bg-gradient-to-b after:from-black/20 after:to-black/60
-              ${currentSlide === idx ? 'opacity-60 scale-100' : 'opacity-0 scale-105'}`}
+            className={`absolute inset-0 bg-cover bg-center transition-all duration-2000 ease-in-out after:content-[''] after:absolute after:inset-0 after:bg-gradient-to-b after:from-black/40 after:to-black/85
+              ${currentSlide === idx ? 'opacity-40 scale-100' : 'opacity-0 scale-105'}`}
             style={{ backgroundImage: `url('${url}')` }}
           />
         ))}
@@ -101,83 +86,124 @@ const MagicMode: React.FC<MagicModeProps> = ({ isOpen, onClose, onOpenPlanner })
 
       {/* BACKGROUND EFFECTS */}
       <div className="absolute inset-0 z-[1] pointer-events-none">
-        <div className="absolute w-[200%] h-[200%] bg-[radial-gradient(circle,rgba(255,255,255,0.03)_0%,transparent_60%)] animate-mm-drift" />
+        <div className="absolute w-[200%] h-[200%] bg-[radial-gradient(circle,rgba(255,255,255,0.02)_0%,transparent_60%)] animate-mm-drift" />
         <div className="absolute inset-0" ref={particlesRef} />
       </div>
 
-      {/* ORB */}
-      {orbState === 'visible' && (
-        <div
-          className="relative z-10 cursor-pointer transition-all duration-500 ease-elastic flex items-center justify-center animate-mm-breathe rounded-full"
-          onClick={handleOrbClick}
-        >
-          <div className="w-72 h-72 rounded-full bg-white/5 border border-brand-gold/25  flex flex-col items-center justify-center text-center p-6 shadow-deep hover:border-brand-gold/45 transition-all duration-300 overflow-hidden">
-            <Heading as="h2" size="lg" variant="white" className="font-bold mb-2 drop-shadow-[0_2px_10px_rgba(255,255,255,0.3)] flex items-center justify-center gap-2"><Icon name="Sparkles" size={24} /> Touch Vietnam</Heading>
-            <Text variant="white" className="opacity-80 leading-relaxed">Not all journeys begin with a destination.<br />Some begin with a feeling.</Text>
-          </div>
-        </div>
-      )}
-
-      {/* STARS */}
-      <div className={`absolute inset-0 z-[5] pointer-events-none transition-opacity duration-500 ${showStars ? 'block' : 'hidden'} ${selectedDest ? 'opacity-20' : 'opacity-100'}`}>
-        {showStars && MAGIC_DESTINATIONS.map((dest, i) => {
-          const cols = 6;
-          const rows = 5;
-          const cellW = 80 / cols;
-          const cellH = 70 / rows;
-          const col = i % cols;
-          const row = Math.floor(i / cols);
-          const rx = 10 + (col * cellW) + (Math.random() * (cellW * 0.8));
-          const ry = 10 + (row * cellH) + (Math.random() * (cellH * 0.8));
-
-          return (
-            <div
-              key={i}
-              className="absolute w-10 h-10 bg-[radial-gradient(circle_at_center,#fff_0%,#fff_10%,transparent_12%)] rounded-full pointer-events-auto cursor-pointer transition-transform duration-300 animate-mm-float -mt-4 -ml-4 group"
-              style={{ left: `${rx}vw`, top: `${ry}vh`, animationDelay: `-${Math.random() * 5}s` }}
-              onClick={() => setSelectedDest(dest)}
-            >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.7)_0%,transparent_60%)] rounded-full -z-10 pointer-events-none animate-mm-glow group-hover:bg-[radial-gradient(circle_at_center,rgba(255,215,0,0.8)_0%,transparent_60%)]" style={{ animationDelay: `-${Math.random() * 3}s` }} />
-              <span className="absolute top-[30px] left-1/2 -translate-x-1/2 bg-black/60 px-2.5 py-1 rounded-xl text-sm whitespace-nowrap opacity-0 transition-opacity duration-300  group-hover:opacity-100 pointer-events-none z-10">
-                {dest.label}
-              </span>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* STORY CARD */}
-      <Card
-        variant="glass"
-        padding="lg"
-        hover={false}
-        className={`absolute z-20 bg-brand-green-dark/70 rounded-3xl w-[90%] max-w-md text-center shadow-deep transition-all duration-500 ease-elastic ${selectedDest ? 'opacity-100 scale-100 pointer-events-auto visible' : 'opacity-0 scale-95 pointer-events-none invisible'}`}
-      >
-        <Heading as="h2" size="lg" variant="accent" className="mb-5 text-brand-gold-light">{selectedDest?.label}</Heading>
-        <Text variant="white" size="lg" className="leading-relaxed mb-8 whitespace-pre-line">
-          {selectedDest?.desc}
+      {/* HEADER */}
+      <div className="relative z-10 text-center max-w-2xl mt-4">
+        <Heading as="h1" size="3xl" font="serif" className="mb-3 text-white tracking-wide">
+          Design Your Escape
+        </Heading>
+        <Text variant="white" className="opacity-90 max-w-lg mx-auto text-sm sm:text-base leading-relaxed font-light">
+          Choose your preferred planning experience. From customized itineraries to fully autonomous AI, we'll design Vietnam your way.
         </Text>
-        <Button variant="primary" className="w-full py-3 flex items-center justify-center gap-2" onClick={handleExploreFeeling}>
-          Explore this destination <Icon name="ChevronRight" size={18} />
-        </Button>
-        <button className="absolute top-4 right-5 bg-transparent border-none text-white cursor-pointer opacity-60 hover:opacity-100 transition-opacity flex items-center justify-center" onClick={() => setSelectedDest(null)}>
-          <Icon name="X" size={24} />
-        </button>
-      </Card>
-
-      {/* FLASH EFFECT */}
-      <div className={`fixed inset-0 bg-white z-[999] pointer-events-none transition-opacity duration-800 ${isFlashActive ? 'opacity-100' : 'opacity-0'}`} />
-
-      {/* CONTROLS */}
-      <div className="absolute bottom-8 w-full flex flex-col items-center gap-4 z-30 opacity-0 animate-fade-in [animation-delay:1s] pointer-events-auto">
-        <div className="flex items-center gap-3 opacity-80">
-          <Text size="sm" variant="white">Not sure?</Text>
-          <Button size="sm" className="flex items-center justify-center gap-2" onClick={() => handleClose(() => onOpenPlanner())}>
-            <Icon name="Sparkles" size={16} /> Let <BrandName /> understand you
-          </Button>
-        </div>
-        <Button variant="glass" size="sm" className="px-4 py-1.5 flex items-center justify-center gap-2" onClick={() => handleClose()}>Return to reality</Button>
       </div>
+
+      {/* THREE PATHS GRID */}
+      <div className="relative z-10 w-full max-w-6xl grid grid-cols-1 md:grid-cols-3 gap-8 my-10">
+        
+        {/* OPTION 1: CURATED PACKAGES */}
+        <Card
+          variant="glass"
+          padding="lg"
+          className="bg-brand-green-dark/45 border-white/10 hover:border-brand-gold/40 flex flex-col justify-between h-[360px] text-left transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_12px_40px_rgba(0,0,0,0.4)] group"
+          hover={false}
+        >
+          <div className="space-y-4">
+            <div className="w-12 h-12 rounded-full bg-brand-gold/10 text-brand-gold flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <Icon name="BookOpen" size={24} />
+            </div>
+            <Heading as="h3" size="lg" className="text-white font-bold leading-tight">
+              Curated Packages
+            </Heading>
+            <Text variant="white" className="opacity-75 text-xs sm:text-sm leading-relaxed font-light">
+              Explore our handpicked flagship packages designed specifically for Indian travelers, and customize any of them to align with your personal rhythm.
+            </Text>
+          </div>
+          <Button 
+            variant="glass" 
+            className="w-full mt-6 py-3 text-xs tracking-wider uppercase font-semibold border-white/20 hover:border-white text-white group-hover:bg-white group-hover:text-brand-green-extra-dark transition-all duration-300"
+            onClick={() => handleSelectOption(onOpenPackages)}
+          >
+            See Packages
+          </Button>
+        </Card>
+
+        {/* OPTION 2: CUSTOM TRIP BUILDER (LIVE METRICS) */}
+        <Card
+          variant="glass"
+          padding="lg"
+          className="bg-brand-green-dark/45 border-white/10 hover:border-brand-gold/40 flex flex-col justify-between h-[360px] text-left transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_12px_40px_rgba(212,175,55,0.15)] group relative overflow-hidden"
+          hover={false}
+        >
+          <div className="absolute top-4 right-4 bg-brand-gold text-brand-green-extra-dark text-[8px] font-mono font-bold tracking-wider px-2 py-0.5 rounded shadow-sm">
+            LIVE SYNC
+          </div>
+          <div className="space-y-4">
+            <div className="w-12 h-12 rounded-full bg-brand-gold/10 text-brand-gold flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <Icon name="Activity" size={24} />
+            </div>
+            <Heading as="h3" size="lg" className="text-white font-bold leading-tight">
+              Custom Trip Builder
+            </Heading>
+            <Text variant="white" className="opacity-75 text-xs sm:text-sm leading-relaxed font-light">
+              Compute your budget in real time. Customize destinations, hotels, and services with flight, visa, and local expense rates updated every hour.
+            </Text>
+          </div>
+          <Button 
+            variant="solid" 
+            className="w-full mt-6 py-3 text-xs tracking-wider uppercase font-semibold bg-brand-gold hover:bg-brand-gold-muted text-white shadow-gold hover:scale-[1.02] transition-all duration-300"
+            onClick={() => handleSelectOption(onOpenBuilder)}
+          >
+            Build Custom Trip
+          </Button>
+        </Card>
+
+        {/* OPTION 3: AI CONCIERGE */}
+        <Card
+          variant="glass"
+          padding="lg"
+          className="bg-brand-green-dark/45 border-white/10 hover:border-brand-gold/40 flex flex-col justify-between h-[360px] text-left transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_12px_40px_rgba(0,0,0,0.4)] group"
+          hover={false}
+        >
+          <div className="space-y-4">
+            <div className="w-12 h-12 rounded-full bg-brand-gold/10 text-brand-gold flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <Icon name="Sparkles" size={24} />
+            </div>
+            <Heading as="h3" size="lg" className="text-white font-bold leading-tight">
+              Totally AI Planner
+            </Heading>
+            <Text variant="white" className="opacity-75 text-xs sm:text-sm leading-relaxed font-light">
+              Converse naturally with our local intelligence engine. Share your flight details, preferences, and desires, and let AI structure your dream escape.
+            </Text>
+          </div>
+          <Button 
+            variant="glass" 
+            className="w-full mt-6 py-3 text-xs tracking-wider uppercase font-semibold border-white/20 hover:border-white text-white group-hover:bg-white group-hover:text-brand-green-extra-dark transition-all duration-300"
+            onClick={() => handleSelectOption(() => onOpenPlanner())}
+          >
+            Plan with AI
+          </Button>
+        </Card>
+
+      </div>
+
+      {/* FOOTER CONTROLS */}
+      <div className="relative z-10 flex flex-col items-center gap-2 mt-4">
+        <Button 
+          variant="glass" 
+          size="sm" 
+          className="px-6 py-2 text-white border-white/20 hover:border-white text-xs tracking-widest uppercase transition-colors"
+          onClick={() => handleSelectOption(() => {})}
+        >
+          Return to Reality
+        </Button>
+        <Text size="xxs" variant="white" className="opacity-40 tracking-wider">
+          VIETANA™ — LOCALLY MANAGED FROM HO CHI MINH CITY
+        </Text>
+      </div>
+
     </div>
   );
 };

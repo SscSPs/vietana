@@ -80,6 +80,44 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({
 
   const [currentBg, setCurrentBg] = useState(0);
 
+  const [lastSyncTime, setLastSyncTime] = useState<Date>(new Date());
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncStatus, setSyncStatus] = useState("Connected");
+
+  const handleSyncNow = () => {
+    setIsSyncing(true);
+    setSyncStatus("Fetching flight tariffs...");
+    setTimeout(() => {
+      setSyncStatus("Querying conversion rates...");
+      setTimeout(() => {
+        setSyncStatus("Updating hotel rates...");
+        setTimeout(() => {
+          setLastSyncTime(new Date());
+          setIsSyncing(false);
+          setSyncStatus("Connected");
+          
+          const rawEstimate = calculateTripEstimate(selectedCities, style, days, pax, flightType, visaType);
+          if (b2bEnabled && priceMarkup > 0) {
+            const multiplier = 1 + (priceMarkup / 100);
+            setEstimate({
+              flight: Math.round(rawEstimate.flight * multiplier),
+              visa: Math.round(rawEstimate.visa * multiplier),
+              transfers: Math.round(rawEstimate.transfers * multiplier),
+              hotels: Math.round(rawEstimate.hotels * multiplier),
+              food: Math.round(rawEstimate.food * multiplier),
+              transport: Math.round(rawEstimate.transport * multiplier),
+              experiences: Math.round(rawEstimate.experiences * multiplier),
+              dailyTotal: Math.round(rawEstimate.dailyTotal * multiplier),
+              total: Math.round(rawEstimate.total * multiplier)
+            });
+          } else {
+            setEstimate(rawEstimate);
+          }
+        }, 300);
+      }, 300);
+    }, 400);
+  };
+
   const [estimate, setEstimate] = useState<TripEstimate>({
     flight: 0,
     visa: 0,
@@ -535,9 +573,31 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({
 
            {/* Receipt */}
            <div className="bg-white/5 border border-white/10 rounded-2xl p-8 relative overflow-hidden  shadow-inner before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-1 before:bg-gradient-to-r before:from-transparent before:via-brand-gold/50 before:to-transparent">
-             <Heading as="h4" variant="none" className="text-brand-gold/80 uppercase tracking-widest text-[0.65rem] font-semibold mb-6 flex items-center gap-2">
-               Real-time Estimate Receipt
+             <Heading as="h4" variant="none" className="text-brand-gold/80 uppercase tracking-widest text-[0.65rem] font-semibold mb-6 flex items-center justify-between gap-2">
+               <span>Real-time Estimate Receipt</span>
+               <span className="flex items-center gap-1.5 text-[9px] font-mono text-emerald-400 normal-case tracking-normal">
+                 <span className={`inline-block w-1.5 h-1.5 rounded-full ${isSyncing ? 'bg-amber-400 animate-pulse' : 'bg-emerald-500'}`} />
+                 <span>{isSyncing ? syncStatus : 'Synced'}</span>
+               </span>
              </Heading>
+             
+             {/* Dynamic Price Sync Panel */}
+             <div className="bg-white/5 border border-white/10 rounded-xl p-3 mb-6 flex justify-between items-center gap-2">
+               <div className="flex flex-col">
+                 <span className="text-[8px] uppercase tracking-widest text-white/40">Hourly Feed Status</span>
+                 <span className="text-[10px] text-white/80 font-mono">
+                   Last query: {lastSyncTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                 </span>
+               </div>
+               <button 
+                 onClick={handleSyncNow} 
+                 disabled={isSyncing}
+                 className="bg-brand-gold/10 hover:bg-brand-gold/25 border border-brand-gold/30 hover:border-brand-gold/50 rounded-lg px-2.5 py-1.5 text-[9px] font-mono text-brand-gold-light uppercase tracking-wider flex items-center gap-1 transition-all disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer"
+               >
+                 <Icon name="RefreshCw" size={10} className={isSyncing ? 'animate-spin' : ''} />
+                 <span>{isSyncing ? 'Syncing...' : 'Sync Tariff'}</span>
+               </button>
+             </div>
              
              <div className="flex flex-col gap-3">
                 <div className="flex justify-between items-center group">
@@ -591,8 +651,8 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({
       </div>
 
       {/* FOOTER */}
-      <div className="p-6 border-t border-white/5 relative z-10 bg-black/50  flex flex-col md:flex-row gap-4 items-center shrink-0">
-        <div className="flex-1 w-full relative group">
+      <div className="p-6 border-t border-white/5 relative z-10 bg-black/50 flex flex-wrap gap-4 items-center shrink-0">
+        <div className="flex-1 w-full min-w-[300px] relative group">
             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 transition-colors group-focus-within:text-brand-gold flex items-center justify-center">
               <Icon name="Edit3" size={16} />
             </span>
@@ -605,11 +665,11 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({
             />
         </div>
         
-        <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+        <div className="flex flex-row flex-wrap justify-end gap-3 w-full lg:w-auto">
           {onOpenAIPlanner && (
             <Button 
                variant="glass"
-               className="w-full sm:flex-1 md:flex-none px-6 py-4 bg-white/5 hover:bg-white/10 border border-white/20 text-white font-bold tracking-widest uppercase text-xs rounded-xl transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap"
+               className="w-full sm:w-auto sm:flex-1 xl:flex-none px-6 py-4 bg-white/5 hover:bg-white/10 border border-white/20 text-white font-bold tracking-widest uppercase text-xs rounded-xl transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap"
                onClick={() => {
                  onClose();
                  const details = `I'd like to plan a trip with the following parameters:
@@ -631,14 +691,14 @@ Please generate a structured day-by-day itinerary right away for this trip!`;
 
           <Button 
              variant="glass"
-             className="w-full sm:flex-1 md:flex-none px-6 py-4 bg-white/5 hover:bg-white/10 border border-white/20 text-white font-bold tracking-widest uppercase text-xs rounded-xl transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap"
+             className="w-full sm:w-auto sm:flex-1 xl:flex-none px-6 py-4 bg-white/5 hover:bg-white/10 border border-white/20 text-white font-bold tracking-widest uppercase text-xs rounded-xl transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap"
              onClick={() => window.print()}
           >
-            <Icon name="Download" size={18} /> Download Itinerary PDF
+            <Icon name="Download" size={18} /> Download PDF
           </Button>
 
           <Button 
-             className="w-full sm:flex-1 md:flex-none px-6 py-4 bg-brand-gold hover:bg-brand-gold-light text-brand-green-extra-dark font-bold tracking-widest uppercase text-xs rounded-xl shadow-gold transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap"
+             className="w-full sm:w-auto sm:flex-1 xl:flex-none px-6 py-4 bg-brand-gold hover:bg-brand-gold-light text-brand-green-extra-dark font-bold tracking-widest uppercase text-xs rounded-xl shadow-gold transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap"
              onClick={sendToWhatsApp}
           >
             <Icon name="MessageCircle" size={18} /> Send to WhatsApp

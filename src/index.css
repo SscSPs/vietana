@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   /* Premium Cinematic Luxury Theme */
@@ -20,10 +21,13 @@
   --color-surface-ivory: #FAF8F3; /* Warm Ivory */
   --color-surface-white: #FFFFFF; /* Soft White */
   --color-surface-dark: #111615; /* Premium Deep Charcoal Green */
+  --color-surface-cream: #FAF8F3; /* Map cream to warm ivory */
+  --color-surface-warm: #E9DFC8; /* Champagne/Warm Beige */
   
   --color-text-charcoal: #111111; /* Near Pure Black */
   --color-text-muted: #333333; /* Dark Gray */
   --color-text-subtle: #555555; /* Medium Gray */
+  --color-text-dark: #111111; /* Dark text */
 
   /* Typography Sizing */
   --font-size-xxs: 0.625rem;
@@ -137,9 +141,9 @@
     to { opacity: 1; }
   }
   @keyframes light-leak {
-    0% { opacity: 0; transform: scale(1) translate(0, 0); filter: blur(40px); }
-    50% { opacity: var(--leak-op, 0.15); transform: scale(1.5) translate(10%, -10%); filter: blur(60px); }
-    100% { opacity: 0; transform: scale(1) translate(-10%, 10%); filter: blur(40px); }
+    0% { opacity: 0; transform: scale(1) translate(0, 0); }
+    50% { opacity: var(--leak-op, 0.15); transform: scale(1.5) translate(10%, -10%); }
+    100% { opacity: 0; transform: scale(1) translate(-10%, 10%); }
   }
   @keyframes glow-pulse {
     0% { box-shadow: 0 0 50px rgba(212,175,55,0.6); border-color: rgba(212,175,55,0.6); }
@@ -304,11 +308,15 @@ html {
 /* Utility Classes */
 .glass {
   background: rgba(250, 250, 249, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
 }
 .glass-dark {
   background: rgba(28, 25, 23, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
@@ -403,7 +411,7 @@ html {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
   z-index: 1;
 }
 
@@ -489,7 +497,7 @@ html {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox=\"0 0 200 200\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cfilter id=\"noiseFilter\"%3E%3CfeTurbulence type=\"fractalNoise\" baseFrequency=\"0.85\" numOctaves=\"3\" stitchTiles=\"stitch\"/%3E%3C/filter%3E%3Crect width=\"100%25\" height=\"100%25\" filter=\"url(%23noiseFilter)\" opacity=\"0.08\"/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox=\"0 0 200 200\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cfilter id=\"noiseFilter\"%3E%3CfeTurbulence type=\"fractalNoise\" baseFrequency=\"0.85\" numOctaves=\"1\" stitchTiles=\"stitch\"/%3E%3C/filter%3E%3Crect width=\"100%25\" height=\"100%25\" filter=\"url(%23noiseFilter)\" opacity=\"0.08\"/%3E%3C/svg%3E");
     z-index: 0;
     opacity: 0.6;
     mix-blend-mode: multiply;
@@ -719,9 +727,13 @@ html {
 .dark {
   --color-surface-ivory: #111615; /* Charcoal Green */
   --color-surface-white: #1A2120; /* Dark Panel */
+  --color-surface-cream: #111615; /* Charcoal Green for cream */
+  --color-surface-warm: #1A2120; /* Dark Panel for warm */
+  
   --color-text-charcoal: #FAF8F3; /* Warm White */
   --color-text-muted: #E9DFC8; /* Champagne */
   --color-text-subtle: #AAB7A1; /* Muted Sage */
+  --color-text-dark: #FAF8F3; /* Warm White for dark text */
 }
 
 /* Base structural overrides when in dark mode */
@@ -736,7 +748,9 @@ html {
 }
 
 .dark .bg-\[\#FAF7F0\],
-.dark .bg-\[\#FAF8F3\] {
+.dark .bg-\[\#faf7f0\],
+.dark .bg-\[\#FAF8F3\],
+.dark .bg-\[\#faf8f3\] {
   background-color: #111615 !important;
 }
 
@@ -749,7 +763,9 @@ html {
 .dark .text-charcoal,
 .dark .text-\[\#111111\],
 .dark .text-\[\#1E4D45\],
-.dark .text-\[\#1D1D1F\] {
+.dark .text-\[\#1e4d45\],
+.dark .text-\[\#1D1D1F\],
+.dark .text-\[\#1d1d1f\] {
   color: #FAF8F3 !important;
 }
 
@@ -759,7 +775,9 @@ html {
 }
 
 .dark .border-\[\#E8E4D9\],
+.dark .border-\[\#e8e4d9\],
 .dark .border-\[\#1D1D1F\]\/10,
+.dark .border-\[\#1d1d1f\]\/10,
 .dark .border-black\/5,
 .dark .border-black\/10 {
   border-color: rgba(255, 255, 255, 0.08) !important;
@@ -802,7 +820,7 @@ html {
   border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
-/* Soft transition support on theme toggle */
-* {
-  transition: background-color 0.4s ease, border-color 0.4s ease;
+/* Soft transition support on theme toggle - targeted for performance */
+html, body, section, .editorial-card, .skeuo-paper, .skeuo-paper-premium, .vintage-ledger, .boarding-pass, button, input, select, textarea, p, span, h1, h2, h3, h4, h5, h6, a {
+  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
 }

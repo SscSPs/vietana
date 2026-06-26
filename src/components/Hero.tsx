@@ -74,11 +74,11 @@ const Hero: React.FC<HeroProps> = ({ onOpenMagic }) => {
         {TRIPTYCH_PANELS.map((panel, idx) => (
           <div 
             key={idx}
-            className={`relative h-full flex-1 transition-[flex] duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] hover:flex-[1.5] group cursor-default ${idx !== 1 ? 'hidden md:block' : ''}`}
+            className={`relative h-full flex-1 group cursor-default ${idx !== 1 ? 'hidden md:block' : ''}`}
           >
             <div 
               className="absolute inset-0 bg-cover bg-center transition-transform duration-[2000ms] ease-out group-hover:scale-105"
-              style={{ backgroundImage: `url(${panel.img})` }}
+              style={{ backgroundImage: `url(${panel.img})`, willChange: 'transform' }}
             />
             {/* Ambient vignette per panel */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/25 to-black/85 pointer-events-none" />
