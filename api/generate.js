@@ -108,6 +108,92 @@ export default async function handler(req, res) {
   const { message, history, context } = req.body;
   const lowerMsg = message.toLowerCase();
 
+  // If Groq API Key is configured, use Groq API (OpenAI-compatible)
+  if (process.env.GROQ_API_KEY) {
+    try {
+      let contextString = "";
+      if (context) {
+        contextString = "Current User Preferences Context:\n" + Object.entries(context)
+          .filter(([_, v]) => v !== "" && v !== null)
+          .map(([k, v]) => `- ${k}: ${v}`)
+          .join("\n");
+      }
+
+      const systemInstruction = `You are VIETANA, a friendly, warm, and highly knowledgeable local expert travel guide for Indian travelers visiting Vietnam.
+You know EVERYTHING about Vietnam's destinations, food recommendations, FAQs, and services.
+Your goal is to answer customer questions naturally, provide top recommendations, interesting facts, and gently guide them to plan their trip.
+
+${contextString}
+
+INSTRUCTIONS FOR OUTPUT:
+Always respond in JSON format ONLY. 
+Your response MUST be a valid JSON object matching this schema:
+{
+  "text": "Your friendly, html-formatted conversational response here. Use <strong>, <br>, <em>, etc. for formatting.",
+  "extractedPreferences": {
+    "focus": "Update if they mention a destination (e.g. Hanoi, Da Nang), otherwise leave null",
+    "vibe": "Update if they mention a vibe (e.g. relaxing, adventure, romantic), otherwise leave null",
+    "food": "Update if they mention food preferences (e.g. vegetarian, spicy, street food), otherwise leave null",
+    "style": "Update if they mention luxury, budget, family, etc., otherwise leave null"
+  },
+  "itinerary": {
+    "title": "A premium descriptive title for the journey (only provide this object if they request an itinerary, plan, or if they submit parameters from the custom builder, otherwise leave this whole field null)",
+    "days": [
+      {
+        "day": 1,
+        "title": "Day's theme or focus (e.g., Charming Old Quarter Explorations)",
+        "description": "Compelling 1-2 sentence overview of the day's flow",
+        "activities": ["List 2-3 specific sights or activities"],
+        "food": ["List 1-2 specific restaurants, cafes, or street food items matching their style"]
+      }
+    ]
+  }
+}
+DO NOT output any markdown blocks outside the JSON, just the JSON string.
+`;
+
+      const formattedMessages = [
+        { role: 'system', content: systemInstruction }
+      ];
+      if (history && history.length > 0) {
+        history.forEach(item => {
+          const role = item.role === 'model' ? 'assistant' : item.role;
+          const text = item.parts?.[0]?.text || '';
+          formattedMessages.push({ role, content: text });
+        });
+      }
+      formattedMessages.push({ role: 'user', content: message });
+
+      const groqResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          messages: formattedMessages,
+          response_format: { type: 'json_object' }
+        })
+      });
+
+      if (!groqResponse.ok) {
+        const errorText = await groqResponse.text();
+        throw new Error(`Groq API returned error: ${groqResponse.status} - ${errorText}`);
+      }
+
+      const groqData = await groqResponse.json();
+      const responseText = groqData.choices?.[0]?.message?.content || '{}';
+      const parsed = extractJSON(responseText);
+      if (parsed) {
+        return res.status(200).json(parsed);
+      }
+      return res.status(200).json({ text: responseText, extractedPreferences: {} });
+    } catch (err) {
+      console.error("Groq API error inside serverless function:", err);
+    }
+  }
+
   // If OpenAI API Key is configured, use OpenAI Chat Completions API
   if (process.env.OPENAI_API_KEY) {
     try {
