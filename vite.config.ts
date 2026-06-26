@@ -31,10 +31,10 @@ const apiGeneratePlugin = () => ({
             const data = JSON.parse(body);
             const { message, history, context } = data;
             
-            if (!process.env.GEMINI_API_KEY && !process.env.OPENAI_API_KEY) {
+            if (!process.env.GEMINI_API_KEY && !process.env.OPENAI_API_KEY && !process.env.GROQ_API_KEY) {
               res.statusCode = 500;
               res.setHeader('Content-Type', 'application/json');
-              return res.end(JSON.stringify({ error: 'Neither GEMINI_API_KEY nor OPENAI_API_KEY is configured' }));
+              return res.end(JSON.stringify({ error: 'Neither GEMINI_API_KEY, OPENAI_API_KEY, nor GROQ_API_KEY is configured' }));
             }
  
             // Read data files to build context
@@ -96,7 +96,40 @@ DO NOT output any markdown blocks outside the JSON, just the JSON string.
  
             let responseText = "";
  
-            if (process.env.OPENAI_API_KEY) {
+            if (process.env.GROQ_API_KEY) {
+              const formattedMessages = [
+                { role: 'system', content: systemInstruction }
+              ];
+              if (history && history.length > 0) {
+                history.forEach(item => {
+                  const role = item.role === 'model' ? 'assistant' : item.role;
+                  const text = item.parts?.[0]?.text || '';
+                  formattedMessages.push({ role, content: text });
+                });
+              }
+              formattedMessages.push({ role: 'user', content: message });
+ 
+              const groqResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
+                },
+                body: JSON.stringify({
+                  model: 'llama-3.3-70b-versatile',
+                  messages: formattedMessages,
+                  response_format: { type: 'json_object' }
+                })
+              });
+ 
+              if (!groqResponse.ok) {
+                const errorText = await groqResponse.text();
+                throw new Error(`Groq API returned error: ${groqResponse.status} - ${errorText}`);
+              }
+ 
+              const groqData = await groqResponse.json();
+              responseText = groqData.choices?.[0]?.message?.content || '{}';
+            } else if (process.env.OPENAI_API_KEY) {
               const formattedMessages = [
                 { role: 'system', content: systemInstruction }
               ];
