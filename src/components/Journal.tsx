@@ -27,6 +27,7 @@ const highlightText = (text: string, query: string) => {
 
 const Journal: React.FC = () => {
   const [activeArticle, setActiveArticle] = useState<Article | null>(null);
+  const [selectedCollectionId, setSelectedCollectionId] = useState('c1');
   const [searchQuery, setSearchQuery] = useState('');
 
   const q = searchQuery.toLowerCase().trim();
@@ -40,6 +41,8 @@ const Journal: React.FC = () => {
         c.title.toLowerCase().includes(q)
       )
     : magazineData.collections;
+
+  const selectedCollection = magazineData.collections.find(c => c.id === selectedCollectionId) || magazineData.collections[0];
 
   const openArticle = (article: Article) => {
     setActiveArticle(article);
@@ -129,20 +132,10 @@ const Journal: React.FC = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
-              className="shrink-0 w-[240px] md:w-[280px] snap-center group cursor-pointer"
-              onClick={() => {
-                if (collection.articles.length > 0) {
-                  openArticle(collection.articles[0]);
-                } else {
-                  openArticle({
-                    id: `dummy-${collection.id}`,
-                    title: `Exploring ${collection.title}`,
-                    intro: `The best of ${collection.title.toLowerCase()} is coming soon.`,
-                    image: collection.image,
-                    isComingSoon: true
-                  });
-                }
-              }}
+              className={`shrink-0 w-[240px] md:w-[280px] snap-center group cursor-pointer border-2 rounded-2xl p-1 transition-all duration-300 ${
+                selectedCollectionId === collection.id ? 'border-[#B8860B] scale-[1.02] shadow-md bg-white/50' : 'border-transparent'
+              }`}
+              onClick={() => setSelectedCollectionId(collection.id)}
             >
               <div className="bg-white dark:bg-[#1A2120] border border-[#E8E4D9] dark:border-white/10 rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
                 <div className="h-[140px] overflow-hidden relative">
@@ -171,6 +164,51 @@ const Journal: React.FC = () => {
           {/* Spacer */}
           <div className="w-4 md:w-12 xl:w-24 shrink-0 pointer-events-none" />
         </div>
+
+        {/* Active Collection Articles Display */}
+        <Container className="mt-4 mb-8">
+          <div className="bg-white/40 border border-[#E8E4D9] rounded-3xl p-6 md:p-8 backdrop-blur-sm">
+            <div className="flex justify-between items-center mb-8 border-b border-[#E8E4D9] pb-4">
+              <Heading as="h3" size="xl" font="serif" className="text-[#1E4D45] flex items-center gap-2">
+                <span className="text-xl">{selectedCollection.icon}</span> {selectedCollection.title} Guides
+              </Heading>
+              <span className="text-[10px] font-mono bg-[#B8860B]/10 text-[#B8860B] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                {selectedCollection.articles.length} Journals Available
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6">
+              {selectedCollection.articles.map((article) => (
+                <div 
+                  key={article.id} 
+                  onClick={() => openArticle(article)}
+                  className="bg-white border border-[#E8E4D9] rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col h-full group"
+                >
+                  <div className="h-32 overflow-hidden relative border-b border-[#E8E4D9]/40">
+                    <img 
+                      src={article.image} 
+                      alt={article.title} 
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="p-4 flex-1 flex flex-col justify-between text-left">
+                    <div>
+                      <h4 className="font-serif text-sm font-bold text-[#1E4D45] line-clamp-2 mb-1.5 group-hover:text-[#B8860B] transition-colors leading-snug">
+                        {article.title}
+                      </h4>
+                      <p className="text-[11px] text-[#555555] font-light line-clamp-3 leading-relaxed">
+                        {article.intro}
+                      </p>
+                    </div>
+                    <span className="text-[9px] text-[#B8860B] font-mono mt-4 block font-bold tracking-widest uppercase">
+                      READ RECORD ➔
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Container>
       </div>
 
       {/* FEATURED STORIES - POLAROID WALL */}
