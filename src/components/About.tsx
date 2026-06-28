@@ -1,5 +1,7 @@
 import React from 'react';
+import Icon from './ui/Icon';
 import Modal from './ui/Modal';
+import Card from './ui/Card';
 import Button from './ui/Button';
 import { motion } from 'motion/react';
 
@@ -109,23 +111,28 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, onOpenBuilder 
               key={card.id}
               whileHover={{ y: -5 }}
               transition={{ duration: 0.3 }}
-              className="bg-[rgba(255,255,255,0.55)] backdrop-blur-[25px] rounded-[28px] overflow-hidden flex flex-col sm:flex-row shadow-[0_10px_30px_rgba(0,0,0,0.04)] border border-white/60 text-left h-full"
+              className="h-full"
             >
-              <div className="w-full sm:w-[140px] h-[180px] sm:h-auto shrink-0 relative">
-                <img
-                  src={card.image}
-                  alt={card.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-6 flex flex-col justify-center">
-                <h3 className="text-[18px] font-semibold text-[#1F2328] mb-2 flex items-center gap-2">
-                  <span>{card.icon}</span> {card.title}
-                </h3>
-                <p className="text-[#68707B] text-[15px] leading-relaxed">
-                  {card.desc}
-                </p>
-              </div>
+              <Card 
+                variant="glass-panel"
+                className="!rounded-[28px] overflow-hidden flex flex-col sm:flex-row shadow-[0_10px_30px_rgba(0,0,0,0.04)] border-white/60 text-left h-full !p-0"
+              >
+                <div className="w-full sm:w-[140px] h-[180px] sm:h-auto shrink-0 relative">
+                  <img
+                    src={card.image}
+                    alt={card.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-6 flex flex-col justify-center">
+                  <h3 className="text-[18px] font-semibold text-[#1F2328] mb-2 flex items-center gap-2">
+                    <span>{card.icon}</span> {card.title}
+                  </h3>
+                  <p className="text-[#68707B] text-[15px] leading-relaxed">
+                    {card.desc}
+                  </p>
+                </div>
+              </Card>
             </motion.div>
           ))}
         </div>

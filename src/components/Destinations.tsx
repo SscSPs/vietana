@@ -5,6 +5,8 @@ import { Heading, Text } from './ui/Typography';
 import { useTranslation } from '../contexts/LanguageContext';
 import { CITIES, CityDestination } from '../data/destinations';
 import Modal from './ui/Modal';
+import Card from './ui/Card';
+import Badge from './ui/Badge';
 import Icon from './ui/Icon';
 import Button from './ui/Button';
 import SectionHeader from './ui/SectionHeader';
@@ -63,10 +65,10 @@ const Destinations: React.FC = () => {
             const rotAngle = getAngle(idx);
             const weather = getWeatherForCity(city.name);
             return (
-              <div
+              <Card
                 key={city.id}
                 style={{ transform: `rotate(${rotAngle}deg)` }}
-                className="polaroid-frame group cursor-pointer bg-white"
+                className="polaroid-frame !p-0 group cursor-pointer bg-white"
                 onClick={() => setSelectedCity(city)}
                 onMouseEnter={handleCardHover}
               >
@@ -77,9 +79,9 @@ const Destinations: React.FC = () => {
                     style={{ backgroundImage: `url(${city.coverImage})` }}
                   />
                   {/* Stamp style overlay */}
-                  <div className="absolute top-3 right-3 text-[11px] font-mono bg-[#FAF7F0]/80 text-brand-gold-muted border border-brand-gold/35 rounded px-2 py-0.5 pointer-events-none shadow-sm">
+                  <Badge variant="gold" className="absolute top-3 right-3 !px-2 !py-0.5 !text-[11px] pointer-events-none bg-[#FAF7F0]/80 border-brand-gold/35 text-brand-gold-muted shadow-sm normal-case tracking-normal">
                     {weather.icon} {weather.temp}
-                  </div>
+                  </Badge>
                 </div>
 
                 {/* Polaroid Title/Label area */}
@@ -96,7 +98,7 @@ const Destinations: React.FC = () => {
                     {city.shortDesc}
                   </p>
                 </div>
-              </div>
+              </Card>
             );
           })}
         </div>
@@ -129,10 +131,10 @@ const Destinations: React.FC = () => {
               {(() => {
                 const w = getWeatherForCity(selectedCity.name);
                 return (
-                  <div className="absolute top-6 right-6 bg-[#FAF7F0] border border-brand-gold/30 px-3 py-1.5 rounded flex items-center gap-2 text-brand-green shadow-md">
+                  <Badge variant="green" className="absolute top-6 right-6 bg-[#FAF7F0] shadow-md border-brand-gold/30 flex items-center gap-2 normal-case tracking-normal">
                     <span className="text-sm">{w.icon}</span>
                     <span className="text-[10px] tracking-wider uppercase font-mono font-bold">{w.temp} • {w.desc}</span>
-                  </div>
+                  </Badge>
                 );
               })()}
 

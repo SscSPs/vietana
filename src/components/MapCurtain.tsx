@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Heading, Text } from './ui/Typography';
 import Button from './ui/Button';
+import Card from './ui/Card';
 import Icon from './ui/Icon';
 
 const VietnamMap = React.lazy(() => import('./map/VietnamVectorMap'));
@@ -42,7 +43,7 @@ const MapCurtain: React.FC<MapCurtainProps> = ({ isOpen, onClose, selectedCities
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="fixed inset-0 z-[3000] bg-surface-cream dark:bg-surface-dark flex flex-col"
         >
-          <div className="flex items-center justify-between p-4 sm:p-6 lg:px-12 bg-surface-cream/80 dark:bg-surface-dark/80 backdrop-blur-xl absolute top-0 left-0 right-0 z-[3010] border-b border-text-dark/5 dark:border-white/10 shadow-sm">
+          <Card variant="glass-panel" className="flex items-center justify-between p-4 sm:p-6 lg:px-12 absolute top-0 left-0 right-0 z-[3010] !rounded-none border-t-0 border-x-0 !shadow-sm">
             <div>
               <Text className="text-[10px] tracking-widest uppercase text-brand-green dark:text-brand-gold font-bold mb-1">
                 Cartography
@@ -52,16 +53,16 @@ const MapCurtain: React.FC<MapCurtainProps> = ({ isOpen, onClose, selectedCities
               </Heading>
             </div>
             <Button
-              variant="glass" size="sm"
+              variant="ghost" size="sm"
               onClick={onClose}
-              className="rounded-full shadow-sm group"
+              className="rounded-full shadow-sm group border border-text-dark/5 dark:border-white/10"
             >
               <Text className="text-xs tracking-[0.2em] uppercase font-bold hidden sm:block m-0">
                 Close Map
               </Text>
               <Icon name="X" size={18} />
             </Button>
-          </div>
+          </Card>
 
           {/* Map Area */}
           <div className="flex-1 w-full h-full relative pt-[88px]">

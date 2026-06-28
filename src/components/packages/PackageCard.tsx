@@ -1,5 +1,7 @@
 import React from 'react';
 import { PackageProduct } from '../../data/packagesData';
+import Card from '../ui/Card';
+import Badge from '../ui/Badge';
 import Button from '../ui/Button';
 import Icon from '../ui/Icon';
 
@@ -17,7 +19,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
   onSetSelectedPackage,
 }) => {
   return (
-    <div className="w-[85vw] sm:w-[420px] h-[540px] editorial-card rounded-xl flex flex-col justify-between shrink-0 snap-start relative group overflow-hidden border border-[#E8E4D9]">
+    <Card className="w-[85vw] sm:w-[420px] h-[540px] editorial-card !p-0 flex flex-col justify-between shrink-0 snap-start relative group overflow-hidden">
       {/* Photo area */}
       <div className="h-[220px] relative w-full overflow-hidden shrink-0 border-b border-[#E8E4D9]">
         <img
@@ -28,17 +30,17 @@ const PackageCard: React.FC<PackageCardProps> = ({
 
         {/* Top tags */}
         <div className="absolute top-4 left-4 right-4 flex justify-between items-start z-10">
-          <span className="bg-brand-green text-white font-semibold text-[11px] tracking-widest uppercase px-2.5 py-1 rounded shadow-sm">
+          <Badge variant="green-filled" className="!px-2.5 !py-1 !text-[11px] shadow-sm normal-case tracking-widest">
             {pkg.badge}
-          </span>
+          </Badge>
           {pkg.price ? (
-            <span className="bg-brand-gold-light text-brand-green-dark px-2.5 py-1 rounded text-[11px] tracking-wider uppercase font-mono font-bold shadow-sm border border-white/20">
+            <Badge variant="gold-filled" className="!px-2.5 !py-1 !text-[11px] shadow-sm border-white/20 font-mono">
               {pkg.price} PP
-            </span>
+            </Badge>
           ) : (
-            <span className="bg-white text-brand-green border border-[#E8E4D9] px-2.5 py-1 rounded text-[11px] tracking-widest uppercase font-mono font-bold">
+            <Badge variant="outline" className="!px-2.5 !py-1 !text-[11px] font-mono text-brand-green border-[#E8E4D9] bg-white">
               {pkg.duration}
-            </span>
+            </Badge>
           )}
         </div>
       </div>
@@ -106,7 +108,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
           Details
         </Button>
       </div>
-    </div>
+    </Card>
   );
 };
 
