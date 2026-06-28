@@ -308,7 +308,7 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({
       <div className="p-10 pb-8 border-b border-white/5 relative z-10 flex flex-col items-center text-center select-none shrink-0">
         <div className="flex items-center gap-2 mb-3 bg-black/20 border border-white/10 px-3.5 py-1.5 rounded-full backdrop-blur-xs">
           <Icon name="Leaf" size={14} className="text-[#E8C84A]" />
-          <span className="font-sans font-black tracking-[0.25em] text-[10px] text-white uppercase">VIETANA</span>
+          <span className="font-sans font-black tracking-wide-em text-[10px] text-white uppercase">VIETANA</span>
         </div>
         <Heading as="h2" variant="white" className="text-3xl md:text-4xl font-serif mb-2 tracking-wide">
            Craft Your <span className="text-brand-gold-light italic">Journey</span>
@@ -331,14 +331,14 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({
 
             {/* Travel Style */}
             <div>
-              <Text variant="none" className="text-white/50 text-[0.65rem] uppercase tracking-widest mb-4 font-semibold">Travel Style</Text>
+              <Text variant="none" className="text-white/50 text-caption uppercase tracking-widest mb-4 font-semibold">Travel Style</Text>
               <div className="grid grid-cols-2 lg:grid-cols-4 bg-white/5 border border-white/10 rounded-xl p-1.5 gap-1 relative ">
                 {(['budget', 'comfort', 'premium', 'luxury'] as const).map(s => {
                   const IconComponent = s === 'budget' ? Compass : s === 'comfort' ? Heart : s === 'premium' ? Sparkles : Gem;
                   return (
                     <button 
                       key={s}
-                      className={`py-3.5 px-2 rounded-lg text-[0.65rem] font-semibold tracking-widest uppercase transition-all duration-500 cursor-pointer flex items-center justify-center gap-1.5
+                      className={`py-3.5 px-2 rounded-lg text-caption font-semibold tracking-widest uppercase transition-all duration-500 cursor-pointer flex items-center justify-center gap-1.5
                         ${style === s ? 'bg-brand-gold text-brand-green-extra-dark shadow-strong scale-[1.02]' : 'bg-transparent text-white/40 hover:text-white/80 hover:bg-white/5'}`} 
                       onClick={() => setStyle(s)}
                     >
@@ -353,7 +353,7 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({
             {/* Toggles: Flight & Visa */}
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <Text variant="none" className="text-white/50 text-[0.65rem] uppercase tracking-widest mb-4 font-semibold">Flight Type</Text>
+                <Text variant="none" className="text-white/50 text-caption uppercase tracking-widest mb-4 font-semibold">Flight Type</Text>
                 <div className="flex bg-white/5 border border-white/10 rounded-xl p-1.5 gap-1">
                   <button 
                     className={`flex-1 py-2.5 rounded-lg text-xs transition-all ${flightType === 'oneway' ? 'bg-white/10 text-white' : 'text-white/40 hover:text-white/80'}`}
@@ -366,7 +366,7 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({
                 </div>
               </div>
               <div>
-                <Text variant="none" className="text-white/50 text-[0.65rem] uppercase tracking-widest mb-4 font-semibold">Vietnam E-Visa</Text>
+                <Text variant="none" className="text-white/50 text-caption uppercase tracking-widest mb-4 font-semibold">Vietnam E-Visa</Text>
                 <div className="flex bg-white/5 border border-white/10 rounded-xl p-1.5 gap-1">
                   <button 
                     className={`flex-1 py-2.5 rounded-lg text-xs transition-all ${visaType === 'single' ? 'bg-white/10 text-white' : 'text-white/40 hover:text-white/80'}`}
@@ -384,7 +384,7 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({
             <div className="grid grid-cols-2 gap-6">
               <div className="flex flex-col gap-4">
                 <div className="flex justify-between items-end">
-                  <label htmlFor="trip-duration" className="text-white/50 text-[0.65rem] uppercase tracking-widest font-semibold">Duration</label>
+                  <label htmlFor="trip-duration" className="text-white/50 text-caption uppercase tracking-widest font-semibold">Duration</label>
                   <Text variant="none" className="text-brand-gold-light text-xl font-serif">{days} Days</Text>
                 </div>
                 <input 
@@ -397,7 +397,7 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({
 
               <div className="flex flex-col gap-4">
                 <div className="flex justify-between items-end">
-                  <label htmlFor="trip-pax" className="text-white/50 text-[0.65rem] uppercase tracking-widest font-semibold">Travelers</label>
+                  <label htmlFor="trip-pax" className="text-white/50 text-caption uppercase tracking-widest font-semibold">Travelers</label>
                   <Text variant="none" className="text-brand-gold-light text-xl font-serif">{pax} {pax === 1 ? 'Person' : 'People'}</Text>
                 </div>
                 <input 
@@ -424,7 +424,7 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({
             {b2bEnabled && (
               <div className="flex flex-col gap-5 pt-4 border-t border-white/5 animate-msg-fade-in">
                 <div>
-                  <label htmlFor="b2b-agency-name" className="text-white/50 text-[0.65rem] uppercase tracking-widest block mb-2 font-semibold">Agency Name</label>
+                  <label htmlFor="b2b-agency-name" className="text-white/50 text-caption uppercase tracking-widest block mb-2 font-semibold">Agency Name</label>
                   <input
                     id="b2b-agency-name"
                     type="text"
@@ -436,7 +436,7 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({
                 </div>
 
                 <div>
-                  <label htmlFor="b2b-agency-logo" className="text-white/50 text-[0.65rem] uppercase tracking-widest block mb-2 font-semibold">Agency Logo</label>
+                  <label htmlFor="b2b-agency-logo" className="text-white/50 text-caption uppercase tracking-widest block mb-2 font-semibold">Agency Logo</label>
                   <div className="flex items-center gap-4">
                     {agencyLogo && (
                       <img src={agencyLogo} alt="Logo" className="w-12 h-12 object-contain bg-white/10 rounded border border-white/10 p-1" />
@@ -453,7 +453,7 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({
 
                 <div>
                   <div className="flex justify-between items-end mb-2">
-                    <label htmlFor="b2b-price-markup" className="text-white/50 text-[0.65rem] uppercase tracking-widest font-semibold">Price Markup</label>
+                    <label htmlFor="b2b-price-markup" className="text-white/50 text-caption uppercase tracking-widest font-semibold">Price Markup</label>
                     <span className="text-brand-gold-light text-sm font-semibold">{priceMarkup}%</span>
                   </div>
                   <input
@@ -478,7 +478,7 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({
               {(selectedCities.length > 0 || selectedSights.length > 0) && (
                 <button 
                   onClick={clearTripSelections}
-                  className="text-[0.65rem] text-white/40 hover:text-brand-gold font-semibold uppercase tracking-wider transition-colors cursor-pointer"
+                  className="text-caption text-white/40 hover:text-brand-gold font-semibold uppercase tracking-wider transition-colors cursor-pointer"
                 >
                   Reset Selections
                 </button>
@@ -557,19 +557,19 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({
               </Heading>
               <div className="grid grid-cols-2 gap-y-4 gap-x-6">
                 <div>
-                  <Text variant="none" className="text-white/40 text-[0.65rem] uppercase tracking-widest mb-1">📍 Suggested Route</Text>
+                  <Text variant="none" className="text-white/40 text-caption uppercase tracking-widest mb-1">📍 Suggested Route</Text>
                   <Text variant="none" className="text-white/90 text-sm">{suggestedRoute}</Text>
                 </div>
                 <div>
-                  <Text variant="none" className="text-white/40 text-[0.65rem] uppercase tracking-widest mb-1">🍛 Food</Text>
+                  <Text variant="none" className="text-white/40 text-caption uppercase tracking-widest mb-1">🍛 Food</Text>
                   <Text variant="none" className="text-white/90 text-sm">Rich culinary diversity</Text>
                 </div>
                 <div>
-                  <Text variant="none" className="text-white/40 text-[0.65rem] uppercase tracking-widest mb-1">💰 Daily Budget</Text>
+                  <Text variant="none" className="text-white/40 text-caption uppercase tracking-widest mb-1">💰 Daily Budget</Text>
                   <Text variant="none" className="text-white/90 text-sm font-mono">₹{(estimate.dailyTotal / days).toLocaleString('en-IN')}</Text>
                 </div>
                 <div>
-                  <Text variant="none" className="text-white/40 text-[0.65rem] uppercase tracking-widest mb-1">✨ Travel Vibe</Text>
+                  <Text variant="none" className="text-white/40 text-caption uppercase tracking-widest mb-1">✨ Travel Vibe</Text>
                   <Text variant="none" className="text-white/90 text-sm capitalize">{style} Explorer</Text>
                 </div>
               </div>
@@ -577,7 +577,7 @@ const CustomTripBuilder: React.FC<CustomTripBuilderProps> = ({
 
            {/* Receipt */}
            <div className="bg-white/5 border border-white/10 rounded-2xl p-8 relative overflow-hidden  shadow-inner before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-1 before:bg-gradient-to-r before:from-transparent before:via-brand-gold/50 before:to-transparent">
-             <Heading as="h4" variant="none" className="text-brand-gold/80 uppercase tracking-widest text-[0.65rem] font-semibold mb-6 flex items-center justify-between gap-2">
+             <Heading as="h4" variant="none" className="text-brand-gold/80 uppercase tracking-widest text-caption font-semibold mb-6 flex items-center justify-between gap-2">
                <span>Real-time Estimate Receipt</span>
                <span className="flex items-center gap-1.5 text-[9px] font-mono text-emerald-400 normal-case tracking-normal">
                  <span className={`inline-block w-1.5 h-1.5 rounded-full ${isSyncing ? 'bg-amber-400 animate-pulse' : 'bg-emerald-500'}`} />

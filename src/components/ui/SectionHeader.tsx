@@ -24,7 +24,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
 }) => {
   const isDark = variant === 'dark';
 
-  const labelClasses = 'text-xs font-bold tracking-[0.25em] uppercase mb-3 block';
+  const labelClasses = 'text-xs font-bold tracking-wide-em uppercase mb-3 block';
   const titleClasses = isDark ? 'text-white' : 'text-brand-green-dark';
   const descClasses = isDark ? 'text-white/70' : 'text-[#555555]';
 

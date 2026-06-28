@@ -167,7 +167,7 @@ const Services: React.FC = () => {
                 <img
                   src={service.image}
                   alt={service.shortTitle}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover img-zoom"
                 />
               </div>
               <div className="p-5">
@@ -202,7 +202,7 @@ const Services: React.FC = () => {
                 <img
                   src={service.image}
                   alt={service.shortTitle}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover img-zoom"
                 />
               </div>
               <div className="p-5">

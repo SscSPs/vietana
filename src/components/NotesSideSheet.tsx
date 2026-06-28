@@ -299,25 +299,25 @@ const NotesSideSheet: React.FC<NotesSideSheetProps> = ({ isOpen, onClose, articl
               
               <div className="absolute bottom-0 left-0 p-8 md:p-12 text-white w-full">
                 <div className="flex items-center gap-3 mb-2 flex-wrap">
-                  <span className="bg-brand-gold/90 text-brand-green-extra-dark font-bold text-[0.65rem] tracking-widest uppercase px-2.5 py-1 rounded-full">
+                  <span className="bg-brand-gold/90 text-brand-green-extra-dark font-bold text-caption tracking-widest uppercase px-2.5 py-1 rounded-full">
                     {getReadingTime(article)}
                   </span>
                   {article.author && (
-                    <span className="bg-white/20 backdrop-blur-md border border-white/10 text-white font-bold text-[0.65rem] tracking-widest uppercase px-3 py-1 rounded-full flex items-center gap-1.5">
+                    <span className="bg-white/20 backdrop-blur-md border border-white/10 text-white font-bold text-caption tracking-widest uppercase px-3 py-1 rounded-full flex items-center gap-1.5">
                       <Icon name="User" size={10} />
                       By {article.author}
                     </span>
                   )}
                   <button 
                     onClick={handleSaveToPlan}
-                    className="bg-white/20 backdrop-blur-md border border-white/10 hover:bg-white/30 text-white font-bold text-[0.65rem] tracking-widest uppercase px-3 py-1 rounded-full flex items-center gap-1.5 transition-all cursor-pointer"
+                    className="bg-white/20 backdrop-blur-md border border-white/10 hover:bg-white/30 text-white font-bold text-caption tracking-widest uppercase px-3 py-1 rounded-full flex items-center gap-1.5 transition-all cursor-pointer"
                   >
                     <Icon name={saved ? 'Check' : 'Bookmark'} size={10} />
                     {saved ? 'Saved!' : 'Save to Plan'}
                   </button>
                   <button 
                     onClick={handleDownloadPDF}
-                    className="bg-white/20 backdrop-blur-md border border-white/10 hover:bg-white/30 text-white font-bold text-[0.65rem] tracking-widest uppercase px-3 py-1 rounded-full flex items-center gap-1.5 transition-all cursor-pointer"
+                    className="bg-white/20 backdrop-blur-md border border-white/10 hover:bg-white/30 text-white font-bold text-caption tracking-widest uppercase px-3 py-1 rounded-full flex items-center gap-1.5 transition-all cursor-pointer"
                   >
                     <Icon name="Download" size={10} />
                     Download PDF

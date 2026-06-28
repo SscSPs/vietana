@@ -85,7 +85,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenMagic }) => {
             
             {/* Panel Label — visible on hover, always visible on mobile */}
             <div className="absolute bottom-12 left-1/2 -translate-x-1/2 md:bottom-20 md:left-10 md:translate-x-0 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
-              <Text variant="none" className="text-white/70 tracking-[0.3em] text-[0.65rem] uppercase font-bold drop-shadow-md">
+              <Text variant="none" className="text-white/70 tracking-loose-em text-caption uppercase font-bold drop-shadow-md">
                 {panel.label}
               </Text>
             </div>
@@ -117,7 +117,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenMagic }) => {
           <div className="mb-6 overflow-hidden">
             <div className="animate-reveal-up [animation-duration:0.8s] flex items-center justify-center gap-3">
               <span className="w-8 h-px bg-brand-gold/50"></span>
-              <Text variant="none" className="uppercase tracking-[0.3em] text-[0.65rem] sm:text-xs font-semibold text-brand-gold-light drop-shadow-md">
+              <Text variant="none" className="uppercase tracking-loose-em text-caption sm:text-xs font-semibold text-brand-gold-light drop-shadow-md">
                 {t.hero.support}
               </Text>
               <span className="w-8 h-px bg-brand-gold/50"></span>

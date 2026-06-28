@@ -115,7 +115,7 @@ const Journal: React.FC = () => {
             className="mb-8 flex justify-between items-end border-b border-[#E8E4D9] pb-4"
           >
             <div>
-              <span className="text-xs font-bold tracking-[0.25em] text-brand-sage uppercase mb-1 block">REGIONAL LOGBOOKS</span>
+              <span className="text-xs font-bold tracking-wide-em text-brand-sage uppercase mb-1 block">REGIONAL LOGBOOKS</span>
               <Heading as="h2" size="2xl" font="serif" className="text-[#1E4D45]">
                 Curated Collections
               </Heading>
@@ -154,7 +154,7 @@ const Journal: React.FC = () => {
                   <img 
                     src={collection.image} 
                     alt={`Curated collection of travel stories for ${collection.title}`} 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover img-zoom"
                   />
                   <div className="absolute top-3 left-3 bg-[#FAF7F0] dark:bg-[#111615] border border-[#D4AF37]/30 dark:border-white/10 rounded px-2 py-0.5 shadow-sm">
                     <Text size="xs" variant="none" className="uppercase tracking-widest text-brand-sage font-mono text-xs font-bold">
@@ -201,7 +201,7 @@ const Journal: React.FC = () => {
                     <img 
                       src={article.image} 
                       alt={article.title} 
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="w-full h-full object-cover img-zoom"
                     />
                   </div>
                   <div className="p-4 flex-1 flex flex-col justify-between text-left">
@@ -265,7 +265,7 @@ const Journal: React.FC = () => {
                         <img 
                           src={filteredStories[0].image} 
                           alt={`Featured travel story: ${filteredStories[0].title}`} 
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          className="w-full h-full object-cover img-zoom"
                         />
                       </div>
                       <div className="p-6 md:p-10 flex flex-col justify-center">
@@ -300,7 +300,7 @@ const Journal: React.FC = () => {
                         <img 
                           src={story.image} 
                           alt={`Featured travel story: ${story.title}`} 
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          className="w-full h-full object-cover img-zoom"
                         />
                       </div>
                       <div className="p-5">
@@ -328,7 +328,7 @@ const Journal: React.FC = () => {
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
         <Container>
           <div className="relative z-10 flex flex-col items-center text-center max-w-2xl mx-auto py-8">
-            <span className="text-xs font-bold tracking-[0.25em] text-brand-sage uppercase mb-4 block">SHARE YOUR JOURNEY</span>
+            <span className="text-xs font-bold tracking-wide-em text-brand-sage uppercase mb-4 block">SHARE YOUR JOURNEY</span>
             <Heading as="h2" size="3xl" font="serif" className="mb-6 text-white drop-shadow-md">
               Send Your Own Story
             </Heading>

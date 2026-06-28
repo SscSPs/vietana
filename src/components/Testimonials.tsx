@@ -95,7 +95,7 @@ const Testimonials: React.FC = () => {
         <div className="text-center mb-16">
           <div className="flex items-center justify-center gap-3 mb-4">
             <span className="w-8 h-px bg-brand-gold/30"></span>
-            <Text variant="none" className="uppercase tracking-[0.25em] text-xs font-semibold text-brand-gold-light">
+            <Text variant="none" className="uppercase tracking-wide-em text-xs font-semibold text-brand-gold-light">
               Trusted by Indian Travelers
             </Text>
             <span className="w-8 h-px bg-brand-gold/30"></span>

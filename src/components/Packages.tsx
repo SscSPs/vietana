@@ -157,7 +157,7 @@ Please load this itinerary and let me customize it!`;
         {/* Section Header */}
         <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <span className="text-xs font-bold tracking-[0.25em] text-brand-sage uppercase mb-3 block">
+            <span className="text-xs font-bold tracking-wide-em text-brand-sage uppercase mb-3 block">
               VIETANA CURATED
             </span>
             <Heading as="h2" size="h3" font="serif" className="mb-3 tracking-tight text-[#1E4D45]">
@@ -420,7 +420,7 @@ Please load this itinerary and let me customize it!`;
 
               <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end gap-4">
                 <div>
-                  <Text variant="none" className="text-[0.65rem] uppercase tracking-widest text-[#D4AF37] font-mono font-bold mb-1.5 block">
+                  <Text variant="none" className="text-caption uppercase tracking-widest text-[#D4AF37] font-mono font-bold mb-1.5 block">
                     {selectedPackage.duration} · {selectedPackage.badge}
                   </Text>
                   <Heading as="h3" variant="none" className="text-2xl font-serif text-white tracking-wide">
@@ -463,7 +463,7 @@ Please load this itinerary and let me customize it!`;
                       </Text>
                     ))}
                     {selectedPackage.inclusions.length > 4 && (
-                      <Text variant="none" className="text-[#555555]/60 text-[0.65rem] italic pl-5">
+                      <Text variant="none" className="text-[#555555]/60 text-caption italic pl-5">
                         + {selectedPackage.inclusions.length - 4} more inclusions
                       </Text>
                     )}
@@ -505,13 +505,13 @@ Please load this itinerary and let me customize it!`;
                             <div className="mt-3 text-xs flex flex-col gap-3 animate-msg-fade-in font-light leading-relaxed text-[#555555]">
                               <Text variant="none" className="italic text-[#555555]/85 mb-1">{day.description}</Text>
                               <div>
-                                <span className="text-[0.65rem] uppercase tracking-widest text-[#B8860B] font-bold block mb-1">Activities:</span>
+                                <span className="text-caption uppercase tracking-widest text-[#B8860B] font-bold block mb-1">Activities:</span>
                                 {day.activities.map((act, i) => (
                                   <div key={i} className="pl-2 flex gap-2"><span>-</span> <span>{act}</span></div>
                                 ))}
                               </div>
                               <div>
-                                <span className="text-[0.65rem] uppercase tracking-widest text-[#B8860B] font-bold block mb-1">Gastronomy:</span>
+                                <span className="text-caption uppercase tracking-widest text-[#B8860B] font-bold block mb-1">Gastronomy:</span>
                                 {day.food.map((f, i) => (
                                   <div key={i} className="pl-2 flex gap-2 italic text-[#555555]/80"><span>✦</span> <span>{f}</span></div>
                                 ))}
@@ -531,7 +531,7 @@ Please load this itinerary and let me customize it!`;
               const paths = getDownloadPaths(selectedPackage);
               return (
                 <div className="px-6 py-4 bg-[#FAF7F0] border-t border-[#E8E4D9] shrink-0 flex flex-col gap-2">
-                  <span className="text-[0.65rem] uppercase tracking-widest text-[#B8860B] font-semibold text-center mb-1">
+                  <span className="text-caption uppercase tracking-widest text-[#B8860B] font-semibold text-center mb-1">
                     Download Luxury Handbook
                   </span>
                   <div className="flex border border-[#E8E4D9] rounded overflow-hidden shadow-sm">

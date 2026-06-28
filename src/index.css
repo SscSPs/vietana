@@ -43,6 +43,7 @@
 
   /* Typography Sizing — Editorial Luxury Scale */
   --font-size-xxs: 0.625rem;
+  --font-size-caption: 0.65rem;
   --font-size-display: clamp(3rem, 10vw, 8rem);
   --font-size-h1: clamp(2.5rem, 8vw, 6.5rem);
   --font-size-h2: clamp(1.8rem, 5vw, 4rem);
@@ -321,6 +322,23 @@ html {
   font-variant-numeric: tabular-nums;
 }
 
+/* Editorial image zoom — used across Destinations, Services, Journal, Food, etc. */
+.img-zoom {
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.img-zoom:hover,
+.group:hover .img-zoom {
+  transform: scale(1.05);
+}
+
+/* Tracking shorthand utilities */
+.tracking-wide-em { letter-spacing: 0.25em; }
+.tracking-mid-em { letter-spacing: 0.2em; }
+.tracking-loose-em { letter-spacing: 0.3em; }
+
+/* Text caption size */
+.text-caption { font-size: 0.65rem; }
+
 /* Light-on-dark type compensation — heavier weight, more line-height, trace letter-spacing */
 .light-on-dark,
 .light-on-dark p,
@@ -409,6 +427,9 @@ html {
   .touch-target {
     min-height: 44px;
     min-width: 44px;
+  }
+  button, select, input, summary {
+    min-height: 44px;
   }
 }
 
