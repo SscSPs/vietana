@@ -25,14 +25,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled: scrolledParam, navClass, mobi
   const scrolled = false;
   const { language, setLanguage, t } = useTranslation();
   const [langOpen, setLangOpen] = useState(false);
-  const [emergencyOpen, setEmergencyOpen] = useState(false);
   const [expDropOpen, setExpDropOpen] = useState(false);
-  const [isEmergencyPulsing, setIsEmergencyPulsing] = useState(true);
-
-  React.useEffect(() => {
-    const timer = setTimeout(() => setIsEmergencyPulsing(false), 3000);
-    return () => clearTimeout(timer);
-  }, []);
 
   const isLight = false;
 
@@ -48,14 +41,6 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled: scrolledParam, navClass, mobi
 
   return (
     <>
-      <button 
-        onClick={() => setEmergencyOpen(true)}
-        className={`focus-ring fixed top-6 right-6 z-[9999] hidden sm:flex items-center gap-2 px-4 py-2 rounded-full border border-red-500 bg-red-500/10 backdrop-blur-md text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300 cursor-pointer shadow-[0_4px_15px_rgba(239,68,68,0.3)] hover:animate-none ${isEmergencyPulsing ? 'animate-pulse' : ''}`}
-      >
-        <Icon name="AlertCircle" size={16} />
-        <span className="text-xs font-bold tracking-widest uppercase">Emergency</span>
-      </button>
-
       <nav 
         id="nav" 
         className={`fixed left-1/2 -translate-x-1/2 z-[1000] px-6 md:px-10 flex items-center justify-between transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] gap-2 md:gap-4 w-[95%] max-w-7xl rounded-full border safe-top 
@@ -187,8 +172,6 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled: scrolledParam, navClass, mobi
         </ul>
 
         <div className="flex items-center gap-4 shrink-0">
-
-
           <button 
             onClick={() => onOpenMapCurtain()}
             className={`focus-ring hidden sm:flex items-center gap-2 px-4 py-1.5 rounded-full transition-colors border ${isLight ? 'glass border-[#1D1D1F]/10 text-[#1D1D1F] hover:bg-[#F2EFE8]' : 'glass-dark border-white/20 text-surface-cream hover:bg-white/10'}`}
@@ -340,7 +323,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled: scrolledParam, navClass, mobi
           <div className="h-px w-2/3 bg-white/10 my-4"></div>
 
           <button 
-            onClick={() => { setMobileMenuOpen(false); setEmergencyOpen(true); }}
+            onClick={() => { setMobileMenuOpen(false); window.dispatchEvent(new CustomEvent('open-emergency')); }}
             className="flex items-center justify-center gap-3 px-6 py-3 rounded-full bg-red-500/20 border border-red-500/50 text-red-400 transition-colors no-underline w-full max-w-[200px] cursor-pointer"
           >
             <Icon name="AlertCircle" size={20} />
@@ -381,78 +364,6 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled: scrolledParam, navClass, mobi
       {/* Click outside to close drops */}
       {langOpen && <div className="fixed inset-0 z-[999]" onClick={() => setLangOpen(false)}></div>}
       {expDropOpen && <div className="fixed inset-0 z-[999]" onClick={() => setExpDropOpen(false)}></div>}
-
-      <Modal isOpen={emergencyOpen} onClose={() => setEmergencyOpen(false)} maxWidth="max-w-xl">
-        <div className="p-6 sm:p-8 flex flex-col gap-6 relative">
-          <button 
-            onClick={() => setEmergencyOpen(false)}
-            className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors cursor-pointer"
-          >
-            <Icon name="X" size={24} />
-          </button>
-          
-          <div className="flex flex-col items-center text-center mb-2">
-            <div className="w-16 h-16 rounded-full bg-red-500/20 text-red-500 flex items-center justify-center mb-4 shrink-0">
-              <Icon name="AlertTriangle" size={32} />
-            </div>
-            <Heading as="h3" size="2xl" font="serif" className="text-white">Emergency Support</Heading>
-            <Text variant="none" className="text-white/70 mt-2 text-sm sm:text-base">Download essential guides and protocols for immediate assistance.</Text>
-          </div>
-
-          <div className="flex flex-col gap-4">
-            <a 
-              href="/vietana_emergency_medical_card.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setEmergencyOpen(false)}
-              className="flex items-center gap-4 p-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-red-500/50 transition-all group no-underline"
-            >
-              <div className="w-12 h-12 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center shrink-0">
-                <Icon name="HeartPulse" size={24} />
-              </div>
-              <div className="flex-1">
-                <Text variant="none" weight="bold" className="text-white text-left">Medical Assistance</Text>
-                <Text variant="none" size="xs" className="text-white/50 text-left">Emergency Medical Card</Text>
-              </div>
-              <Icon name="Download" size={20} className="text-white/30 group-hover:text-red-400 transition-colors" />
-            </a>
-
-            <a 
-              href="/vietana_embassy_and_consular_assistance.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setEmergencyOpen(false)}
-              className="flex items-center gap-4 p-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-brand-gold/50 transition-all group no-underline"
-            >
-              <div className="w-12 h-12 rounded-full bg-brand-gold/20 text-brand-gold flex items-center justify-center shrink-0">
-                <Icon name="Flag" size={24} />
-              </div>
-              <div className="flex-1">
-                <Text variant="none" weight="bold" className="text-white text-left">Embassy & Consular Assistance</Text>
-                <Text variant="none" size="xs" className="text-white/50 text-left">Missions & Crisis Numbers</Text>
-              </div>
-              <Icon name="Download" size={20} className="text-white/30 group-hover:text-brand-gold transition-colors" />
-            </a>
-
-            <a 
-              href="/vietana_travel_emergency_guide.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setEmergencyOpen(false)}
-              className="flex items-center gap-4 p-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-blue-500/50 transition-all group no-underline"
-            >
-              <div className="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
-                <Icon name="ShieldAlert" size={24} />
-              </div>
-              <div className="flex-1">
-                <Text variant="none" weight="bold" className="text-white text-left">Travel Emergencies & Essential Support</Text>
-                <Text variant="none" size="xs" className="text-white/50 text-left">Baggage, Flights, Scams</Text>
-              </div>
-              <Icon name="Download" size={20} className="text-white/30 group-hover:text-blue-400 transition-colors" />
-            </a>
-          </div>
-        </div>
-      </Modal>
     </>
   );
 };

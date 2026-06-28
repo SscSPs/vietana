@@ -5,7 +5,7 @@ interface BackToTopProps {
 }
 
 const BackToTop: React.FC<BackToTopProps> = ({ visible }) => {
-  const [offsetBottom, setOffsetBottom] = useState(24);
+  const [offsetBottom, setOffsetBottom] = useState(176);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -19,9 +19,9 @@ const BackToTop: React.FC<BackToTopProps> = ({ visible }) => {
       const footerLimit = docHeight - 400; // Average height threshold of footer section
       
       if (scrollPos > footerLimit) {
-        setOffsetBottom(Math.min(90, 24 + (scrollPos - footerLimit) * 0.15));
+        setOffsetBottom(Math.min(240, 176 + (scrollPos - footerLimit) * 0.15));
       } else {
-        setOffsetBottom(24);
+        setOffsetBottom(176);
       }
     };
     window.addEventListener('scroll', handleScroll);
