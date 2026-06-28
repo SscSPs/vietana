@@ -231,15 +231,24 @@ const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestinati
                     <span className="text-white flex items-center justify-center"><Icon name="Leaf" size={14} /></span>
                   </div>
                 )}
-                <div className={`max-w-[80%] ${msg.type === 'user'
+                <div className={`max-w-[80%] relative group/msg ${msg.type === 'user'
                     ? 'bg-gradient-to-r from-brand-gold/10 to-brand-gold/20 border border-brand-gold/30 rounded-2xl rounded-br-sm p-5 shadow-soft text-right'
-                    : 'bg-gradient-to-br from-brand-green/20 via-brand-green-dark/10 to-white/5 border border-brand-green-light/20 rounded-2xl rounded-bl-sm p-5 shadow-soft text-left'
+                    : 'bg-gradient-to-br from-brand-green/20 via-brand-green-dark/10 to-white/5 border border-brand-green-light/20 rounded-2xl rounded-bl-sm p-5 pr-12 shadow-soft text-left'
                   }`}>
                   <Text
                     variant="none"
                     className={`leading-relaxed text-base md:text-lg ${msg.type === 'user' ? 'text-white' : 'text-white/90'} [&_strong]:text-brand-gold-light [&_strong]:font-medium`}
                     dangerouslySetInnerHTML={{ __html: sanitize(msg.text) }}
                   />
+                  {msg.type === 'bot' && (
+                    <button
+                      onClick={() => speakText(msg.text)}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 opacity-60 md:opacity-0 group-hover/msg:opacity-100 transition-opacity duration-300 text-white/40 hover:text-brand-gold cursor-pointer p-1.5 rounded-lg hover:bg-white/5"
+                      title="Read Aloud"
+                    >
+                      <Icon name="Volume2" size={16} />
+                    </button>
+                  )}
                 </div>
               </div>
             );
