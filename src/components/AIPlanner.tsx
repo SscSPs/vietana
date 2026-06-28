@@ -100,6 +100,15 @@ const AIPlanner: React.FC<AIPlannerProps> = ({ isOpen, onClose, initialDestinati
       };
 
       recognitionRef.current = recognition;
+
+      return () => {
+        try {
+          recognition.stop();
+        } catch(e) {}
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+        }
+      };
     }
   }, [handleSend, language]);
 

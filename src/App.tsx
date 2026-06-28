@@ -35,6 +35,7 @@ const About = lazy(() => import('./components/About'));
 const Contact = lazy(() => import('./components/Contact'));
 
 import SEO from './components/seo/SEO';
+import ErrorBoundary from './components/ui/ErrorBoundary';
 
 export default function App() {
   const { t } = useTranslation();
@@ -53,9 +54,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden selection:bg-brand-gold selection:text-black">
-      <SEO />
-      <ProgressBar progress={scrollProgress} />
+    <ErrorBoundary>
+      <div className="min-h-screen bg-black text-white overflow-hidden selection:bg-brand-gold selection:text-black">
+        <SEO />
+        <ProgressBar progress={scrollProgress} />
       <BackToTop visible={scrollY > 700} />
 
       <OverlayLayout />
@@ -76,8 +78,9 @@ export default function App() {
       <main>
         <Hero onOpenMagic={() => setModalOpen('magicMode', true)} />
 
-        <Suspense fallback={<SectionPlaceholder />}>
-          <Destinations />
+        <ErrorBoundary>
+          <Suspense fallback={<SectionPlaceholder />}>
+            <Destinations />
           <Separator variant="green" />
           <Packages
             onOpenBuilder={(dest) => { setBuilderDestinations(dest || []); setModalOpen('builder', true); }}
@@ -91,14 +94,16 @@ export default function App() {
           <Team />
           <Separator variant="green" />
           <Journal />
-          <FAQ onOpenPlanner={(dest, prompt) => openPlanner(dest, prompt)} />
-          <Separator variant="gold" />
-          <Testimonials />
-        </Suspense>
+            <FAQ onOpenPlanner={(dest, prompt) => openPlanner(dest, prompt)} />
+            <Separator variant="gold" />
+            <Testimonials />
+          </Suspense>
+        </ErrorBoundary>
       </main>
 
       <Footer />
     </div>
+    </ErrorBoundary>
   );
 }
 
