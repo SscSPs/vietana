@@ -776,6 +776,21 @@ html {
   color: #AAB7A1 !important;
 }
 
+/* Hardcoded opacity class overrides for dark mode */
+.dark .text-\[\#1D1D1F\]\/90, .dark .text-\[\#1d1d1f\]\/90 { color: rgba(250, 248, 243, 0.9) !important; }
+.dark .text-\[\#1D1D1F\]\/80, .dark .text-\[\#1d1d1f\]\/80 { color: rgba(250, 248, 243, 0.8) !important; }
+.dark .text-\[\#1D1D1F\]\/70, .dark .text-\[\#1d1d1f\]\/70 { color: rgba(250, 248, 243, 0.7) !important; }
+.dark .text-\[\#1D1D1F\]\/60, .dark .text-\[\#1d1d1f\]\/60 { color: rgba(250, 248, 243, 0.6) !important; }
+.dark .text-\[\#1D1D1F\]\/50, .dark .text-\[\#1d1d1f\]\/50 { color: rgba(250, 248, 243, 0.5) !important; }
+.dark .text-\[\#1D1D1F\]\/40, .dark .text-\[\#1d1d1f\]\/40 { color: rgba(250, 248, 243, 0.4) !important; }
+.dark .text-\[\#1D1D1F\]\/30, .dark .text-\[\#1d1d1f\]\/30 { color: rgba(250, 248, 243, 0.3) !important; }
+.dark .text-\[\#1D1D1F\]\/20, .dark .text-\[\#1d1d1f\]\/20 { color: rgba(250, 248, 243, 0.2) !important; }
+.dark .text-\[\#1D1D1F\]\/10, .dark .text-\[\#1d1d1f\]\/10 { color: rgba(250, 248, 243, 0.1) !important; }
+
+.dark .border-\[\#1D1D1F\]\/5, .dark .border-\[\#1d1d1f\]\/5 { border-color: rgba(255, 255, 255, 0.05) !important; }
+.dark .bg-\[\#1D1D1F\]\/5, .dark .bg-\[\#1d1d1f\]\/5 { background-color: rgba(255, 255, 255, 0.05) !important; }
+.dark .bg-\[\#1D1D1F\]\/20, .dark .bg-\[\#1d1d1f\]\/20 { background-color: rgba(255, 255, 255, 0.2) !important; }
+
 .dark .border-\[\#E8E4D9\],
 .dark .border-\[\#e8e4d9\],
 .dark .border-\[\#1D1D1F\]\/10,
